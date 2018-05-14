@@ -31,10 +31,10 @@
 
     <!-- Your html goes here -->
     <div class='panel panel-default'>
-        <a class='btn btn-primary pull-right' style="margin: 2px" href='http://127.0.0.1:8000/admin/task_calendar'><i class="fa fa-calendar"></i>  Calendar</a>
-        <a class='btn btn-success pull-right' style="margin: 2px" href='http://127.0.0.1:8000/admin/appliances/add?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Fappliances%3Fforeign_key%3Dorders_id%26label%3DAppliances%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dorders%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Forders%253Fm%253D45&parent_id={{$id}}&parent_field=orders_id'><i class="fa fa-bars"></i> Appliances</a>
-        <a class='btn btn-primary pull-right' style="margin: 2px" href='http://127.0.0.1:8000/admin/notes_quotes/add?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Fnotes_quotes%3Fforeign_key%3Dorders_id%26label%3DNotes%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dorders%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Forders%253Fm%253D45&parent_id={{$id}}&parent_field=orders_id'><i class="fa fa-file-text-o"></i> Notes</a>
-        <a class='btn btn-warning pull-right' style="margin: 2px" href='http://127.0.0.1:8000/admin/eazy_tasks_quotes/add?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Feazy_tasks_quotes%3Fforeign_key%3Dorders_id%26label%3DTasks%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dorders%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Forders%253Fm%253D45&parent_id={{$id}}&parent_field=orders_id'><i class="fa fa-book"></i> Tasks</a>
+        <a class='btn btn-primary pull-right' style="margin: 2px" href='http://ezcrm.us/admin/task_calendar'><i class="fa fa-calendar"></i>  Calendar</a>
+        <a class='btn btn-success pull-right' style="margin: 2px" href='http://ezcrm.us/admin/appliances/add?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Fappliances%3Fforeign_key%3Dorders_id%26label%3DAppliances%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dorders%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Forders%253Fm%253D45&parent_id={{$id}}&parent_field=orders_id'><i class="fa fa-bars"></i> Appliances</a>
+        <a class='btn btn-primary pull-right' style="margin: 2px" href='http://ezcrm.us/admin/notes_quotes/add?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Fnotes_quotes%3Fforeign_key%3Dorders_id%26label%3DNotes%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dorders%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Forders%253Fm%253D45&parent_id={{$id}}&parent_field=orders_id'><i class="fa fa-file-text-o"></i> Notes</a>
+        <a class='btn btn-warning pull-right' style="margin: 2px" href='http://ezcrm.us/admin/eazy_tasks_quotes/add?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Feazy_tasks_quotes%3Fforeign_key%3Dorders_id%26label%3DTasks%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dorders%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Forders%253Fm%253D45&parent_id={{$id}}&parent_field=orders_id'><i class="fa fa-book"></i> Tasks</a>
 
         @if( $isClosed == 0 )
                 <a class='btn btn-danger pull-right' style="margin: 2px" href='{{CRUDBooster::mainpath("change-quotes/$id")}}'><i class="fa fa-cubes"></i> Close Quote</a>
@@ -47,7 +47,7 @@
         <div class='panel-heading'><strong><i class="fa fa-shopping-bag"></i> Quote Information </strong></div>
 
         <div class="panel-body" style="padding:5px 0px 0px 0px">
-            <form class="form-horizontal" method="post" id="form" enctype="multipart/form-data" action="http://127.0.0.1:8000/admin/campaigns/edit-save/2">
+            <form class="form-horizontal" method="post" id="form" enctype="multipart/form-data" action="http://ezcrm.us/admin/campaigns/edit-save/2">
 
                 <div class="box-body" id="parent-form-area">
 
@@ -412,8 +412,8 @@
                                 <td>{{$task->created_at}}</td>
                                 <td>{{$task->task_type_name}}</td>
                                 <td style="text-align: center">
-                                    <a class="btn btn-xs btn-primary btn-detail" title="Detail Data" href="http://127.0.0.1:8000/admin/eazy_tasks_quotes/detail/{{$task->id}}?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Feazy_tasks_quotes%3Fforeign_key%3Dorders_id%26label%3DTasks%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dorders%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Forders%253Fm%253D45"><i class="fa fa-eye"></i></a>
-                                    <a class="btn btn-xs btn-success btn-edit" title="Edit Data" href="http://127.0.0.1:8000/admin/eazy_tasks_quotes/edit/{{$task->id}}?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Feazy_tasks_quotes%3Fforeign_key%3Dorders_id%26label%3DTasks%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dorders%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Forders%253Fm%253D45&parent_id={{$id}}&parent_field="><i class="fa fa-pencil"></i></a>
+                                    <a class="btn btn-xs btn-primary btn-detail" title="Detail Data" href="http://ezcrm.us/admin/eazy_tasks_quotes/detail/{{$task->id}}?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Feazy_tasks_quotes%3Fforeign_key%3Dorders_id%26label%3DTasks%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dorders%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Forders%253Fm%253D45"><i class="fa fa-eye"></i></a>
+                                    <a class="btn btn-xs btn-success btn-edit" title="Edit Data" href="http://ezcrm.us/admin/eazy_tasks_quotes/edit/{{$task->id}}?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Feazy_tasks_quotes%3Fforeign_key%3Dorders_id%26label%3DTasks%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dorders%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Forders%253Fm%253D45&parent_id={{$id}}&parent_field="><i class="fa fa-pencil"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -448,7 +448,7 @@
                                             confirmButtonText: 'Yes!',
                                             cancelButtonText: 'No',
                                             closeOnConfirm: false },
-                                            function(){  location.href='http://127.0.0.1:8000/admin/notes_quotes/delete/{{ $note->id }}' });"><i class="fa fa-trash"></i>
+                                            function(){  location.href='http://ezcrm.us/admin/notes_quotes/delete/{{ $note->id }}' });"><i class="fa fa-trash"></i>
                                     </a>
                                 </div>
                             </div>

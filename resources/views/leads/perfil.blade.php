@@ -34,11 +34,11 @@
         <div class='panel-heading' style="background-color: #337ab7; color: white;"><strong><i class="fa fa-user"></i> {{ trans('crudbooster.Lead_Profile') }} </strong></div>
 
         <div class="panel-body" style="padding:20px 0px 0px 0px">
-            <form class="form-horizontal" method="post" id="form" enctype="multipart/form-data" action="http://127.0.0.1:8000/crm/campaigns/edit-save/2">
+            <form class="form-horizontal" method="post" id="form" enctype="multipart/form-data" action="http://ezcrm.us/crm/campaigns/edit-save/2">
                 <input type="hidden" name="_token" value="04WEmigxCcCs05dhAXuQZvlOTccK4fKUG3OrTpQO">
-                <input type="hidden" name="return_url" value="http://127.0.0.1:8000/crm/campaigns?m=61">
-                <input type="hidden" name="ref_mainpath" value="http://127.0.0.1:8000/crm/campaigns">
-                <input type="hidden" name="ref_parameter" value="return_url=http://127.0.0.1:8000/crm/campaigns?m=61">
+                <input type="hidden" name="return_url" value="http://ezcrm.us/crm/campaigns?m=61">
+                <input type="hidden" name="ref_mainpath" value="http://ezcrm.us/crm/campaigns">
+                <input type="hidden" name="ref_parameter" value="return_url=http://ezcrm.us/crm/campaigns?m=61">
                 <div class="box-body" id="parent-form-area">
 
                     <style type="text/css">
@@ -209,7 +209,7 @@
                                                         confirmButtonText: '{{trans('crudbooster.yes')}}',
                                                         cancelButtonText: '{{trans('crudbooster.no')}}',
                                                         closeOnConfirm: false },
-                                                        function(){  location.href='http://127.0.0.1:8000/crm/orders/delete/{{ $quote->id }}' });"><i class="fa fa-trash"></i>
+                                                        function(){  location.href='http://ezcrm.us/crm/orders/delete/{{ $quote->id }}' });"><i class="fa fa-trash"></i>
                                                 </a>
                                             </td>
                                         </tr>
@@ -228,7 +228,7 @@
                 <div class='panel panel-default'>
                     <div class='panel-heading' style="background-color: #337ab7; color: white;"><strong><i class="fa fa-book"></i> {{trans('crudbooster.List_Tasks')}}</strong></div>
                     <a title="{{trans('crudbooster.show_calendar')}}" class='btn btn-primary pull-right' style="margin-left: 2px" href='{{CRUDBooster::adminpath("task_calendar")}}'><i class="fa fa-calendar"></i> </a>
-                    {{--<a title="{{trans('crudbooster.add_task')}}" id="addTasks" class='btn btn-primary pull-right' href='http://127.0.0.1:8000/crm/eazy_tasks/add?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Fnotes%3Fforeign_key%3Dcustomers_id%26label%3DNotes%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dcustomers%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Fcustomers%253Fm%253D50&parent_id={{$id}}&parent_field=customers_id'><i class="fa fa-book"></i></a>--}}
+                    {{--<a title="{{trans('crudbooster.add_task')}}" id="addTasks" class='btn btn-primary pull-right' href='http://ezcrm.us/crm/eazy_tasks/add?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Fnotes%3Fforeign_key%3Dcustomers_id%26label%3DNotes%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dcustomers%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Fcustomers%253Fm%253D50&parent_id={{$id}}&parent_field=customers_id'><i class="fa fa-book"></i></a>--}}
                     <a title="{{trans('crudbooster.add_task')}}" id="addTasks" class='btn btn-primary pull-right' href='#'><i class="fa fa-book"></i></a>
                 </div>
 
@@ -293,7 +293,7 @@
 
                 <div class='panel panel-default'>
                     <div class='panel-heading' style="background-color: #337ab7; color: white;"><strong><i class="fa fa-file-text-o"></i> {{trans('crudbooster.Notes')}}</strong></div>
-                    {{--<a title="{{trans('crudbooster.add_note')}}" class='btn btn-danger pull-right' style="margin: 2px" href='http://127.0.0.1:8000/crm/eazy_notes/add?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Fnotes%3Fforeign_key%3Dcustomers_id%26label%3DNotes%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dcustomers%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Fcustomers%253Fm%253D50&parent_id={{$id}}&parent_field=customers_id'><i class="fa fa-file-text-o"></i></a>--}}
+                    {{--<a title="{{trans('crudbooster.add_note')}}" class='btn btn-danger pull-right' style="margin: 2px" href='http://ezcrm.us/crm/eazy_notes/add?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Fnotes%3Fforeign_key%3Dcustomers_id%26label%3DNotes%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dcustomers%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Fcustomers%253Fm%253D50&parent_id={{$id}}&parent_field=customers_id'><i class="fa fa-file-text-o"></i></a>--}}
                 </div>
 
                 <?php
@@ -319,7 +319,7 @@
                                             confirmButtonText: '{{trans('crudbooster.yes')}}',
                                             cancelButtonText: '{{trans('crudbooster.no')}}',
                                             closeOnConfirm: false },
-                                            function(){  location.href='http://127.0.0.1:8000/crm/notes/delete/{{ $note->id }}' });"><i class="fa fa-trash"></i>
+                                            function(){  location.href='http://ezcrm.us/crm/notes/delete/{{ $note->id }}' });"><i class="fa fa-trash"></i>
                                     </a>
                                 </div>
                             </div>

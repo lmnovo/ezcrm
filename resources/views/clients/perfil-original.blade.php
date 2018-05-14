@@ -47,17 +47,17 @@
                         <table id="table-detail" class="table table-striped">
                             <tbody>
                                 <tr>
-                                    <td colspan="4" style="text-align: center;"><a data-lightbox="roadtrip" href="http://127.0.0.1:8000/{{$lead->photo}}"><img style="max-width:150px" title="Image For Photo" src="http://127.0.0.1:8000/{{$lead->photo}}"></a>
-                                        {{--<a class='btn btn-success pull-right' style="margin: 2px" href='http://127.0.0.1:8000/admin/fases?parent_table=customers&parent_columns=name&parent_id=3289&return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Fcustomers25%3Fm%3D62&foreign_key=customers_id&label=Phases'><i class="fa fa-step-forward"></i> Process</a>--}}
-                                        <a title="Add Note" class='btn btn-danger pull-right' style="margin: 2px" href='http://127.0.0.1:8000/admin/notes/add?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Fnotes%3Fforeign_key%3Dcustomers_id%26label%3DNotes%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dcustomers%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Fcustomers%253Fm%253D50&parent_id={{$id}}&parent_field=customers_id'><i class="fa fa-file-text-o"></i></a>
-                                        <a title="Add Task" class='btn btn-primary pull-right' style="margin: 2px" href='http://127.0.0.1:8000/admin/eazy_tasks/add?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Feazy_tasks%3Fforeign_key%3Dcustomers_id%26label%3DTasks%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dcustomers%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Fcustomers%253Fm%253D50&parent_id={{$id}}&parent_field=customers_id'><i class="fa fa-book"></i></a>
+                                    <td colspan="4" style="text-align: center;"><a data-lightbox="roadtrip" href="http://ezcrm.us/{{$lead->photo}}"><img style="max-width:150px" title="Image For Photo" src="http://ezcrm.us/{{$lead->photo}}"></a>
+                                        {{--<a class='btn btn-success pull-right' style="margin: 2px" href='http://ezcrm.us/admin/fases?parent_table=customers&parent_columns=name&parent_id=3289&return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Fcustomers25%3Fm%3D62&foreign_key=customers_id&label=Phases'><i class="fa fa-step-forward"></i> Process</a>--}}
+                                        <a title="Add Note" class='btn btn-danger pull-right' style="margin: 2px" href='http://ezcrm.us/admin/notes/add?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Fnotes%3Fforeign_key%3Dcustomers_id%26label%3DNotes%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dcustomers%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Fcustomers%253Fm%253D50&parent_id={{$id}}&parent_field=customers_id'><i class="fa fa-file-text-o"></i></a>
+                                        <a title="Add Task" class='btn btn-primary pull-right' style="margin: 2px" href='http://ezcrm.us/admin/eazy_tasks/add?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Feazy_tasks%3Fforeign_key%3Dcustomers_id%26label%3DTasks%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dcustomers%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Fcustomers%253Fm%253D50&parent_id={{$id}}&parent_field=customers_id'><i class="fa fa-book"></i></a>
                                         <a title="Send Email" class='btn btn-success pull-right' style="margin: 2px" href='{{CRUDBooster::mainpath("send-email/$id")}}'><i class="fa fa-envelope"></i></a>
                                         <a title="Send SMS" class='btn btn-warning pull-right' style="margin: 2px" href='{{CRUDBooster::mainpath("send-sms/$id")}}'><i class="fa fa-phone"></i></a>
                                         <a title="Add Quote" class='btn btn-primary pull-right' style="margin: 2px" href='{{CRUDBooster::adminpath("customers25/quotes/$id")}}'><i class="fa fa-edit"></i></a>
 
                                         <br>
-                                        <a title="Show Calendar" class='btn btn-primary pull-right' style="margin: 2px" href='http://127.0.0.1:8000/admin/task_calendar'><i class="fa fa-calendar"></i> </a>
-                                        <a title="Edit" class='btn btn-success pull-right' style="margin: 2px" href='http://127.0.0.1:8000/admin/customers/edit/{{$id}}?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Fcustomers%3Fm%3D50&parent_id=&parent_field='><i class="fa fa-pencil"></i></a>
+                                        <a title="Show Calendar" class='btn btn-primary pull-right' style="margin: 2px" href='http://ezcrm.us/admin/task_calendar'><i class="fa fa-calendar"></i> </a>
+                                        <a title="Edit" class='btn btn-success pull-right' style="margin: 2px" href='http://ezcrm.us/admin/customers/edit/{{$id}}?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Fcustomers%3Fm%3D50&parent_id=&parent_field='><i class="fa fa-pencil"></i></a>
                                 </tr>
                                 <tr>
                                     <td>Name</td><td>{{ $lead->name }}</td>
@@ -690,8 +690,8 @@
                                 <td>{{$task->created_at}}</td>
                                 <td>{{$task->task_type_name}}</td>
                                 <td style="text-align: center">
-                                    <a class="btn btn-xs btn-primary btn-detail" title="Detail Data" href="http://127.0.0.1:8000/admin/eazy_tasks/detail/{{$task->id}}?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Feazy_tasks%3Fforeign_key%3Dcustomers_id%26label%3DTasks%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dcustomers%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Fcustomers%253Fm%253D50"><i class="fa fa-eye"></i></a>
-                                    <a class="btn btn-xs btn-success btn-edit" title="Edit Data" href="http://127.0.0.1:8000/admin/eazy_tasks/edit/{{$task->id}}?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Feazy_tasks%3Fforeign_key%3Dcustomers_id%26label%3DTasks%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dcustomers%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Fcustomers%253Fm%253D50&parent_id=3288&parent_field="><i class="fa fa-pencil"></i></a>
+                                    <a class="btn btn-xs btn-primary btn-detail" title="Detail Data" href="http://ezcrm.us/admin/eazy_tasks/detail/{{$task->id}}?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Feazy_tasks%3Fforeign_key%3Dcustomers_id%26label%3DTasks%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dcustomers%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Fcustomers%253Fm%253D50"><i class="fa fa-eye"></i></a>
+                                    <a class="btn btn-xs btn-success btn-edit" title="Edit Data" href="http://ezcrm.us/admin/eazy_tasks/edit/{{$task->id}}?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Feazy_tasks%3Fforeign_key%3Dcustomers_id%26label%3DTasks%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dcustomers%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Fcustomers%253Fm%253D50&parent_id=3288&parent_field="><i class="fa fa-pencil"></i></a>
                                     <a class="btn btn-xs btn-warning btn-delete" title="Delete" href="javascript:;" onclick="swal({
                                             title: 'Are you sure',
                                             text: 'You will not be able to recover this record data!',
@@ -743,7 +743,7 @@
                                                 confirmButtonText: 'Yes!',
                                                 cancelButtonText: 'No',
                                                 closeOnConfirm: false },
-                                                function(){  location.href='http://127.0.0.1:8000/admin/notes/delete/{{ $note->id }}' });"><i class="fa fa-trash"></i>
+                                                function(){  location.href='http://ezcrm.us/admin/notes/delete/{{ $note->id }}' });"><i class="fa fa-trash"></i>
                                         </a>
                                     </div>
                                 </div>

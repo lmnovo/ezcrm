@@ -1,5 +1,5 @@
-/vendor
-/public
+/public/uploads
+/storage/*.key
 /storage
 /.idea
 .env

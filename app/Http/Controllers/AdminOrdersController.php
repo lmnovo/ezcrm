@@ -216,7 +216,7 @@
                             type:  'get',
                             dataType: 'json',
                             success : function(data) {
-                                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/'+quotes_id;                                                        
+                                window.location.href = 'http://ezcrm.us/crm/orders/edit/'+quotes_id;                                                        
                             }
                          });  
                     });                    
@@ -568,9 +568,9 @@
                                  $('#total').val(data[0].price);                                 
                                 
                                  if(data[0].imagen==null) 
-                                   $('#imagen').attr('src','http://127.0.0.1:8000/assets/images/appliances/no_photo.jpg');
+                                   $('#imagen').attr('src','http://ezcrm.us/assets/images/appliances/no_photo.jpg');
                                  else
-                                   $('#imagen').attr('src','http://127.0.0.1:8000/assets/images/appliances/'+data[0].imagen);
+                                   $('#imagen').attr('src','http://ezcrm.us/assets/images/appliances/'+data[0].imagen);
                                    $('#modal-loading').modal('hide');
                             }
                          });
@@ -678,7 +678,7 @@
                        $('#appliance').val('');
                        $('#product').val('');
                        $('#appliance_inside_category').val(''); 
-                       $('#imagen').attr('src','http://127.0.0.1:8000/assets/images/appliances/no_photo.jpg');
+                       $('#imagen').attr('src','http://ezcrm.us/assets/images/appliances/no_photo.jpg');
                        
                        actualizar_total();
                        $('#applianceModal').modal('hide');                                                

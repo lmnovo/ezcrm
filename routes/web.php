@@ -128,7 +128,7 @@
                     // Add color and link on event
                     [
                         'color' => $color->description,
-                        'url' => 'http://127.0.0.1:8000/crm/eazy_tasks/detail/'.$value->id,
+                        'url' => 'http://ezcrm.us/crm/eazy_tasks/detail/'.$value->id,
                     ]
                 );
             }

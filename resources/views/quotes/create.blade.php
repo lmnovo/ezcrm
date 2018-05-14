@@ -442,7 +442,7 @@
                                             confirmButtonText: '{{trans('crudbooster.yes')}}',
                                             cancelButtonText: '{{trans('crudbooster.no')}}',
                                             closeOnConfirm: false },
-                                            function(){  location.href='http://127.0.0.1:8000/crm/notes_quotes/delete/{{ $note->id }}' });"><i class="fa fa-trash"></i>
+                                            function(){  location.href='http://ezcrm.us/crm/notes_quotes/delete/{{ $note->id }}' });"><i class="fa fa-trash"></i>
                                     </a>
                                 </div>
                             </div>

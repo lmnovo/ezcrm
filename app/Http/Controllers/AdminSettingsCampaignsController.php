@@ -159,7 +159,7 @@
 	        	    $('section[class=content-header] h1').text('Send Campaign');	    
 	        	    $('div[class=panel-heading] strong').text('Send Campaign');
 	        	    
-	        	    var lo = '<div><a class=\"btn btn-success pull-right\" href=\"http://127.0.0.1:8000/admin/email_templates/add\">New Template</a></div>';
+	        	    var lo = '<div><a class=\"btn btn-success pull-right\" href=\"http://ezcrm.us/admin/email_templates/add\">New Template</a></div>';
 	        	    	 
 	        	    //$('#form-group-cms_email_templates_id').append(lo);	 
 	        	    $('div[class=col-sm-9]').append(lo);	 
