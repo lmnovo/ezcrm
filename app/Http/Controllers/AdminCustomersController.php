@@ -2,6 +2,7 @@
 
 	use App\EazyTask;
     use Illuminate\Support\Facades\Auth;
+    use Illuminate\Support\Facades\Schema;
     use Session;
 	use Request;
 	use DB;

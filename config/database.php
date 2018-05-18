@@ -53,6 +53,20 @@ return [
             'engine' => null,
         ],
 
+        'ezcrm' => [
+            'driver' => 'mysql',
+            'host' => env('CRM_HOST', '127.0.0.1'),
+            'port' => env('CRM_PORT', '3306'),
+            'database' => env('CRM_DATABASE', 'forge'),
+            'username' => env('CRM_USERNAME', 'forge'),
+            'password' => env('CRM_PASSWORD', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),

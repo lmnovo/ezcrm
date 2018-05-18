@@ -118,6 +118,7 @@ return [
 	'button_download_file'   =>'Descargar Fichero',
 	'button_reset'           =>'Resetear',
 	'button_add_to_table'    =>'Agregar a la Tabla',
+    'profit'      => 'Ganancias',
 	
 
 	'export_dialog_title'            =>"Exportar Datos",

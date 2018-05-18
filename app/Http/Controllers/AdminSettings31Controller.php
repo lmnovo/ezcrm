@@ -307,7 +307,15 @@
 	    | 
 	    */
 	    public function hook_after_edit($id) {
-	        //Your code here 
+	        //Después de Actualizar los Settings actualizo la tabla de configuration para la app3d
+            $settings = DB::table('settings')->where('id', 1)->first();
+
+
+            DB::table('configuration')->where('id', 1)->update(['value' => $settings->registration]);
+            DB::table('configuration')->where('id', 4)->update(['value' => $settings->tax_accesories]);
+            DB::table('configuration')->where('id', 5)->update(['value' => $settings->tax_buildout]);
+            DB::table('configuration')->where('id', 6)->update(['value' => $settings->tax_item]);
+	        //Your code here
 
 	    }
 

@@ -146,6 +146,7 @@ return [
     'Module_Generator'    => 'Modules',
     'List_Privilege'      => 'List Privileges',
     'List_Statistic'      => 'Charts',
+    'profit'      => 'Profits',
 
 
     'Add_New_Privilege'   => 'Add New Privilege',

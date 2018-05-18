@@ -39,6 +39,7 @@
             $this->col[] = ["label"=>trans('crudbooster.assigned_to'),"name"=>"id_account","urlUserQuote"=>"users"];
             $this->col[] = ["label"=>trans('crudbooster.source'),"name"=>"from_where","join"=>"sources,name"];
             $this->col[] = ["label"=>"Total","name"=>"truck_aprox_price"];
+            $this->col[] = ["label"=>trans('crudbooster.profit'),"name"=>"profits"];
 
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
@@ -196,6 +197,7 @@
 	        */
 	        $this->script_js = "
 	        	$(function() {
+                       
 	        	
 	        	    $('#date_limit').datepicker();
 	        	    var count = 0;	        	    
@@ -221,13 +223,71 @@
                          });  
                     });                    
                     
-                    //para editar el precio
+                    //Editar y Guardar el Precio del Appliance
                     $('#edit_precio').on('click',function(){
                         $('#price2').removeAttr('disabled');
                         $('#save_precio').css('display','inline');
                         $(this).css('display','none');
                     });
-       		    
+                    
+                    $('#save_precio').on('click',function(){
+                         $('#price2').removeAttr('disabled');
+                         $('#save_precio').css('display','inline');
+                         $(this).css('display','none');
+                         $.ajax({
+                            url: '../updateprecio',
+                            data: \"id=\"+$('#appliance_inside_category').val()+\"&precio=\"+$('#price2').val(),
+                            type:  'get',
+                            dataType: 'json',
+                            success : function(data) {
+                                if(data==true){
+                                    $('#price2').attr('disabled','true');
+                                    $('#save_precio').css('display','none');
+                                    $('#edit_precio').css('display','inline');
+                                    
+                                    //actualizo el total
+                                    var price = $('#price2').val(); 
+                                    var cant=$('#quantity').val();
+                                    var total=parseFloat(price)*parseFloat(cant);
+                                    $('#total').val(total);
+                                    
+                                    updateTotales()
+                                }
+                            }
+                         });
+                     });
+                    
+                    //Editar y Guardar el Registration
+                    $('#edit_registration').on('click',function(){
+                        $('#registration').removeAttr('readonly');
+                        $('#save_registration').css('display','inline');
+                        $(this).css('display','none');
+                    });
+                    
+                    $('#save_registration').on('click',function(){
+                         $('#registration').removeAttr('readonly');
+                         $('#save_registration').css('display','inline');
+                         $(this).css('display','none');
+                         $.ajax({
+                            url: '../updateregistration',
+                            data: \"registration=\"+$('#registration').val(),
+                            type:  'get',
+                            dataType: 'json',
+                            success : function(data) {
+                                if(data==true){
+                                    $('#registration').attr('readonly','true');
+                                    $('#save_registration').css('display','none');
+                                    $('#edit_registration').css('display','inline');
+                                    
+                                    //Actualizo el Total Quote
+                                    actualizar_total();
+                                    
+                                    updateTotales()
+                                }
+                            }
+                         });
+                     });
+                     
                     var oTableaccesorios = $('#accesorios').DataTable({
                         \"order\": [[ 0, \"asc\" ]],
                          \"lengthMenu\": [ 25, 50, 75, 100 ],
@@ -245,9 +305,11 @@
                             $( api.column( 6 ).footer() ).html(
                                 total
                             );
+                            
                             //siempre que agregue o elimine se actualiza el campo en el resumen
                             $('#resumen_appliance').val(total);
-                            //si el estado seleccionado es texas el impuesto es 0
+                            
+                            //Si el estado seleccionado no es Texas el Impuesto es 0
                             if($('#state option:selected').text()==='TX')
                             {
                                 $('#taxappliance').val(parseFloat(total * 0.0825));
@@ -256,6 +318,8 @@
                             }
                                      
                             actualizar_total();
+                            
+                            updateTotales()
                         },
                         \"columnDefs\": [
                             { \"width\": \"15%\", \"targets\": 0 },
@@ -275,10 +339,12 @@
                     
 	        		 $('#interesting').on('change',function(){
                           Actualizar_Estado();
+                          updateTotales()
                      });
                      
                      $('#buildout_price').on('change',function(){
-                          actualizar_total();                          
+                          actualizar_total();   
+                          updateTotales()                       
                      });
                      
                      if($('#financing').val() === 'Yes'){
@@ -295,6 +361,10 @@
                               $('#alerta').css('display','none');
                           }
                      });
+                     
+                     function updateTotales() {updateTotales
+                        console.log($('#taxbuildout').val()+'--'+$('#taxappliance').val()+'--'+$('#taxitem').val());
+                     }
                      
                      function Actualizar_Estado() {
                            var type = $('#interesting').val();
@@ -341,37 +411,13 @@
                                 }
                                 
                                 $('#modal-loading').modal('hide');
+                                
+                                updateTotales()
                            }
                         });
                        
-                    });                    
-                    
-                    $('#save_precio').on('click',function(){
-                         $('#price2').removeAttr('disabled');
-                         $('#save_precio').css('display','inline');
-                         $(this).css('display','none');
-                         $.ajax({
-                            url: '../updateprecio',
-                            data: \"id=\"+$('#appliance_inside_category').val()+\"&precio=\"+$('#price2').val(),
-                            type:  'get',
-                            dataType: 'json',
-                            success : function(data) {
-                                if(data==true){
-                                    $('#price2').attr('disabled','true');
-                                    $('#save_precio').css('display','none');
-                                    $('#edit_precio').css('display','inline');
-                                    
-                                    //actualizo el total
-                                    var price = $('#price2').val(); 
-                                    var cant=$('#quantity').val();
-                                    var total=parseFloat(price)*parseFloat(cant);
-                                    $('#total').val(total);
-                                }
-                            }
-                         });
-                     });
-                    
-                    
+                    });
+                                        
                     $('#sizes').on('change',function(){       
                         $('#price').val('0.00');                        
                         var type = $('#interesting').val();
@@ -399,6 +445,8 @@
                                          actualizar_total();                               
                                    }
                                 });
+                                
+                                updateTotales()
                         }
                         
                         $.ajax({
@@ -413,6 +461,8 @@
                                 {
                                     $('#buildout_name').append('<option value=\"'+data[i].id+'\">'+data[i].nombre+'</option>');                                    
                                 }
+                                
+                                updateTotales()
                             }
                          });                    
                         
@@ -443,7 +493,9 @@
                                 $('#resumen_buildout').val(new Number(data[0].precio).toFixed(2));   
                                 $('#modal-loading').modal('hide');
                                 
-                                actualizar_total();                      
+                                actualizar_total();    
+                                
+                                updateTotales()                  
                             }
                          });
                     });
@@ -453,11 +505,15 @@
                     });
                     
                     $('#discount').on('change',function(){
-                        actualizar_total();                  
+                        actualizar_total();     
+                        
+                        updateTotales()             
                     });
                     
                     $('#state').on('change',function(){
-                        actualizar_total();                  
+                        actualizar_total();   
+                        
+                        updateTotales()               
                     });
                    
                     $('#new').on('click',function(){ 
@@ -490,6 +546,8 @@
                                     
                                     $('#modal-loading').modal('hide');
                                     
+                                    updateTotales()
+                                    
                                   }
                                });
                                
@@ -521,6 +579,8 @@
                                   }
                                   $('#modal-loading').modal('hide');
                                   
+                                  updateTotales()
+                                  
                                 }
                              });
                     });
@@ -548,6 +608,8 @@
                                        $('#appliance_inside_category').append('<option value=\"'+data[i].id+'\">'+data[i].name+'</option>');
                                     }
                                     $('#modal-loading').modal('hide');
+                                    
+                                    updateTotales()
                                 }
                              });
                     });
@@ -572,6 +634,8 @@
                                  else
                                    $('#imagen').attr('src','http://ezcrm.us/assets/images/appliances/'+data[0].imagen);
                                    $('#modal-loading').modal('hide');
+                                   
+                                   updateTotales()
                             }
                          });
                     });
@@ -599,7 +663,7 @@
                          $('#descriptionba').val('');
                          $('#descriptionba').removeAttr('title');                         
                          $('#price2ba').val('');
-                         $('#Build_OutGModal').modal('show');
+                         $('#Build_OutGModal').modal('show');                         
                     });
                     
                     //Abrir el Modal para Agregar Nuevo Buildout
@@ -625,7 +689,9 @@
                             success : function(data) {      
                                 //Cargando en campos del buildout de la Quote actual
                                 $('#buildout_description').summernote('code',description);
-                                $('#Build_OutGModal').modal('hide');                                                                                             
+                                $('#Build_OutGModal').modal('hide');           
+                                
+                                updateTotales()                                                                                  
                             }
                          });       
                         
@@ -641,6 +707,8 @@
                                 {
                                     $('#buildout_name').append('<option value=\"'+data[i].id+'\">'+data[i].nombre+'</option>');                                    
                                 }
+                                
+                                updateTotales()
                             }
                          });                  
                     });
@@ -681,7 +749,9 @@
                        $('#imagen').attr('src','http://ezcrm.us/assets/images/appliances/no_photo.jpg');
                        
                        actualizar_total();
-                       $('#applianceModal').modal('hide');                                                
+                       $('#applianceModal').modal('hide');    
+
+                        updateTotales()                       
 
                     });
                     
@@ -724,6 +794,9 @@
                                                                 
                                 oTableaccesorios.row(fila).remove().draw(false);
                                 actualizar_total();
+                                
+                                
+                                updateTotales()
                             }
                        });                     
                        
@@ -733,8 +806,8 @@
                               
                               if($('#buildout_price').val() != '') {
                                 $('#resumen_buildout').val($('#buildout_price').val());
-                              } 
-                                       
+                              }                   
+                              
                               var resumen_registration= $('#registration').val();
                               var resumen_truck= $('#resumen_truck').val();
                               var taxitem= $('#taxitem').val();
@@ -744,10 +817,10 @@
                               var resumen_taxappliance= $('#taxappliance').val();                                                
                               var descuento =  $('#discount').val();                                                
                               var resumen_tax= $('#tax').val();
-                            
+                              
                               taxes = parseFloat(resumen_taxbuildout) +
                                       parseFloat(resumen_taxappliance) +
-                                      parseFloat(taxitem);
+                                      parseFloat(taxitem);                                  
                                
                               $('#tax').val(taxes);
                                                       
@@ -755,9 +828,6 @@
                                              parseFloat(resumen_buildout) +
                                              parseFloat(resumen_appliance) -
                                              parseFloat(descuento);
-                              
-                              console.log('result: ');               
-                                            
                             
                               $('#subtotal_without_tax').val(subtotal);
                             
@@ -792,7 +862,18 @@
                                   
                                   // Truck tax
                                   var p=new Number($('#starting').val()).toFixed(2);
-                                  $('#taxitem').val( (p * 6.25/100).toFixed(2));
+                                  
+                                  /*$.ajax({
+                                        url: '../taxitem/',
+                                        data: '',
+                                        type:  'get',
+                                        dataType: 'json',
+                                        success : function(data) {                                        
+                                            $('#taxitem').val((p * (data/100)).toFixed(2));                                            
+                                        }
+                                  }); */                        
+                                  
+                                  $('#taxitem').val((p * (6.25/100)).toFixed(2));     
                                    
                                   // Verify if user is purchasing a truck and set buildout tax amount.
                                   var buildoutTax;
@@ -827,13 +908,15 @@
                             var input = $( this );
                             if(input.is( \":checked\" ))
                             {
-                                $('#registration').val('500.00');
+                                $('#registration').val('430.00');
                             }
                             else
                             {
                                 $('#registration').val('0.00');
                             }
+                            
                             actualizar_total();
+                            updateTotales()
                         });
                         
                       ////para el checkbox de requeiro truck 
@@ -846,6 +929,7 @@
                               $('#taxitem').val('0.00');
                           }
                           actualizar_total();
+                          updateTotales()
                       });                                       
                      
 	        	})
@@ -2150,10 +2234,45 @@
             \Illuminate\Support\Facades\DB::commit();
 
             $data['quotes'] = $data['quotes'][0];
+
+            //Obtiene el listado dinámico de los sizes de la quote
+            $data['sizes_list'] = $this->getSizes($data['quotes']->interesting);
+
+            //Obtiene el listado dinámico de los buildout de la quote
+            $data['buildout_list'] = $this->getBuildoutQuote($data['quotes']->interesting, $data['quotes']->id_size);
+
             $data['orders_detail'] = DB::table('truck_items')->where('id_truck',$id)->get();
             $data['notes'] = DB::table('eazy_notes_quotes')->where('quotes_id', $id)->where('deleted_at', null)->get();
 
             $this->cbView('quotes.create',$data);
+        }
+
+        //Obtener el valor del Registration
+        public function getRegistration() {
+	        $data = DB::table('settings')->where('id', 1)->first();
+	        $data = $data->registration;
+            return $data;
+        }
+
+        //Obtener el valor del Impuesto de Accesorioss
+        public function getTaxaccesories() {
+            $data = DB::table('settings')->where('id', 1)->first();
+            $data = $data->tax_accesories;
+            return $data;
+        }
+
+        //Obtener el valor del Impuesto de Buildout
+        public function getTaxbuildout() {
+            $data = DB::table('settings')->where('id', 1)->first();
+            $data = $data->tax_buildout;
+            return $data;
+        }
+
+        //Obtener el valor del Impuesto de Buildout
+        public function getTaxitem() {
+            $data = DB::table('settings')->where('id', 1)->first();
+            $data = $data->tax_item;
+            return $data;
         }
 
         public function getSteps(\Illuminate\Http\Request $request) {
@@ -2385,6 +2504,18 @@
             ];
             DB::table('user_trucks')->where('id', $orders_id)->update($sumarizedData);
 
+
+            $profits  = DB::table('truck_items')->where('id_truck', $orders_id)->get();
+            $ganancias = 0;
+            foreach ($profits as $profit) {
+                $precio = DB::table('appliance_inside_category')->where('name', $profit->item_subcategory)->first();
+                $precio = ($precio->price) - ($precio->retail_price);
+                $ganancias += $precio;
+            }
+
+            DB::table('user_trucks')->where('id', $orders_id)->update(['profits' => $ganancias]);
+
+
             CRUDBooster::redirect(CRUDBooster::adminPath("orders"),trans("crudbooster.text_change_quotes"));
 
         }
@@ -2400,11 +2531,20 @@
             return $data;
         }
 
+        //Función que permite guardar el "Precio" de la "Appliance"
         public function getUpdateprecio(\Illuminate\Http\Request $request) {
             $price= $request->get('precio');
             $id= $request->get('id');
-
             $data = DB::table('appliance_inside_category')->where('id', $id)->update(['price' => $price]);
+
+            return $data;
+        }
+
+        //Función que permite guardar el "Registration" de la "Quote"
+        public function getUpdateregistration(\Illuminate\Http\Request $request) {
+            $registration= $request->get('registration');
+            $data = DB::table('settings')->where('id', 1)->update(['registration' => $registration]);
+            DB::table('configuration')->where('id', 1)->update(['value' => $registration]);
 
             return $data;
         }
@@ -2500,6 +2640,36 @@
         public function getBuildout(\Illuminate\Http\Request $request) {
             $type=$request->get('type');
             $size=$request->get('size');
+
+            if ($type != 2) {
+                $data = DB::table('buildout')
+                    ->select(\Illuminate\Support\Facades\DB::raw('type.type as type'), 'buildout.id', 'buildout.nombre', 'buildout.descripcion', 'buildout.precio', 'buildout.tipo')
+                    ->join('type', 'type.id', '=', 'buildout.tipo')
+                    ->where('type.id', $type)
+                    ->get();
+
+            } elseif ($type == 2) {
+
+                \Illuminate\Support\Facades\DB::beginTransaction();
+
+                $data = \Illuminate\Support\Facades\DB::select( DB::raw("
+                        SELECT buildout.id, buildout.nombre, buildout.descripcion, buildout.precio, size.size
+                        FROM buildout
+                        INNER JOIN type ON buildout.tipo = type.id 
+                        INNER JOIN size_type ON size_type.id_type = type.id
+                        INNER JOIN size on size_type.id_size = size.id
+                        WHERE buildout.tipo=$type
+                        AND size.id=$size AND buildout.nombre LIKE CONCAT('%',size.size,'%');
+                        ")
+                );
+
+                \Illuminate\Support\Facades\DB::commit();
+            }
+
+            return $data;
+        }
+
+        public function getBuildoutQuote($type, $size) {
 
             if ($type != 2) {
                 $data = DB::table('buildout')

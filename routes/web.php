@@ -151,6 +151,26 @@
         return view('calendar.calendar', compact('calendar', 'taskTypes'));
     });
 
+    Route::get('/profits', function () {
+
+        $quotes = DB::table('user_trucks')->get();
+
+        foreach ($quotes as $quote) {
+            $profits  = DB::table('truck_items')->where('id_truck', $quote->id)->get();
+
+            $ganancias = 0;
+            foreach ($profits as $profit) {
+                $precio = DB::table('appliance_inside_category')->where('name', $profit->item_subcategory)->first();
+                $precio = ($precio->price) - ($precio->retail_price);
+                $ganancias += $precio;
+            }
+
+            DB::table('user_trucks')->where('id', $quote->id)->update(['profits' => $ganancias]);
+        }
+
+    });
+
+
     Route::get('/quotes', function () {
         \Illuminate\Support\Facades\DB::beginTransaction();
 

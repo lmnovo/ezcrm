@@ -89,13 +89,20 @@
                     <div class='col-sm-2'>
                         <label>{{trans('crudbooster.size')}}*</label>
                         <select class="form-control" id="sizes" placeholder="Select" required name="sizes">
-                            <option value="{{ $size->id }}" id="{{ $size->id }}">{{ $size->size }}</option>
+                            {{--<option value="{{ $size->id }}" id="{{ $size->id }}">{{ $size->size }}</option>--}}
+                            @foreach($sizes_list as $item)
+                                @if($item->id == $size->id)
+                                    <option selected="true" value="{{ $item->id }}" id="{{ $item->id }}">{{ $item->size }}</option>;
+                                @else
+                                    <option value="{{ $item->id }}" id="{{ $item->id }}">{{ $item->size }}</option>;
+                                @endif
+                            @endforeach
                         </select>
                     </div>
 
                     <div class='col-sm-2'>
                         <label>{{trans('crudbooster.starting_with')}}*</label>
-                        <input type='text' name='starting' id='starting' required class='form-control' value="{{ $orders->price_item }}"/>
+                        <input type='text' name='starting' id='starting' required class='form-control' value="<?php echo !$quotes->price_item == 0 ? $quotes->price_item : "0.00" ?>"/>
                     </div>
 
                 </div>
@@ -176,7 +183,14 @@
                     <div class='col-sm-4'>
                         <label>{{trans('crudbooster.buildout')}}*</label>
                         <select class="form-control" id="buildout_name" placeholder="Select" required name="buildout_name">
-                            <option value="{{ $buildout[0]->id }}" id="{{ $buildout[0]->id }}">{{ $buildout[0]->buildout_name }}</option>
+                            {{--<option value="{{ $buildout[0]->id }}" id="{{ $buildout[0]->id }}">{{ $buildout[0]->buildout_name }}</option>--}}
+                            @foreach($buildout_list as $item)
+                                @if($item->id == $buildout[0]->id)
+                                    <option selected="true" value="{{ $item->id }}" id="{{ $item->id }}">{{ $item->nombre }}</option>;
+                                @else
+                                    <option value="{{ $item->id }}" id="{{ $item->id }}">{{ $item->nombre }}</option>;
+                                @endif
+                            @endforeach
                         </select>
                     </div>
 
@@ -338,7 +352,14 @@
                 <div class="row" style="padding-top: 15px;">
                     <div class="col-md-6">
                         <label for="registration" >{{trans('crudbooster.registration')}}</label>
-                        <input class="form-control" id="registration" value="<?php echo (isset($quotes->registration)) ? $quotes->registration : "0.00" ?>" name="registration" placeholder="Registration" readonly="" />
+
+                        <div class="input-group">
+                            <input class="form-control" id="registration" value="<?php echo (isset($quotes->registration)) ? $quotes->registration : "0.00" ?>" name="registration" placeholder="Registration" readonly="" >
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" id="edit_registration"><span class="glyphicon glyphicon-edit"></span></button>
+                                <button class="btn btn-default" type="button" id="save_registration" style="display: none;"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+                            </span>
+                        </div>
                     </div>
                     <div class="col-sm-5">
                         <div class="checkbox">
