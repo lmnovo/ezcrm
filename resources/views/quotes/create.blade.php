@@ -1,5 +1,48 @@
 @extends('crudbooster::admin_template')
 @section('content')
+
+    <script>
+        $(document).ready(function()
+        {
+            var td,campo,valor,id;
+            $(document).on("click","td.editable span",function(e)
+            {
+                e.preventDefault();
+                $("input:not(#id)").removeClass("editable");
+                td=$(this).closest("td");
+                campo=$(this).closest("td").data("campo");
+                valor=$(this).text();
+                id=$(this).closest("tr").find("#id").val();
+                td.text("").html("<input type='text' name='"+campo+"' value='"+valor+"'><a class='enlace guardar' href='#'><i class=\"fa fa-check-circle\"></i></a> <a class='enlace cancelar' href='#'><i class=\"fa fa-times-circle\"></i></a>");
+            });
+
+            $(document).on("click",".cancelar",function(e)
+            {
+                e.preventDefault();
+                td.html("<span>"+valor+"</span>");
+                $("input:not(#id)").addClass("editable");
+            });
+
+            $(document).on("click",".guardar",function(e)
+            {
+                e.preventDefault();
+                nuevovalor=$(this).closest("td").find("input").val();
+                $.ajax({
+                    type: "GET",
+                    url: "../editquote",
+                    data: { campo: campo, valor: nuevovalor, id: id }
+                })
+                .done(function( msg ) {
+                    $('#total_appliance').html(nuevovalor * $('#price_appliance').text());
+                    td.html("<span>"+nuevovalor+"</span>");
+                    $("td:not(#id)").addClass("editable");
+                    window.location.href = 'http://ezcrm.us/crm/orders/edit/'+msg;
+                });
+            });
+
+        });
+    </script>
+
     <!-- Your html goes here -->
         <div class='panel panel-default'>
         <div class='panel-heading' style="background-color: #337ab7; color: white;">
@@ -15,7 +58,7 @@
 
             <form class='form-horizontal' id="form" enctype="multipart/form-data" action='<?php echo e($action); ?>'>
 
-                <input type="hidden" name="quote_id" value="{{ $id }}">
+                <input type="hidden" id="quote_id" name="quote_id" value="{{ $id }}">
                 <input type="hidden" id="applianceitem_1" name="applianceitem_1" value="">
                 <input type="hidden" id="applianceitem_2" name="applianceitem_2" value="">
                 <input type="hidden" id="applianceitem_3" name="applianceitem_3" value="">
@@ -236,6 +279,7 @@
 
                     @foreach($orders_detail as $items)
                         <tr role="row" class="odd">
+                            <input id='id' type="hidden" value="{{ $items->id }}"/>
                             <td class="sorting_1">
                                 <span class="originals" id="tbl_sel_category">{{ $items->item_category }}</span>
                             </td>
@@ -249,12 +293,10 @@
                             <span class="originals">{{ $items->descripcion_details }}</span>
                             </td>
                             <td>
-                                <span class="originals">{{ $items->price }}</span>
+                                <span id="price_appliance" class="originals">{{ $items->price }}</span>
                             </td>
-                            <td>
-                                <span class="originals">{{ $items->cant }}</span>
-                            </td>
-                            <td>
+                            <td class='editable' data-campo='cant'><span>{{ $items->cant }}</span></td>
+                            <td id="total_appliance">
                                 {{ $items->cant * $items->price }}
                             </td>
                             <td>

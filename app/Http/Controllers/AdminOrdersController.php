@@ -2242,6 +2242,7 @@
             $data['buildout_list'] = $this->getBuildoutQuote($data['quotes']->interesting, $data['quotes']->id_size);
 
             $data['orders_detail'] = DB::table('truck_items')->where('id_truck',$id)->get();
+
             $data['notes'] = DB::table('eazy_notes_quotes')->where('quotes_id', $id)->where('deleted_at', null)->get();
 
             $this->cbView('quotes.create',$data);
@@ -2531,6 +2532,13 @@
             return $data;
         }
 
+        public function getEditquote(\Illuminate\Http\Request $request) {
+            DB::table('truck_items')->where('id', $request->get('id'))->update([$request->get('campo') => $request->get('valor')]);
+            $data = DB::table('truck_items')->where('id', $request->get('id'))->first();
+            $data = $data->id_truck;
+
+            return $data;        }
+
         //Función que permite guardar el "Precio" de la "Appliance"
         public function getUpdateprecio(\Illuminate\Http\Request $request) {
             $price= $request->get('precio');
@@ -2722,6 +2730,7 @@
 
         public function getSearchappliances(\Illuminate\Http\Request $request) {
             $id=$request->get('id');
+
 
             $data = DB::table('appliance_inside_category')
                 ->where('id', $id)
