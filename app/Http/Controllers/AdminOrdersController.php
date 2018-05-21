@@ -405,6 +405,7 @@
                            type:  'get',
                            dataType: 'json',
                            success : function(data) {
+                                $('#sizes').append('<option value=\"\">**Select Data**</option>');
                                 for(var i=0;i<data.length;i++)
                                 {
                                     $('#sizes').append('<option value=\"'+data[i].id+'\">'+data[i].size+'</option>');
@@ -2505,9 +2506,22 @@
             ];
             DB::table('user_trucks')->where('id', $orders_id)->update($sumarizedData);
 
+            $quote_updated = DB::table('user_trucks')->where('id', $orders_id)->first();
+            $ganancias = 0;
+
+            //Para el cálculo de las Ganancias debemos obtener la mitad del precio del TRUCK, TRAILER, CART, etc
+            if($quote_updated->price_item == 0 || $quote_updated->price_item == null) {
+                $ganancias += floatval($quote_updated->truck_price_range) / 2;
+            } else {
+                $ganancias += floatval($quote_updated->price_item) / 2;
+            }
+
+            //Para el cálculo de las Ganancias debemos obtener la mitad del precio del Buildout
+            if($quote_updated->precio_builout != 0) {
+                $ganancias += floatval($quote_updated->precio_builout) / 2;
+            }
 
             $profits  = DB::table('truck_items')->where('id_truck', $orders_id)->get();
-            $ganancias = 0;
             foreach ($profits as $profit) {
                 $precio = DB::table('appliance_inside_category')->where('name', $profit->item_subcategory)->first();
                 $precio = ($precio->price) - ($precio->retail_price);
@@ -2537,7 +2551,8 @@
             $data = DB::table('truck_items')->where('id', $request->get('id'))->first();
             $data = $data->id_truck;
 
-            return $data;        }
+            return $data;
+	    }
 
         //Función que permite guardar el "Precio" de la "Appliance"
         public function getUpdateprecio(\Illuminate\Http\Request $request) {

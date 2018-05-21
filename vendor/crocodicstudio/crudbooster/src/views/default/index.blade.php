@@ -109,7 +109,7 @@
                     <option {{($limit==25)?'selected':''}} value='25'>25</option>
                     <option {{($limit==50)?'selected':''}} value='50'>50</option>
                     <option {{($limit==100)?'selected':''}} value='100'>100</option>
-                    <option {{($limit==200)?'selected':''}} value='200'>200</option>
+                    {{--<option {{($limit==200)?'selected':''}} value='200'>200</option>--}}
                 </select>                              
               </div>
             </form>

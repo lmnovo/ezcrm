@@ -482,6 +482,23 @@
             CRUDBooster::redirect(CRUDBooster::adminPath('customers25/detail/'.$request->get('lead_id')),trans("crudbooster.text_lead_added"));
         }
 
+        //Obtiene el listado de usuarios existentes en bd
+        public function getUsers() {
+            $data = DB::table('cms_users')
+                ->select('id','name')
+                ->get();
+
+            return $data;
+        }
+
+        //Permite editar la información del usuario en el lead
+        public function getEdituser(\Illuminate\Http\Request $request) {
+            DB::table('clients')->where('id', $request->get('id_client'))->update([$request->get('campo') => $request->get('valor')]);
+            $data = DB::table('cms_users')->where('id', $request->get('valor'))->first();
+
+            return $data->name;
+        }
+
         public function getAddsave(\Illuminate\Http\Request $request) {
 
             $date = $request->get('date');

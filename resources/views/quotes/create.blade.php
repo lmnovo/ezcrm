@@ -13,7 +13,10 @@
                 campo=$(this).closest("td").data("campo");
                 valor=$(this).text();
                 id=$(this).closest("tr").find("#id").val();
-                td.text("").html("<input type='text' name='"+campo+"' value='"+valor+"'><a class='enlace guardar' href='#'><i class=\"fa fa-check-circle\"></i></a> <a class='enlace cancelar' href='#'><i class=\"fa fa-times-circle\"></i></a>");
+                td.text("").html("<input type='text' name='"+campo+"' value='"+valor+"'>" +
+                    "<a class='enlace guardar' href='#'><i class=\"fa fa-check-circle\"></i></a> " +
+                    "<a class='enlace cancelar' href='#'><i class=\"fa fa-times-circle\"></i></a>")
+                ;
             });
 
             $(document).on("click",".cancelar",function(e)
@@ -133,6 +136,7 @@
                         <label>{{trans('crudbooster.size')}}*</label>
                         <select class="form-control" id="sizes" placeholder="Select" required name="sizes">
                             {{--<option value="{{ $size->id }}" id="{{ $size->id }}">{{ $size->size }}</option>--}}
+                            <option selected="true">**Select Data**</option>
                             @foreach($sizes_list as $item)
                                 @if($item->id == $size->id)
                                     <option selected="true" value="{{ $item->id }}" id="{{ $item->id }}">{{ $item->size }}</option>;
@@ -436,12 +440,12 @@
                 <div class="row">
                     <div class='col-sm-4'>
                         <label>{{trans('crudbooster.what_is_your_budget')}}?*</label>
-                        <input type='text' name='budget' required class='form-control' value="<?php if(isset($quotes->truck_budget)) echo $quotes->truck_budget ?>"/>
+                        <input type='text' name='budget' required class='form-control' value="<?php echo (!empty($quotes->truck_budget)) ? $quotes->truck_budget : "0.00"?>"/>
                     </div>
 
                     <div class='col-sm-4'>
                         <label>{{trans('crudbooster.downpayment')}}</label>
-                        <input type='text' name='downpayment' required class='form-control' value="<?php if(isset($quotes->downpayment)) echo $quotes->downpayment ?>"/>
+                        <input type='text' name='downpayment' required class='form-control' value="<?php echo (isset($quotes->downpayment)) ? $quotes->downpayment : "0.00" ?>"/>
                     </div>
 
                     <div class='col-sm-4'>

@@ -153,19 +153,32 @@
 
     Route::get('/profits', function () {
 
+        //UPDATE user_trucks SET profits = 0 where id >= 0;
+
         $quotes = DB::table('user_trucks')->get();
 
-        foreach ($quotes as $quote) {
-            $profits  = DB::table('truck_items')->where('id_truck', $quote->id)->get();
-
+        for ($i=1200; $i>1000; $i--) {
+            $quote_updated = DB::table('user_trucks')->where('id', $quotes[$i]->id)->first();
             $ganancias = 0;
-            foreach ($profits as $profit) {
-                $precio = DB::table('appliance_inside_category')->where('name', $profit->item_subcategory)->first();
-                $precio = ($precio->price) - ($precio->retail_price);
-                $ganancias += $precio;
-            }
 
-            DB::table('user_trucks')->where('id', $quote->id)->update(['profits' => $ganancias]);
+            if (!empty($quote_updated)) {
+                //Para el cálculo de las Ganancias debemos obtener la mitad del precio del TRUCK, TRAILER, CART, etc
+                if($quote_updated->price_item == 0 || $quote_updated->price_item == null) {
+                    $ganancias += floatval($quote_updated->truck_price_range) / 2;
+                } else {
+                    $ganancias += floatval($quote_updated->price_item) / 2;
+                }
+
+                $profits  = DB::table('truck_items')->where('id_truck', $quotes[$i]->id)->get();
+
+                foreach ($profits as $profit) {
+                    $precio = DB::table('appliance_inside_category')->where('name', $profit->item_subcategory)->first();
+                    $precio = ($precio->price) - ($precio->retail_price);
+                    $ganancias += $precio;
+                }
+
+                DB::table('user_trucks')->where('id', $quotes[$i]->id)->update(['profits' => floatval($ganancias)]);
+            }
         }
 
     });
@@ -174,10 +187,10 @@
     Route::get('/quotes', function () {
         \Illuminate\Support\Facades\DB::beginTransaction();
 
-            $query = \Illuminate\Support\Facades\DB::select( DB::raw("
+            /*$query = \Illuminate\Support\Facades\DB::select( DB::raw("
                             UPDATE account SET quotes = 0 where id >= 0;                                            
                             ")
-            );
+            );*/
 
             $result = \Illuminate\Support\Facades\DB::select( DB::raw("
                         SELECT count(id) as cant, id_account 
@@ -188,10 +201,10 @@
 
             \Illuminate\Support\Facades\DB::commit();
 
-            foreach ($result as $item) {
-                $q = DB::table('account')->where('id', $item->id_account)->first();
+            for ($i=900; $i>800; $i--) {
+                $q = DB::table('account')->where('id', $result[$i]->id_account)->first();
                 if ($q != null) {
-                    DB::table('account')->where('id', $item->id_account)->update(['quotes' => $item->cant]);
+                    DB::table('account')->where('id', $result[$i]->id_account)->update(['quotes' => $result[$i]->cant]);
                 }
             }
 

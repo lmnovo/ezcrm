@@ -320,7 +320,7 @@
 	    | ---------------------------------------------------------------------- 
 	    |
 	    */    
-	    public function hook_row_index($column_index,&$column_value) {	        
+	    public function hook_row_index($column_index,&$column_value) {
 	    	//Your code here
 	    }
 
@@ -460,6 +460,23 @@
             DB::table('eazy_notes')->insertGetId($sumarizedData);
 
             return 1;
+        }
+
+        //Obtiene el listado de usuarios existentes en bd
+        public function getUsers() {
+            $data = DB::table('cms_users')
+                ->select('id','name')
+                ->get();
+
+            return $data;
+        }
+
+        //Permite editar la información del usuario en el lead
+        public function getEdituser(\Illuminate\Http\Request $request) {
+            DB::table('account')->where('id', $request->get('id_account'))->update([$request->get('campo') => $request->get('valor')]);
+            $data = DB::table('cms_users')->where('id', $request->get('valor'))->first();
+
+            return $data->name;
         }
 
         //Agregar Tarea de tipo Lead

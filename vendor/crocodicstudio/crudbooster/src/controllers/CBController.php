@@ -529,6 +529,7 @@ class CBController extends Controller {
 
                     if($col['urlClient']) {
                         $result = DB::table('clients')->where('name', $value)->first();
+                        $value = $result->name;
 
                         $value = "<a href=".$col['urlClient'].'/detail/'.$result->id.">$value</a>";
                     }
@@ -539,6 +540,14 @@ class CBController extends Controller {
 
                         $value = "<a href=".$col['urlUser'].'/detail/'.$account_id->id_usuario.">$result->name</a>";
                     }
+
+                    /*if($col['urlUser']) {
+                        $account_id = DB::table('account')->where('id', $value)->first();
+                        $result = DB::table('cms_users')->where('id', $account_id->id_usuario)->first();
+
+                        //$value = "<a id='editable_user' href=".$col['urlUser'].'/detail/'.$account_id->id_usuario.">$result->name</a> <span data-account='$value' data-user='$account_id->id_usuario' class=\"edit_button_list\"><i class=\"fa fa-edit\"></i></span>";
+                        $value = "<a id='editable_user' href=".$col['urlUser'].'/detail/'.$account_id->id_usuario.">$result->name</a>";
+                    }*/
 
                     if($col['urlUserQuote']) {
 		                $account_id = DB::table('account')->where('id', $value)->first();

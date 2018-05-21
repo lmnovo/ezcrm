@@ -2,6 +2,76 @@
 @extends('crudbooster::admin_template')
 @section('content')
 
+    <script>
+        $(document).ready(function()
+        {
+            var td,campo,valor,id,id_user;
+            var datos = '';
+            $(document).on("click","td.editable .edit_button",function(e)
+            {
+                e.preventDefault();
+                $("input:not(#id)").removeClass("editable");
+                td=$(this).closest("td");
+                campo=$(this).closest("td").data("campo");
+                id_user=$('#id_user').val();
+                id_account=$('#id_lead').val();
+                valor=$('td.editable a').text();
+                id=$(this).closest("tr").find("#id").val();
+
+                //Reiniciamos el listado de users para el select
+                datos = '';
+
+                //Obtener el listado de usuarios existentes en bd
+                $.ajax({
+                    type: "GET",
+                    url: "../users",
+                    data: { campo: campo, valor: nuevovalor, id: id }
+                })
+                    .done(function(data) {
+                        for(var i=0;i<data.length;i++)
+                        {
+                            if (valor == data[i].name) {
+                                datos += '<option selected="true" value='+data[i].id+' >'+data[i].name+'</option>';
+                            } else {
+                                datos += '<option value='+data[i].id+' >'+data[i].name+'</option>';
+                            }
+                        }
+                        td.text("").html("" +
+                            "<select class='form-control' id='cms_users' name='"+campo+"' placeholder='Select' required>"
+                                + datos +
+                            "</select>" +
+                            " <a class='enlace guardar' href='#'><i class=\"fa fa-check-circle\"></i></a> " +
+                            "<a class='enlace cancelar' href='#'><i class=\"fa fa-times-circle\"></i></a>");
+                    });
+
+
+            });
+
+            $(document).on("click",".cancelar",function(e)
+            {
+                e.preventDefault();
+                td.html("<a href=http://ezcrm.us/crm/users/detail/"+id_user+">"+valor+"</a> <span title='{{trans('crudbooster.edit')}}' class=\"edit_button\"><i class=\"fa fa-edit\"></i></span>");
+                $("input:not(#id)").addClass("editable");
+            });
+
+            var nuevovalor;
+            $(document).on("click",".guardar",function(e)
+            {
+                e.preventDefault();
+                nuevovalor=$('#cms_users').val();
+                $.ajax({
+                    type: "GET",
+                    url: "../edituser",
+                    data: { campo: campo, valor: nuevovalor, id_user: id_user, id_account: id_account }
+                })
+                    .done(function( data ) {
+                        td.html("<a href=http://ezcrm.us/crm/users/detail/"+nuevovalor+">"+data+"</a> <span title='{{trans('crudbooster.edit')}}' class=\"edit_button\"><i class=\"fa fa-edit\"></i></span>");
+                    });
+            });
+
+        });
+    </script>
+
     @if($index_statistic)
         <div id='box-statistic' class='row'>
             @foreach($index_statistic as $stat)
@@ -40,6 +110,9 @@
                 <input type="hidden" name="ref_mainpath" value="http://ezcrm.us/crm/campaigns">
                 <input type="hidden" name="ref_parameter" value="return_url=http://ezcrm.us/crm/campaigns?m=61">
                 <div class="box-body" id="parent-form-area">
+
+                    <input type="hidden" id="id_user" value="{{ $lead->id_usuario }}" />
+                    <input type="hidden" id="id_lead" value="{{ $lead->id }}" />
 
                     <style type="text/css">
                         #table-detail tr td:first-child {
@@ -132,7 +205,11 @@
                                 </tr>
 
                                 <tr>
-                                    <td><strong>{{trans('crudbooster.assign_to')}}</strong></td><td><a href='{{CRUDBooster::adminpath("users/detail/$lead->id_usuario")}}'>{{ $assign_to->fullname }}</a></td>
+                                    <td><strong>{{trans('crudbooster.assign_to')}}</strong></td>
+                                        <td class='editable' data-campo='id_usuario'>
+                                            <a href='{{CRUDBooster::adminpath("users/detail/$lead->id_usuario")}}'>{{ $assign_to->fullname }}</a>
+                                            <span title="{{trans('crudbooster.edit')}}" class="edit_button"><i class="fa fa-edit"></i></span>
+                                        </td>
                                     <td></td><td></td>
                                 </tr>
 
@@ -141,8 +218,6 @@
 
                     </div>
                 </div><!-- /.box-body -->
-
-
 
                 <div class='panel panel-default'>
                     <div class='panel-heading' style="background-color: #337ab7; color: white;"><strong><i class="fa fa-pencil-square-o text-normal"></i> {{trans('crudbooster.List_Quotes')}}  </strong></div>
@@ -224,7 +299,6 @@
 
                 </div>
 
-
                 <div class='panel panel-default'>
                     <div class='panel-heading' style="background-color: #337ab7; color: white;"><strong><i class="fa fa-book"></i> {{trans('crudbooster.List_Tasks')}}</strong></div>
                     <a title="{{trans('crudbooster.show_calendar')}}" class='btn btn-primary pull-right' style="margin-left: 2px" href='{{CRUDBooster::adminpath("task_calendar")}}'><i class="fa fa-calendar"></i> </a>
@@ -289,7 +363,6 @@
 
 
                 </div>
-
 
                 <div class='panel panel-default'>
                     <div class='panel-heading' style="background-color: #337ab7; color: white;"><strong><i class="fa fa-file-text-o"></i> {{trans('crudbooster.Notes')}}</strong></div>
