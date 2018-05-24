@@ -1,6 +1,25 @@
 @extends('crudbooster::admin_template')
 @section('content')
 
+    <script src='http://ezcrm.us/p/jquery-ui.custom.min.js'></script>
+    <script src="http://ezcrm.us/p/jquery.ui.touch-punch.min.js"></script>
+    <script src="http://ezcrm.us/p/chosen.jquery.min.js"></script>
+    <script src="http://ezcrm.us/p/spinbox.min.js"></script>
+    <script src="http://ezcrm.us/p/bootstrap-datepicker.min.js"></script>
+    {{--<script src="http://ezcrm.us/p/bootstrap-timepicker.min.js"></script>--}}
+    <script src="http://ezcrm.us/p/moment.min.js"></script>
+    <script src="http://ezcrm.us/p/daterangepicker.min.js"></script>
+    <script src="http://ezcrm.us/p/bootstrap-datetimepicker.min.js"></script>
+    <script src="http://ezcrm.us/p/bootstrap-colorpicker.min.js"></script>
+    <script src="http://ezcrm.us/p/jquery.knob.min.js"></script>
+    <script src="http://ezcrm.us/p/autosize.min.js"></script>
+    <script src="http://ezcrm.us/p/jquery.inputlimiter.min.js"></script>
+    <script src="http://ezcrm.us/p/bootstrap-tag.min.js"></script>
+
+    <!-- ace scripts -->
+    <script src="http://ezcrm.us/p/ace-elements.min.js"></script>
+    <script src="http://ezcrm.us/p/ace.min.js"></script>
+
     <script>
         $(document).ready(function()
         {
@@ -122,13 +141,24 @@
                         <select class="form-control" id="types" placeholder="Select" required name="types">
                             {{--<option value="{{ $state->id }}" id="{{ $state->id }}">{{ $state->estado }}</option>--}}
                             <option selected="true">**Select Data**</option>
-                            @foreach($state_list as $item)
-                                @if($item->id == $state->id)
-                                    <option selected="true" value="{{ $item->id }}" id="{{ $item->id }}">{{ $item->estado }}</option>;
-                                @else
-                                    <option value="{{ $item->id }}" id="{{ $item->id }}">{{ $item->estado }}</option>;
+                            @if($state->id == 0)
+                                @if($interested->id == 2)
+                                    <option selected="true" value="3" id="3">NEW</option>;
                                 @endif
-                            @endforeach
+                            @else
+                                @if($interested->id == 2 || $interested->id == 3)
+                                    <option selected="true" value="3" id="3">NEW</option>;
+                                @else
+                                    @foreach($state_list as $item)
+                                        @if($item->id == $state->id)
+                                            <option selected="true" value="{{ $item->id }}" id="{{ $item->id }}">{{ $item->estado }}</option>;
+                                        @else
+                                            <option value="{{ $item->id }}" id="{{ $item->id }}">{{ $item->estado }}</option>;
+                                        @endif
+                                    @endforeach
+                                @endif
+                            @endif
+
                         </select>
                     </div>
 
@@ -599,7 +629,6 @@
                                 <div class="col-sm-9">
                                     <div class="inline">
                                         <input type="text" id="form-tag-to" value="{{ $customer[0]->email }}" placeholder="{{trans('crudbooster.text_email')}}" />
-                                        <input id="id" type="hidden" class="tags form-control" value="{{ $id }}" />
                                     </div>
                                 </div>
                             </div>

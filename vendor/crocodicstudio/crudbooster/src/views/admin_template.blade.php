@@ -22,24 +22,7 @@
 
 
 
-    <script src="http://ezcrm.us/p/jquery-ui.custom.min.js"></script>
-    <script src="http://ezcrm.us/p/jquery.ui.touch-punch.min.js"></script>
-    <script src="http://ezcrm.us/p/chosen.jquery.min.js"></script>
-    <script src="http://ezcrm.us/p/spinbox.min.js"></script>
-    <script src="http://ezcrm.us/p/bootstrap-datepicker.min.js"></script>
-    <script src="http://ezcrm.us/p/bootstrap-timepicker.min.js"></script>
-    <script src="http://ezcrm.us/p/moment.min.js"></script>
-    <script src="http://ezcrm.us/p/daterangepicker.min.js"></script>
-    <script src="http://ezcrm.us/p/bootstrap-datetimepicker.min.js"></script>
-    <script src="http://ezcrm.us/p/bootstrap-colorpicker.min.js"></script>
-    <script src="http://ezcrm.us/p/jquery.knob.min.js"></script>
-    <script src="http://ezcrm.us/p/autosize.min.js"></script>
-    <script src="http://ezcrm.us/p/jquery.inputlimiter.min.js"></script>
-    <script src="http://ezcrm.us/p/bootstrap-tag.min.js"></script>
 
-    <!-- ace scripts -->
-    <script src="http://ezcrm.us/p/ace-elements.min.js"></script>
-    <script src="http://ezcrm.us/p/ace.min.js"></script>
 
 
 

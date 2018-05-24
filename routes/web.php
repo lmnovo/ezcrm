@@ -93,6 +93,7 @@
     Route::get('crm/tour/user', function () { return view('tour_delete_user'); });
     Route::get('crm/tour/configuration', function () { return view('tour_configuration'); });
     Route::get('crm/tour/first_steps', function () { return view('tour_first_steps'); });
+    Route::get('crm/tour/menu_management', function () { return view('tour_menu_management'); });
 
     Route::get('lang/{lang}', function ($lang) {
         session(['lang' => $lang]);

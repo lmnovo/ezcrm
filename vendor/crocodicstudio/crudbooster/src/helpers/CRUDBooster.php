@@ -826,10 +826,11 @@ class CRUDBooster  {
 
 		        $string_parameters = http_build_query($get);
 		        $string_parameters_array = explode('&',$string_parameters);
+
 		        foreach($string_parameters_array as $s) {
 		            $part = explode('=',$s);
 		            $name = urldecode($part[0]);      
-		            $value = urldecode($part[1]);      
+		            $value = urldecode($part[1]);
 		            $inputhtml .= "<input type='hidden' name='$name' value='$value'/>";
 		        }                                                           
 		    }

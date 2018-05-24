@@ -644,7 +644,9 @@
                     
                     $('#modal-sendEmailPersonal').on('click','#sendMail',function(){
                         var to = $('#form-tag-to').val();
-                        var id = $('#id').val();
+                        var id = $('#quote_id').val();
+                        
+                        console.log('ID: '+id);
                         $.ajax({
                             url: '../sendemailpersonal',
                             data: \"id=\"+id+\"&to=\"+to,
@@ -1195,15 +1197,16 @@
             return 1;
         }
 
-        public function getSendemailpersonal(\Illuminate\Http\Request $request) {
-	        $id = $request->get('id');
-	        $to = $request->get('to');
+        public function getSendemailpersonal(\Illuminate\Http\Request $request)
+        {
+            $id = $request->get('id');
+            $to = $request->get('to');
 
-	        $toArray = explode(', ', $to);
+            $toArray = explode(', ', $to);
 
             \Illuminate\Support\Facades\DB::beginTransaction();
 
-            $result = \Illuminate\Support\Facades\DB::select( DB::raw("
+            $result = \Illuminate\Support\Facades\DB::select(DB::raw("
                         SELECT truck_extras_price,
                             account.email,
                             account.`name`,
@@ -1487,15 +1490,15 @@
 
             $subject = 'Quote Data';
 
-            //Send Email with notification End Step
-            \Mail::send("crudbooster::emails.blank",['content'=>$html],function($message) use ($to,$subject,$toArray) {
-                $message->priority(1);
-                $message->to($toArray);
+                //Send Email with notification End Step
+                \Mail::send("crudbooster::emails.blank", ['content' => $html], function ($message) use ($to, $subject, $toArray) {
+                    $message->priority(1);
+                    $message->to($toArray);
 
-                $message->subject($subject);
-            });
+                    $message->subject($subject);
+                });
 
-            CRUDBooster::redirect($_SERVER['HTTP_REFERER'],"The email with the data of the quote, has been sent correctly","success");
+                CRUDBooster::redirect($_SERVER['HTTP_REFERER'], "The email with the data of the quote, has been sent correctly", "success");
 
         }
 

@@ -324,10 +324,10 @@
                                   @elseif( $col['label'] == 'Type Lead' or $col['label'] == 'Type Quote' or $col['label'] == 'Tipo de Prospecto')
                                     <option typeallow='all' {{ (CRUDBooster::getTypeFilter($col["field_with"]) == '=')?"selected":"" }} value='='>{{trans("crudbooster.filter_equal_to")}}</option>
 
-                                  @elseif( $col['label'] == 'Name' or $col['label'] == 'Business Name' or $col['label'] == 'Address' or $col['label'] == 'City' or $col['label'] == 'Template' or $col['label'] == 'Phase Type')
+                                  @elseif( $col['label'] == 'Name' or $col['label'] == 'Last Name' or $col['label'] == 'Business Name' or $col['label'] == 'Address' or $col['label'] == 'City' or $col['label'] == 'Template' or $col['label'] == 'Phase Type')
                                     <option {{ (CRUDBooster::getTypeFilter($col["field_with"]) == 'like')?"selected":"" }} value='like'>{{trans("crudbooster.filter_like")}}</option>
 
-                                  @elseif( $col['label'] == 'Nombre' or $col['label'] == 'Business Name' or $col['label'] == 'Address' or $col['label'] == 'City' or $col['label'] == 'Template' or $col['label'] == 'Phase Type')
+                                  @elseif( $col['label'] == 'Nombre' or $col['label'] == 'Apellido' or $col['label'] == 'Business Name' or $col['label'] == 'Address' or $col['label'] == 'City' or $col['label'] == 'Template' or $col['label'] == 'Phase Type')
                                     <option {{ (CRUDBooster::getTypeFilter($col["field_with"]) == 'like')?"selected":"" }} value='like'>{{trans("crudbooster.filter_like")}}</option>
 
                                   @elseif( $col['label'] == 'Telephone' or $col['label'] == 'Teléfono')

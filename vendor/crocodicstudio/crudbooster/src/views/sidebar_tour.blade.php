@@ -33,6 +33,7 @@
                 <li class=""><a href='{{CRUDBooster::adminpath("tour/product")}}'><i class='fa fa-clock-o text-normal'></i> {{ trans("crudbooster.Add_Product_to_Catalog") }}</a></li>
                 <li class=""><a href='{{CRUDBooster::adminpath("tour/user")}}'><i class='fa fa-clock-o text-normal'></i> {{ trans("crudbooster.delete_tour_user") }}</a></li>
                 <li class=""><a href='{{CRUDBooster::adminpath("tour/configuration")}}'><i class='fa fa-clock-o text-normal'></i> {{ trans("crudbooster.edit_tour_configuration") }}</a></li>
+                <li class=""><a href='{{CRUDBooster::adminpath("tour/menu_management")}}'><i class='fa fa-clock-o text-normal'></i> {{ trans("crudbooster.Menu_Management") }}</a></li>
 
 
 

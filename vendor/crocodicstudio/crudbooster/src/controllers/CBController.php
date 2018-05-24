@@ -497,10 +497,8 @@ class CBController extends Controller {
 			        if(isset($col['callback'])) {
 			        	$value = call_user_func($col['callback'],$row);
 			        }
-
                     if($col['urlLead']) {
-                        $result = DB::table('account')->where('name', $value)->first();
-
+		                $result = DB::table('account')->where('name', $value)->first();
                         $value = "<a href=".$col['urlLead'].'/detail/'.$result->id.">$value</a>";
                     }
 

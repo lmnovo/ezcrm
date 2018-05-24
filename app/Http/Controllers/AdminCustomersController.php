@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
-	use App\EazyTask;
+	use App\Brands;
+    use App\EazyTask;
     use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\Schema;
     use Session;
@@ -37,10 +38,12 @@
 			$this->table = "account";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
-            # START COLUMNS DO NOT REMOVE THIS LINE
+			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
             //$this->col[] = ["label"=>"Photo","name"=>"photo","image"=>true];
-            $this->col[] = ["label"=>trans('crudbooster.name'), "name"=>"name", "urlLead"=>"account"];
+            //$this->col[] = ["label"=>trans('crudbooster.name'), "name"=>"name", "urlLead"=>"account"];
+            $this->col[] = ["label"=>trans('crudbooster.name'), "name"=>"name"];
+            $this->col[] = ["label"=>trans('crudbooster.lastname'), "name"=>"lastname"];
             $this->col[] = ["label"=>trans('crudbooster.phone'),"name"=>"telephone", "urlPhone"=>"account"];
             $this->col[] = ["label"=>trans('crudbooster.state'),"name"=>"state"];
             $this->col[] = ["label"=>trans('crudbooster.email'),"name"=>"email", "email"=>"email"];
@@ -67,6 +70,23 @@
 			$this->form[] = ['label'=>'Latitude','name'=>'latitude','type'=>'hidden','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Longitude','name'=>'longitude','type'=>'hidden','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
 			# END FORM DO NOT REMOVE THIS LINE
+
+			# OLD START FORM
+			//$this->form = [];
+			//$this->form[] = ['label'=>trans('crudbooster.name'),'name'=>'name','type'=>'text','validation'=>'required|string|min:1|max:70','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>trans('crudbooster.lastname'),'name'=>'lastname','type'=>'text','validation'=>'required|string|min:1|max:70','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>trans('crudbooster.email'),'name'=>'email','type'=>'email','validation'=>'required|min:1|max:255|email|unique:account','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>trans('crudbooster.phone'),'name'=>'telephone','type'=>'text','validation'=>'required','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>trans('crudbooster.zipcode'),'name'=>'zip_code','type'=>'text','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>trans('crudbooster.state'),'name'=>'state','type'=>'select2','width'=>'col-sm-10','datatable'=>'states,name'];
+			//$this->form[] = ['label'=>trans('crudbooster.city'),'name'=>'city','type'=>'text','validation'=>'string|min:3|max:200','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>trans('crudbooster.address'),'name'=>'address','type'=>'googlemaps','validation'=>'min:1|max:255','width'=>'col-sm-10','latitude'=>'latitude','longitude'=>'longitude'];
+			//$this->form[] = ['label'=>trans('crudbooster.photo'),'name'=>'photo','type'=>'upload','validation'=>'image|max:3000','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>trans('crudbooster.type'),'name'=>'estado','type'=>'select2','validation'=>'required','width'=>'col-sm-10','datatable'=>'customer_type,name'];
+			//$this->form[] = ['label'=>trans('crudbooster.assign_to'),'name'=>'id_usuario','type'=>'select2','validation'=>'required','width'=>'col-sm-10','datatable'=>'cms_users,name'];
+			//$this->form[] = ['label'=>'Latitude','name'=>'latitude','type'=>'hidden','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'Longitude','name'=>'longitude','type'=>'hidden','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
+			# OLD END FORM
 
 			/* 
 	        | ---------------------------------------------------------------------- 
@@ -167,8 +187,8 @@
 	        |
 	        */
             $this->script_js = "
-	        	$(function() {   
-	        	
+            
+	        	$(function() {  
                     //Agregar nueva nota
                     $('#add_note').on('click',function(){
                         var name = $('#note_value').val();

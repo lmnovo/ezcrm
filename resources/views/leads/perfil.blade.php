@@ -7,7 +7,7 @@
         {
             var td,campo,valor,id,id_user;
             var datos = '';
-            $(document).on("click","td.editable .edit_button",function(e)
+            $(document).on("click","td.editable .edit_user",function(e)
             {
                 e.preventDefault();
                 $("input:not(#id)").removeClass("editable");
@@ -208,7 +208,7 @@
                                     <td><strong>{{trans('crudbooster.assign_to')}}</strong></td>
                                         <td class='editable' data-campo='id_usuario'>
                                             <a href='{{CRUDBooster::adminpath("users/detail/$lead->id_usuario")}}'>{{ $assign_to->fullname }}</a>
-                                            <span title="{{trans('crudbooster.edit')}}" class="edit_button"><i class="fa fa-edit"></i></span>
+                                            <span title="{{trans('crudbooster.edit')}}" class="edit_user"><i class="fa fa-edit"></i></span>
                                         </td>
                                     <td></td><td></td>
                                 </tr>

@@ -33,7 +33,9 @@
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
             $this->col[] = ["label"=>trans('crudbooster.photo'),"name"=>"photo","image"=>true];
-            $this->col[] = ["label"=>trans('crudbooster.name'), "name"=>"name", "urlClient"=>"customers25"];
+            //$this->col[] = ["label"=>trans('crudbooster.name'), "name"=>"name", "urlClient"=>"customers25"];
+            $this->col[] = ["label"=>trans('crudbooster.name'), "name"=>"name"];
+            $this->col[] = ["label"=>trans('crudbooster.lastname'), "name"=>"lastname"];
             $this->col[] = ["label"=>trans('crudbooster.email'),"name"=>"email", "email"=>"email"];
             $this->col[] = ["label"=>trans('crudbooster.state'),"name"=>"state"];
             $this->col[] = ["label"=>trans('crudbooster.address'), "name"=>"address", "address"=>"true"];
