@@ -134,10 +134,22 @@
 
                                         <a title="{{trans('crudbooster.send_email')}}" class='btn btn-success pull-right' style="margin: 2px" href='{{CRUDBooster::mainpath("send-email/$id")}}'><i class="fa fa-envelope-o"></i></a>
                                         <a title="{{trans('crudbooster.send_sms')}}" class='btn btn-primary pull-right' style="margin: 2px" href='{{CRUDBooster::mainpath("send-sms/$id")}}'><i class="glyphicon glyphicon-phone"></i></a>
-                                        <a title="{{trans('crudbooster.add_quote')}}" class='btn btn-warning pull-right' style="margin: 2px" href='{{CRUDBooster::adminpath("orders/add-quote/$id")}}'><span style="font-family: 'Droid Arabic Naskh', serif">Q</span></a>
+                                        <a title="{{trans('crudbooster.add_quote')}}" class='btn btn-danger pull-right' style="margin: 2px" href='{{CRUDBooster::adminpath("orders/add-quote/$id")}}'><span style="font-family: 'Droid Arabic Naskh', serif">Q</span></a>
 
                                         <br>
+                                        <a style="margin-top: 2px" class="btn btn-warning pull-right" title="{{trans('crudbooster.delete')}}" href="javascript:;" onclick="swal({
+                                                title: '{{trans('crudbooster.are_you_sure')}}',
+                                                text: '{{trans('crudbooster.message_delete')}}',
+                                                type: 'warning',
+                                                showCancelButton: true,
+                                                confirmButtonColor: '#ff0000',
+                                                confirmButtonText: '{{trans('crudbooster.yes')}}',
+                                                cancelButtonText: '{{trans('crudbooster.no')}}',
+                                                closeOnConfirm: false },
+                                                function(){  location.href='http://ezcrm.us/crm/account/delete/{{ $id }}' });"><i class="fa fa-trash"></i>
+                                        </a>
                                         <a title="{{trans('crudbooster.edit')}}" class='btn btn-success pull-right' style="margin: 2px" href='{{CRUDBooster::adminpath("account/edit/$id")}}'><i class="fa fa-pencil"></i> </a>
+
                                 </tr>
 
                                 <tr>
@@ -321,10 +333,8 @@
                                     <thead>
                                     <tr>
                                         <th>{{trans('crudbooster.name')}}</th>
-                                        <th>{{trans('crudbooster.description')}}</th>
                                         <th>{{trans('crudbooster.date')}}</th>
                                         <th>{{trans('crudbooster.creation_date')}}</th>
-                                        <th>{{trans('crudbooster.task_type')}}</th>
                                         <th style="text-align: center">{{trans('crudbooster.actions')}}</th>
                                     </tr>
                                     </thead>
@@ -336,13 +346,11 @@
                         @foreach($tasks as $task)
                             <tr>
                                 <td>{{$task->name}}</td>
-                                <td>{{$task->description}}</td>
                                 <td>{{$task->date}}</td>
                                 <td>{{$task->created_at}}</td>
-                                <td>{{$task->task_type_name}}</td>
                                 <td style="text-align: center">
-                                    <a class="btn btn-xs btn-primary btn-detail" title="{{trans('crudbooster.detail')}}" href="{{CRUDBooster::adminpath("eazy_tasks/detail/$task->id")}}"><i class="fa fa-eye"></i></a>
-                                    <a class="btn btn-xs btn-success btn-edit" title="{{trans('crudbooster.edit')}}" href="{{CRUDBooster::adminpath("eazy_tasks/edit/$task->id")}}"><i class="fa fa-pencil"></i></a>
+                                    <a class="btn btn-xs btn-primary btn-detail" title="{{trans('crudbooster.detail')}}" href="http://ezcrm.us/crm/eazy_tasks/detail/{{$task->id}}?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fcrm%2Feazy_tasks%3Fforeign_key%3Dcustomers_id%26label%3DTasks%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Daccount%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fcrm%252Faccount%253Fm%253D50"><i class="fa fa-eye"></i></a>
+                                    <a class="btn btn-xs btn-success btn-edit" title="{{trans('crudbooster.edit')}}" href="http://ezcrm.us/crm/eazy_tasks/edit/{{$task->id}}?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fcrm%2Feazy_tasks%3Fforeign_key%3Dcustomers_id%26label%3DTasks%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Daccount%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fcrm%252Faccount%253Fm%253D50&parent_id=3288&parent_field="><i class="fa fa-pencil"></i></a>
                                     <a class="btn btn-xs btn-warning btn-delete" title="{{trans('crudbooster.delete')}}" href="javascript:;" onclick="swal({
                                             title: '{{trans('crudbooster.are_you_sure')}}',
                                             text: '{{trans('crudbooster.message_delete')}}',
@@ -450,37 +458,11 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.description')}}*</label>
-                                    <div class="col-md-8">
-                                        <textarea rows="6" id='description' name='description' contenteditable="true" class='form-control'></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
                                     <label class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.date')}}*</label>
                                     <div class="col-md-8">
                                         <input type="text" title="Date" required class="form-control" name="date" id="date" value="">
                                     </div>
                                 </div>
-
-                                <div class="form-group">
-                                    <label class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.task_type')}}*</label>
-                                    <div class="col-md-8">
-                                        <select required class="form-control" required id="task_type" name="task_type" style="width: 100%" >
-                                        <option selected="true">***Select Data***</option>
-                                        @foreach($task_type as $type)
-                                            <option value="{{ $type->id }}" id="{{ $type->id }}"> {{ $type->name }}</option>;
-                                        @endforeach
-
-                                        </select>
-                                    </div>
-                                    <div class="col-md-1">
-                                        <a href="{{CRUDBooster::adminpath("eazy_task_type/add")}}" title="{{trans('crudbooster.add_task_type')}}" id="" class="btn btn-success btn-sm">
-                                            <i class="fa fa-plus-circle"></i>
-                                        </a>
-                                    </div>
-                                </div>
-
 
                             </div>
 

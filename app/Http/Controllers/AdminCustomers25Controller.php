@@ -13,7 +13,7 @@
 
 			# START CONFIGURATION DO NOT REMOVE THIS LINE
 			$this->title_field = "name";
-			$this->limit = "20";
+			$this->limit = "10";
 			$this->orderby = "id,desc";
 			$this->global_privilege = false;
 			$this->button_table_action = true;
@@ -183,14 +183,12 @@
                     
                     $('#addSaveTask').on('click',function(){
                         var name = $('#name').val();
-                        var description = $('#description').val();
                         var date = $('#date').val();
-                        var task_type = $('#task_type').val();
                         var lead_id = $('#lead_id').val();
                         
                         $.ajax({
                             url: '../addsave',
-                            data: \"name=\"+$('#name').val()+\"&description=\"+$('#description').val()+\"&date=\"+$('#date').val()+\"&task_type=\"+$('#task_type').val()+\"&lead_id=\"+$('#lead_id').val(),
+                            data: \"name=\"+$('#name').val()+\"&date=\"+$('#date').val()+\"&task_type=\"+\"&lead_id=\"+$('#lead_id').val(),
                             type:  'get',
                             dataType: 'json',
                             success : function(data) {
@@ -344,8 +342,11 @@
 	    |
 	    */
 	    public function hook_query_index(&$query) {
+
+            $id = (CRUDBooster::isSuperadmin());
             $user_id = (CRUDBooster::myId());
-            if ($user_id != 1) {
+
+            if ($id != 1) {
                 $query->where('id_usuario', $user_id);
             }
 
@@ -512,12 +513,10 @@
                 'date' => $date,
                 'created_at' => Carbon::now(config('app.timezone')),
                 'name' => $request->get('name'),
-                'description' => $request->get('description'),
-                'task_type_id' => $request->get('task_type'),
-                'customers_id' => $request->get('lead_id'),
+                'clients_id' => $request->get('lead_id'),
             ];
 
-            DB::table('eazy_tasks')->insertGetId($sumarizedData);
+            DB::table('eazy_tasks_clients')->insertGetId($sumarizedData);
 
             return 1;
         }
@@ -765,6 +764,13 @@
                 CRUDBooster::redirect(CRUDBooster::adminPath(),trans("crudbooster.denied_access"));
             }
 
+            $account_exists = DB::table('clients')->where('id',$id)->first();
+            if (!empty($account_exists)) {
+                if ($account_exists->deleted_at != null) {
+                    CRUDBooster::redirect(CRUDBooster::adminPath('customers25'),trans("crudbooster.text_delete_client"));
+                }
+            }
+
             $data = [];
             $data['page_title'] = 'Client Profile';
             $data['id'] = $id;
@@ -783,11 +789,10 @@
             $data['contact_type'] = DB::table('customer_type')->where('id',$data['lead']->estado)->first();
             $data['notes'] = DB::table('eazy_notes')->where('customers_id', $id)->where('deleted_at', null)->get();
 
-            $data['tasks'] = DB::table('eazy_tasks')
-                ->select(DB::raw('eazy_tasks.name'), 'eazy_task_type.name as task_type_name', 'eazy_tasks.description', 'eazy_tasks.created_at', 'eazy_tasks.date', 'eazy_tasks.id')
-                ->join('eazy_task_type', 'eazy_task_type.id', '=', 'eazy_tasks.task_type_id')
-                ->where('eazy_tasks.deleted_at', null)
-                ->where('customers_id', $id)
+            $data['tasks'] = DB::table('eazy_tasks_clients')
+                ->select(DB::raw('eazy_tasks_clients.name'), 'eazy_tasks_clients.description', 'eazy_tasks_clients.created_at', 'eazy_tasks_clients.date', 'eazy_tasks_clients.id')
+                ->where('eazy_tasks_clients.deleted_at', null)
+                ->where('clients_id', $id)
                 ->get();
 
             $data['client'] =  DB::table('user_trucks')
@@ -795,7 +800,7 @@
                 ->where('user_trucks.id_account', $id)->first();
 
             $data['quotes_closed'] = DB::table('user_trucks')
-                ->select('user_trucks.id','user_trucks.truck_budget', 'user_trucks.truck_date_created','user_trucks.financing','user_trucks.truck_aprox_price')
+                ->select('user_trucks.id','user_trucks.truck_budget', 'user_trucks.truck_name', 'user_trucks.truck_date_created','user_trucks.financing','user_trucks.truck_aprox_price')
                 ->join('client_quotes', 'client_quotes.id_quote', '=', 'user_trucks.id')
                 ->where('client_quotes.id_client', $id)
                 ->where('client_quotes.main', 1)
@@ -811,7 +816,7 @@
                 ->where('clients.id', $id)->first();
 
             $quotes_opened = DB::table('user_trucks')
-                ->select('user_trucks.id','user_trucks.truck_budget', 'user_trucks.truck_date_created','user_trucks.financing','user_trucks.truck_aprox_price')
+                ->select('user_trucks.id','user_trucks.truck_budget', 'user_trucks.truck_name', 'user_trucks.truck_date_created','user_trucks.financing','user_trucks.truck_aprox_price')
                 ->where('user_trucks.id_account', $idAccount->id)
                 ->where('user_trucks.deleted_at', '=', null)
                 ->where('user_trucks.is_invoice', '=', 0)

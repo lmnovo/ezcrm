@@ -112,6 +112,8 @@
                 <input type="hidden" id="applianceitem_29" name="applianceitem_29" value="">
                 <input type="hidden" id="applianceitem_30" name="applianceitem_30" value="">
 
+                <input type="hidden" id="send_email" name="send_email" value="">
+
                 <div class="row">
                     <div class='col-sm-4'>
                         <label>{{trans('crudbooster.Business_Name')}}*</label>
@@ -567,6 +569,7 @@
 
         <div class='panel-footer'>
             <button type="submit" title="{{trans('crudbooster.save')}}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+            <button type="submit" id="check_send_email" title="{{trans('crudbooster.save_and_submit')}}" class="btn btn-primary"><i class="fa fa-envelope"></i></button>
             <a class="btn btn-yahoo" title="{{trans('crudbooster.create_invoice')}}" style="margin: 2px" href="{{CRUDBooster::mainpath("create-invoice/$id")}}"><i class="fa fa-hand-o-right"></i> </a>
             <a title="{{trans('crudbooster.send_email')}}" id="send-email-personal" class="btn btn-success" style="margin: 2px" href="#"><i class="fa fa-envelope-o"></i></a>
             <a title="{{trans('crudbooster.print')}}" class='btn btn-danger' href='{{CRUDBooster::adminPath("orders/print-quote/$id")}}'><i class="fa fa-print"></i></a>
@@ -647,7 +650,7 @@
         </div><!-- /.modal-dialog -->
     </div>
 
-    <div class="modal fade" tabindex="-1" role="dialog" id="applianceModal">
+    <div class="modal fade" tabindex="-1" role="dialog" id="applianceModal" style="position: relative;">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #337ab7; color: white;">
@@ -655,12 +658,6 @@
                     <h4 class="modal-title">{{trans('crudbooster.appliance_creation')}}</h4>
                 </div>
 
-                <?php
-/*                $action = "";
-                $return_url = ($return_url)?:g('return_url');
-                */?><!--
-
-                <form class='form-horizontal' data-parsley-validate id="form_product" enctype="multipart/form-data" action='<?php /*echo e($action); */?>'>-->
                 <form id="form_product" data-parsley-validate  action="" method="post" class="form-horizontal">
 
                     <div class="modal-body">
@@ -748,14 +745,6 @@
                         <button type="button" class="btn btn-dark" data-dismiss="modal">{{trans('crudbooster.close')}}</button>
                         <button type="button" class="btn btn-primary " id="addSave">{{trans('crudbooster.add')}}</button>
                     </div>
-
-                    {{--<div class="modal-footer">
-                        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
-                        <button id="newappliance" class="btn btn-success" type="button" ><span class="glyphicon glyphicon-save"></span>New</button>
-
-                        <button type="button" class="btn btn-primary " id="addonly">Add</button>
-                        <button type="submit" class="btn btn-warning" id="add">Add & Close</button>
-                    </div>--}}
 
                 </form>
 

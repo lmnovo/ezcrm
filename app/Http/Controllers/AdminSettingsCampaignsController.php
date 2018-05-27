@@ -269,7 +269,9 @@
 	    */
 	    public function hook_query_index(&$query) {
 	        //Your code here
-            if (CRUDBooster::myId() != 1) {
+            $id = (CRUDBooster::isSuperadmin());
+
+            if ($id != 1) {
                 $query->where(['cms_users_id' => CRUDBooster::myId()]);
             }
 	            
@@ -356,8 +358,11 @@
             } else {
                 //Obtengo arreglo de emails asociados a los Leads seleccionados para enviar campaña
                 foreach ($leadsSelected as $item) {
-                    $to[] = $item->email;
-                    $leads_send_id[] = $item->id;
+                    //validamos antes de incluir los emails
+                    if ($this->validarEmail($item->email)) {
+                        $to[] = $item->email;
+                        $leads_send_id[] = $item->id;
+                    }
                 }
             }
 
@@ -366,7 +371,7 @@
 
                 \Mail::send("crudbooster::emails.blank",['content'=>$html],function($message) use ($to,$subject,$template) {
                     $message->priority(1);
-                    $message->to($to);
+                    $message->cc($to);
 
                     if($template->from_email) {
                         $from_name = ($template->from_name)?:CRUDBooster::getSetting('appname');
@@ -510,6 +515,18 @@
 
             return $data;
         }
+
+        //Función para la validación de los correos electrónicos (emails)
+        public function validarEmail($email) {
+            if (preg_match(
+                '/[\w-\.]{1,}@([\w-]{2,}\.)*([\w-]{1,}\.)[\w-]{2,4}/',
+                $email)) {
+                return true;
+            }
+            return false;
+        }
+
+
 
         /*public function getAdd() {
             //Create an Auth

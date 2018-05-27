@@ -536,7 +536,7 @@ class CBController extends Controller {
 		                $account_id = DB::table('account')->where('id_usuario', $value)->first();
                         $result = DB::table('cms_users')->where('id', $account_id->id_usuario)->first();
 
-                        $value = "<a href=".$col['urlUser'].'/detail/'.$account_id->id_usuario.">$result->name</a>";
+                        $value = "<a class='editable' data-id='$account_id->id_usuario' href=".$col['urlUser'].'/detail/'.$account_id->id_usuario.">$result->name</a>";
                     }
 
                     /*if($col['urlUser']) {

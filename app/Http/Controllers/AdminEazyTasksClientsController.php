@@ -5,7 +5,7 @@
 	use DB;
 	use CRUDBooster;
 
-	class AdminEazyTasks1Controller extends \crocodicstudio\crudbooster\controllers\CBController {
+	class AdminEazyTasksClientsController extends \crocodicstudio\crudbooster\controllers\CBController {
 
 	    public function cbInit() {
 
@@ -21,35 +21,35 @@
 			$this->button_edit = true;
 			$this->button_delete = true;
 			$this->button_detail = true;
-			$this->button_show = false;
+			$this->button_show = true;
 			$this->button_filter = true;
 			$this->button_import = false;
 			$this->button_export = false;
-			$this->table = "eazy_tasks";
+			$this->table = "eazy_tasks_clients";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
 			$this->col[] = ["label"=>"Name","name"=>"name"];
-            $this->col[] = ["label"=>"Assigned to","name"=>"customers_id","join"=>"account,name"];
+			$this->col[] = ["label"=>"Description","name"=>"description"];
 			$this->col[] = ["label"=>"Date","name"=>"date"];
-            $this->col[] = ["label"=>"Description","name"=>"description"];
+			$this->col[] = ["label"=>"Clients Id","name"=>"clients_id","join"=>"clients,name"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
 			$this->form[] = ['label'=>'Name','name'=>'name','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter'];
-			$this->form[] = ['label'=>'Date','name'=>'date','type'=>'date','validation'=>'required|date_format:Y-m-d','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Assign to','name'=>'customers_id','type'=>'select2','validation'=>'required','width'=>'col-sm-10','datatable'=>'account,name'];
+			$this->form[] = ['label'=>'Date','name'=>'date','type'=>'date','validation'=>'required|date','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Clients Id','name'=>'clients_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'clients,name'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ['label'=>'Name','name'=>'name','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter'];
-			//$this->form[] = ['label'=>'Description','name'=>'description','type'=>'textarea','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Date','name'=>'date','type'=>'date','validation'=>'required|date_format:Y-m-d','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Task Type','name'=>'task_type_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'eazy_task_type,name'];
-			//$this->form[] = ['label'=>'Assign to','name'=>'customers_id','type'=>'select2','validation'=>'required','width'=>'col-sm-10','datatable'=>'account,name'];
+			//$this->form[] = ["label"=>"Name","name"=>"name","type"=>"text","required"=>TRUE,"validation"=>"required|string|min:3|max:70","placeholder"=>"You can only enter the letter"];
+			//$this->form[] = ["label"=>"Description","name"=>"description","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Date","name"=>"date","type"=>"date","required"=>TRUE,"validation"=>"required|date"];
+			//$this->form[] = ["label"=>"Task Type Id","name"=>"task_type_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"task_type,id"];
+			//$this->form[] = ["label"=>"Clients Id","name"=>"clients_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"clients,name"];
 			# OLD END FORM
 
 			/* 
@@ -116,7 +116,6 @@
 	        | 
 	        */
 	        $this->index_button = array();
-            $this->index_button[] = ['label'=>'Show Calendar','url'=>CRUDBooster::adminPath($slug="task_calendar"),"icon"=>"fa fa-calendar"];
 
 
 
@@ -270,37 +269,8 @@
 	    | @id = last insert id
 	    | 
 	    */
-	    public function hook_after_add($id) {
-            $tasks = DB::table('eazy_tasks')->where('id', $id)->first();
-            $customers = DB::table('account')->where('id', $tasks->customers_id)->first();
-
-            $html = '<p>Task Name: '.$tasks->name.'</p><p>Task Description: '.$tasks->description.'</p><p>Task Date: '.$tasks->date.'</p>';
-            $subject = 'New Task Assigned';
-            $to[] = $customers->email;
-            $template = CRUDBooster::first('cms_email_templates',['id'=>1]);
-
-            \Mail::send("crudbooster::emails.blank",['content'=>$html],function($message) use ($to,$subject,$template) {
-                $message->priority(1);
-                $message->to($to);
-
-                if($template->from_email) {
-                    $from_name = ($template->from_name)?:CRUDBooster::getSetting('appname');
-                    $message->from($template->from_email,$from_name);
-                }
-
-                if($template->cc_email) {
-                    $message->cc($template->cc_email);
-                }
-
-                $message->subject($subject);
-            });
-
-            if($customers->is_client == 1) {
-                CRUDBooster::redirect(CRUDBooster::adminpath("customers25/detail/$tasks->customers_id"),trans("crudbooster.text_task_added"));
-            }
-            else {
-                CRUDBooster::redirect(CRUDBooster::adminpath("account/detail/$tasks->customers_id"),trans("crudbooster.text_task_added"));
-            }
+	    public function hook_after_add($id) {        
+	        //Your code here
 
 	    }
 
@@ -325,36 +295,7 @@
 	    | 
 	    */
 	    public function hook_after_edit($id) {
-            $tasks = DB::table('eazy_tasks')->where('id', $id)->first();
-            $customers = DB::table('account')->where('id', $tasks->customers_id)->first();
-
-            $html = '<p>Task Name: '.$tasks->name.'</p><br><p>Task Description: '.$tasks->description.'</p><br><p>Task Date: '.$tasks->date.'</p><br>';
-            $subject = 'Task Modified';
-            $to[] = $customers->email;
-            $template = CRUDBooster::first('cms_email_templates',['id'=>1]);
-
-            \Mail::send("crudbooster::emails.blank",['content'=>$html],function($message) use ($to,$subject,$template) {
-                $message->priority(1);
-                $message->to($to);
-
-                if($template->from_email) {
-                    $from_name = ($template->from_name)?:CRUDBooster::getSetting('appname');
-                    $message->from($template->from_email,$from_name);
-                }
-
-                if($template->cc_email) {
-                    $message->cc($template->cc_email);
-                }
-
-                $message->subject($subject);
-            });
-
-            if($customers->contact_type == 1) {
-                CRUDBooster::redirect(CRUDBooster::adminpath("customers25/detail/$tasks->customers_id"),trans("crudbooster.text_task_added"));
-            }
-            else {
-                CRUDBooster::redirect(CRUDBooster::adminpath("account/detail/$tasks->customers_id"),trans("crudbooster.text_task_added"));
-            }
+	        //Your code here 
 
 	    }
 

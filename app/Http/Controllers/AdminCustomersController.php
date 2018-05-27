@@ -46,11 +46,12 @@
             $this->col[] = ["label"=>trans('crudbooster.lastname'), "name"=>"lastname"];
             $this->col[] = ["label"=>trans('crudbooster.phone'),"name"=>"telephone", "urlPhone"=>"account"];
             $this->col[] = ["label"=>trans('crudbooster.state'),"name"=>"state"];
-            $this->col[] = ["label"=>trans('crudbooster.email'),"name"=>"email", "email"=>"email"];
             //$this->col[] = ["label"=>trans('crudbooster.email'),"name"=>"email"];
-            $this->col[] = ["label"=>trans('crudbooster.creation_date'),"name"=>"date_created"];
-            $this->col[] = ["label"=>trans('crudbooster.menu_Lead_Type'),"name"=>"estado","join"=>"customer_type,name"];
             $this->col[] = ["label"=>trans('crudbooster.quotes'),"name"=>"quotes"];
+            $this->col[] = ["label"=>trans('crudbooster.menu_Lead_Type'),"name"=>"estado","join"=>"customer_type,name"];
+            $this->col[] = ["label"=>trans('crudbooster.creation_date'),"name"=>"date_created"];
+
+            $this->col[] = ["label"=>trans('crudbooster.email'),"name"=>"email", "email"=>"email"];
             $this->col[] = ["label"=>trans('crudbooster.assign_to'),"name"=>"id_usuario","urlUser"=>"users"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
@@ -211,18 +212,16 @@
                     
                     $('#addSaveTask').on('click',function(){
                         var name = $('#name').val();
-                        var description = $('#description').val();
                         var date = $('#date').val();
-                        var task_type = $('#task_type').val();
                         var lead_id = $('#lead_id').val();
                         
                         $.ajax({
                             url: '../addsave',
-                            data: \"name=\"+$('#name').val()+\"&description=\"+$('#description').val()+\"&date=\"+$('#date').val()+\"&task_type=\"+$('#task_type').val()+\"&lead_id=\"+$('#lead_id').val(),
+                            data: \"name=\"+$('#name').val()+\"&date=\"+$('#date').val()+\"&lead_id=\"+$('#lead_id').val(),
                             type:  'get',
                             dataType: 'json',
                             success : function(data) {
-                                window.location.href = 'http://ezcrm.us/crm/account/detail/'+lead_id; 
+                               window.location.href = 'http://ezcrm.us/crm/account/detail/'+lead_id; 
                                $('#taskLeadModal').modal('hide');
                             }
                          }); 
@@ -324,9 +323,10 @@
 	    */
 	    public function hook_query_index(&$query) {
 	        //Your code here
+            $id = (CRUDBooster::isSuperadmin());
             $user_id = (CRUDBooster::myId());
 
-            if ($user_id != 1) {
+            if ($id != 1) {
                 $query->where(['is_client' => 0])->where('id_usuario', $user_id);
             }
             else {
@@ -511,8 +511,6 @@
                 'date' => $date,
                 'created_at' => Carbon::now(config('app.timezone')),
                 'name' => $request->get('name'),
-                'description' => $request->get('description'),
-                'task_type_id' => $request->get('task_type'),
                 'customers_id' => $request->get('lead_id'),
             ];
 
@@ -523,9 +521,17 @@
 
         //Mostrar el perfil de un Lead dado su id
         public function getDetail($id) {
+
             //Create an Auth
             if(!CRUDBooster::isRead() && $this->global_privilege==FALSE || $this->button_edit==FALSE) {
                 CRUDBooster::redirect(CRUDBooster::adminPath(),trans("crudbooster.denied_access"));
+            }
+
+            $account_exists = DB::table('account')->where('id',$id)->first();
+            if (!empty($account_exists)) {
+                if ($account_exists->deleted_at != null) {
+                    CRUDBooster::redirect(CRUDBooster::adminPath('account'),trans("crudbooster.text_delete_account"));
+                }
             }
 
             $data = [];
@@ -559,8 +565,7 @@
             $data['task_type'] = DB::table('eazy_task_type')->get();
 
             $data['tasks'] = DB::table('eazy_tasks')
-                ->select(DB::raw('eazy_tasks.name'), 'eazy_task_type.name as task_type_name', 'eazy_tasks.description', 'eazy_tasks.created_at', 'eazy_tasks.date', 'eazy_tasks.id')
-                ->join('eazy_task_type', 'eazy_task_type.id', '=', 'eazy_tasks.task_type_id')
+                ->select(DB::raw('eazy_tasks.name'), 'eazy_tasks.description', 'eazy_tasks.created_at', 'eazy_tasks.date', 'eazy_tasks.id')
                 ->where('eazy_tasks.deleted_at', null)
                 ->where('customers_id', $id)->get();
 

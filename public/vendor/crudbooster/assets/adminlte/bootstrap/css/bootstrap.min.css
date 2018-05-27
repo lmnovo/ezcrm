@@ -2466,16 +2466,84 @@ table th[class*="col-"] {
     margin-top: 20px;
   }
 
-  table#table_dashboard td:nth-child(1),
-  table#table_dashboard th:nth-child(1),
-  table#table_dashboard td:nth-child(4),
-  table#table_dashboard th:nth-child(4),
-  table#table_dashboard td:nth-child(5),
-  table#table_dashboard th:nth-child(5),
-  table#table_dashboard td:nth-child(7),
-  table#table_dashboard th:nth-child(7),
-  table#table_dashboard td:nth-child(8),
-  table#table_dashboard th:nth-child(8){display: none;}
+  table.table_class_account td:nth-child(4),
+  table.table_class_account th:nth-child(4),
+  table.table_class_account td:nth-child(5),
+  table.table_class_account th:nth-child(5),
+  table.table_class_account td:nth-child(6),
+  table.table_class_account th:nth-child(6),
+  table.table_class_account td:nth-child(8),
+  table.table_class_account th:nth-child(8),
+  table.table_class_account td:nth-child(9),
+  table.table_class_account th:nth-child(9),
+  table.table_class_account td:nth-child(10),
+  table.table_class_account th:nth-child(10){display: none;}
+
+
+  table.table_class_orders td:nth-child(3),
+  table.table_class_orders th:nth-child(3),
+  table.table_class_orders td:nth-child(4),
+  table.table_class_orders th:nth-child(4),
+  table.table_class_orders td:nth-child(5),
+  table.table_class_orders th:nth-child(5),
+  table.table_class_orders td:nth-child(6),
+  table.table_class_orders th:nth-child(6),
+  table.table_class_orders td:nth-child(8),
+  table.table_class_orders th:nth-child(8),
+  table.table_class_orders td:nth-child(9),
+  table.table_class_orders th:nth-child(9){display: none;}
+
+
+  table.table_class_customers25 td:nth-child(2),
+  table.table_class_customers25 th:nth-child(2),
+  table.table_class_customers25 td:nth-child(5),
+  table.table_class_customers25 th:nth-child(5),
+  table.table_class_customers25 td:nth-child(7),
+  table.table_class_customers25 th:nth-child(7),
+  table.table_class_customers25 td:nth-child(8),
+  table.table_class_customers25 th:nth-child(8),
+  table.table_class_customers25 td:nth-child(9),
+  table.table_class_customers25 th:nth-child(9){display: none;}
+
+  table.table_class_invoice td:nth-child(4),
+  table.table_class_invoice th:nth-child(4),
+  table.table_class_invoice td:nth-child(6),
+  table.table_class_invoice th:nth-child(6){display: none;}
+
+
+  table.table_class_campaigns td:nth-child(3),
+  table.table_class_campaigns th:nth-child(3),
+  table.table_class_campaigns td:nth-child(5),
+  table.table_class_campaigns th:nth-child(5),
+  table.table_class_campaigns td:nth-child(6),
+  table.table_class_campaigns th:nth-child(6){display: none;}
+
+
+  table#table_closed_quotes_clients td:nth-child(1),
+  table#table_closed_quotes_clients th:nth-child(1),
+  table#table_closed_quotes_clients td:nth-child(4),
+  table#table_closed_quotes_clients th:nth-child(4),
+  table#table_closed_quotes_clients td:nth-child(3),
+  table#table_closed_quotes_clients th:nth-child(3),
+  table#table_closed_quotes_clients td:nth-child(5),
+  table#table_closed_quotes_clients th:nth-child(5),
+  table#table_closed_quotes_clients td:nth-child(8),
+  table#table_closed_quotes_clients th:nth-child(8),
+  table#table_closed_quotes_clients td:nth-child(6),
+  table#table_closed_quotes_clients th:nth-child(6){display: none;}
+
+  table#table_opened_quotes_clients td:nth-child(1),
+  table#table_opened_quotes_clients th:nth-child(1),
+  table#table_opened_quotes_clients td:nth-child(4),
+  table#table_opened_quotes_clients th:nth-child(4),
+  table#table_opened_quotes_clients td:nth-child(3),
+  table#table_opened_quotes_clients th:nth-child(3),
+  table#table_opened_quotes_clients td:nth-child(5),
+  table#table_opened_quotes_clients th:nth-child(5),
+  table#table_opened_quotes_clients td:nth-child(8),
+  table#table_opened_quotes_clients th:nth-child(8),
+  table#table_opened_quotes_clients td:nth-child(6),
+  table#table_opened_quotes_clients th:nth-child(6){display: none;}
 
   table#table_closed_quotes td:nth-child(1),
   table#table_closed_quotes th:nth-child(1),

@@ -94,6 +94,7 @@
     Route::get('crm/tour/configuration', function () { return view('tour_configuration'); });
     Route::get('crm/tour/first_steps', function () { return view('tour_first_steps'); });
     Route::get('crm/tour/menu_management', function () { return view('tour_menu_management'); });
+    Route::get('crm/tour/configuration_privileges', function () { return view('tour_privileges_configuration'); });
 
     Route::get('lang/{lang}', function ($lang) {
         session(['lang' => $lang]);
@@ -155,7 +156,6 @@
     Route::get('/profits', function () {
 
         //UPDATE user_trucks SET profits = 0 where id >= 0;
-
         $quotes = DB::table('user_trucks')->get();
 
         for ($i=1200; $i>1000; $i--) {
@@ -170,12 +170,23 @@
                     $ganancias += floatval($quote_updated->price_item) / 2;
                 }
 
+                //Para el cálculo de las Ganancias debemos obtener la mitad del precio del Buildout
+                if($quote_updated->precio_builout != 0) {
+                    $ganancias += floatval($quote_updated->precio_builout) / 2;
+                }
+
                 $profits  = DB::table('truck_items')->where('id_truck', $quotes[$i]->id)->get();
 
                 foreach ($profits as $profit) {
                     $precio = DB::table('appliance_inside_category')->where('name', $profit->item_subcategory)->first();
                     $precio = ($precio->price) - ($precio->retail_price);
                     $ganancias += $precio;
+                }
+
+                if (empty($quote_updated->truck_aprox_price)) {
+                    $ganancias = 0;
+                } else {
+                    $ganancias = round(($ganancias * 100 / floatval($quote_updated->truck_aprox_price)), 2);
                 }
 
                 DB::table('user_trucks')->where('id', $quotes[$i]->id)->update(['profits' => floatval($ganancias)]);

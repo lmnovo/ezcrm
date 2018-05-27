@@ -12,11 +12,11 @@
 
 			# START CONFIGURATION DO NOT REMOVE THIS LINE
 			$this->title_field = "business_name";
-			$this->limit = "20";
+			$this->limit = "10";
 			$this->orderby = "id,desc";
 			$this->global_privilege = false;
 			$this->button_table_action = true;
-			$this->button_bulk_action = false;
+			$this->button_bulk_action = true;
 			$this->button_action_style = "button_icon";
 			$this->button_add = false;
 			$this->button_edit = false;
@@ -236,26 +236,11 @@
 	    |
 	    */
 	    public function hook_query_index(&$query) {
-
-            /*$invoices = DB::table('invoice')->get();
-            foreach ($invoices as $invoice) {
-                if(!is_numeric($invoice->state_client)) {
-                    $states = DB::table('states')->where('abbreviation', $invoice->state_client)->first();
-                    if($states != null) {
-                        DB::table('invoice')->where('id', $invoice->id)->update(['state_client' => $states->id]);
-                    }
-                    else {
-                        $states = DB::table('states')->where('name', strtoupper($invoice->state_client))->first();
-                        if($states != null) {
-                            DB::table('invoice')->where('id', $invoice->id)->update(['state_client' => $states->id]);
-                        }
-                    }
-                }
-            }*/
-
 	        //Your code here
+            $id = (CRUDBooster::isSuperadmin());
             $user_id = (CRUDBooster::myId());
-            if ($user_id != 1) {
+
+            if ($id != 1) {
                 $query->where('id_user', $user_id);
             }
 

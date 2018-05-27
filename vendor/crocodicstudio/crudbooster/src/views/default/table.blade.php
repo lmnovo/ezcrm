@@ -16,6 +16,8 @@
 
                       $('.selected-action ul li a').click(function() {
                         var name = $(this).data('name');
+                        console.log(name);
+
                         $('#form-table input[name="button_name"]').val(name);
                         var title = $(this).attr('title');
 
@@ -41,11 +43,16 @@
                   });
                 </script>
 
+             <?php
+                $id_table = explode('crm/', CRUDBooster::mainpath("action-selected"));
+                $id_table = explode('/', $id_table[1]);
+             ?>
 
                   <form id='form-table' method='post' action='{{CRUDBooster::mainpath("action-selected")}}'>
                   <input type='hidden' name='button_name' value=''/>
                   <input type='hidden' name='_token' value='{{csrf_token()}}'/>
-                  <table id='table_dashboard' class="table table-hover table-striped table-bordered">
+                   <?php echo ("<table id='table_dashboard' class='table table-hover table-striped table-bordered table_class_$id_table[0]'>"); ?>
+
                     <thead>
                     <tr class="active">
                       <?php if($button_bulk_action):?>

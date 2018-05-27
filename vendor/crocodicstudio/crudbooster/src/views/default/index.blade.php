@@ -2,6 +2,18 @@
 
 @section('content')
 
+    {{--<script type="text/javascript">
+        $(document).ready(function() {
+            //($("a[href*='users/detail']").text());
+
+            $(document).on("click","a.editable",function(e)
+            {
+                e.preventDefault();
+
+            });
+        });
+    </script>--}}
+
    @if($index_statistic)
       <div id='box-statistic' class='row'>
       @foreach($index_statistic as $stat)

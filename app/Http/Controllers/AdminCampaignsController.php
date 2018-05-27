@@ -11,7 +11,7 @@
 
 			# START CONFIGURATION DO NOT REMOVE THIS LINE
 			$this->title_field = "name";
-			$this->limit = "20";
+			$this->limit = "10";
 			$this->orderby = "id,desc";
 			$this->global_privilege = false;
 			$this->button_table_action = true;
@@ -232,9 +232,10 @@
 	    |
 	    */
 	    public function hook_query_index(&$query) {
+            $id = (CRUDBooster::isSuperadmin());
             $user_id = (CRUDBooster::myId());
 
-            if ($user_id != 1) {
+            if ($id != 1) {
                 $query->where('id_cms_users', $user_id);
             }
 	            
