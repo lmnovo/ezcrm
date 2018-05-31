@@ -46,13 +46,13 @@
             $this->col[] = ["label"=>trans('crudbooster.lastname'), "name"=>"lastname"];
             $this->col[] = ["label"=>trans('crudbooster.phone'),"name"=>"telephone", "urlPhone"=>"account"];
             $this->col[] = ["label"=>trans('crudbooster.state'),"name"=>"state"];
-            //$this->col[] = ["label"=>trans('crudbooster.email'),"name"=>"email"];
             $this->col[] = ["label"=>trans('crudbooster.quotes'),"name"=>"quotes"];
-            $this->col[] = ["label"=>trans('crudbooster.menu_Lead_Type'),"name"=>"estado","join"=>"customer_type,name"];
+            //$this->col[] = ["label"=>trans('crudbooster.menu_Lead_Type'),"name"=>"estado","join"=>"customer_type,name"];
+            $this->col[] = ["label"=>trans('crudbooster.menu_Lead_Type'),"name"=>"id", "urlEstado"=>"estado"];
             $this->col[] = ["label"=>trans('crudbooster.creation_date'),"name"=>"date_created"];
-
             $this->col[] = ["label"=>trans('crudbooster.email'),"name"=>"email", "email"=>"email"];
-            $this->col[] = ["label"=>trans('crudbooster.assign_to'),"name"=>"id_usuario","urlUser"=>"users"];
+            $this->col[] = ["label"=>trans('crudbooster.assign_to'),"name"=>"id", "urlUser"=>"users"];
+            $this->col[] = ["label"=>trans('crudbooster.notes'),"name"=>"notes"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
@@ -491,10 +491,27 @@
             return $data;
         }
 
-        //Permite editar la información del usuario en el lead
+        //Obtiene el listado de estados existentes en bd
+        public function getEstados() {
+            $data = DB::table('customer_type')
+                ->select('id','name')
+                ->get();
+
+            return $data;
+        }
+
+        //Permite editar la información del usuario en el lead (account)
         public function getEdituser(\Illuminate\Http\Request $request) {
             DB::table('account')->where('id', $request->get('id_account'))->update([$request->get('campo') => $request->get('valor')]);
             $data = DB::table('cms_users')->where('id', $request->get('valor'))->first();
+
+            return $data->name;
+        }
+
+        //Permite editar la información del estado en el lead (account)
+        public function getEditestado(\Illuminate\Http\Request $request) {
+            DB::table('account')->where('id', $request->get('id_account'))->update([$request->get('campo') => $request->get('valor')]);
+            $data = DB::table('customer_type')->where('id', $request->get('valor'))->first();
 
             return $data->name;
         }

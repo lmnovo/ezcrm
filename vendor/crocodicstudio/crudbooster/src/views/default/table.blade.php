@@ -328,7 +328,7 @@
                                   @if( $col['label'] == 'Type Lead' or $col['label'] == 'Type Quote' or $col['label'] == 'Lead Type')
                                     <option typeallow='all' {{ (CRUDBooster::getTypeFilter($col["field_with"]) == '=')?"selected":"" }} value='='>{{trans("crudbooster.filter_equal_to")}}</option>
 
-                                  @elseif( $col['label'] == 'Type Lead' or $col['label'] == 'Type Quote' or $col['label'] == 'Tipo de Prospecto')
+                                @elseif( $col['label'] == 'Type Lead' or $col['label'] == 'Type Quote' or $col['label'] == 'Tipo de Prospecto')
                                     <option typeallow='all' {{ (CRUDBooster::getTypeFilter($col["field_with"]) == '=')?"selected":"" }} value='='>{{trans("crudbooster.filter_equal_to")}}</option>
 
                                   @elseif( $col['label'] == 'Name' or $col['label'] == 'Last Name' or $col['label'] == 'Business Name' or $col['label'] == 'Address' or $col['label'] == 'City' or $col['label'] == 'Template' or $col['label'] == 'Phase Type')
@@ -413,7 +413,7 @@
                                       $result = \Illuminate\Support\Facades\DB::table('customer_type')->get();
 
                                       foreach($result as $item) {
-                                          echo "<option value='$item->name'>$item->name</option>";
+                                          echo "<option value='$item->id'>$item->name</option>";
                                       }
                                       ?>
                                   </select>
@@ -434,7 +434,7 @@
                                       $result = \Illuminate\Support\Facades\DB::table('cms_users')->get();
 
                                       foreach($result as $item) {
-                                          echo "<option value='$item->id'>$item->name</option>";
+                                          echo "<option value='$item->name'>$item->name</option>";
                                       }
                                   ?>
                                 </select>

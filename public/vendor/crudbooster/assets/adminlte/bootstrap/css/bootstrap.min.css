@@ -2466,6 +2466,8 @@ table th[class*="col-"] {
     margin-top: 20px;
   }
 
+  table.table_class_account td:nth-child(3),
+  table.table_class_account th:nth-child(3),
   table.table_class_account td:nth-child(4),
   table.table_class_account th:nth-child(4),
   table.table_class_account td:nth-child(5),
@@ -2475,9 +2477,7 @@ table th[class*="col-"] {
   table.table_class_account td:nth-child(8),
   table.table_class_account th:nth-child(8),
   table.table_class_account td:nth-child(9),
-  table.table_class_account th:nth-child(9),
-  table.table_class_account td:nth-child(10),
-  table.table_class_account th:nth-child(10){display: none;}
+  table.table_class_account th:nth-child(9){display: none;}
 
 
   table.table_class_orders td:nth-child(3),

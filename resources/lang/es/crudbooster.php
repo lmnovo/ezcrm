@@ -95,6 +95,7 @@ return [
 	'action_detail_data' =>'Detalles',
 	'action_edit_data'   =>'Editar',
 	'action_delete_data' =>'Eliminar',
+    'no_data' => 'no_data',
 
     'Privileges_Roles'    => 'Sección de Seguridad',
     'Module_Generator'    => 'Módulos',

@@ -94,6 +94,7 @@ return [
     'action_detail_data' => 'Detail Data',
     'action_edit_data'   => 'Edit Data',
     'action_delete_data' => 'Delete',
+    'no_data' => 'no_data',
 
 
     'button_cancel'          => 'Cancel',

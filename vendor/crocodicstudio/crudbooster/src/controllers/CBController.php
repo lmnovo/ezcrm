@@ -532,20 +532,35 @@ class CBController extends Controller {
                         $value = "<a href=".$col['urlClient'].'/detail/'.$result->id.">$value</a>";
                     }
 
-                    if($col['urlUser']) {
+                    /*if($col['urlUser']) {
 		                $account_id = DB::table('account')->where('id_usuario', $value)->first();
                         $result = DB::table('cms_users')->where('id', $account_id->id_usuario)->first();
 
                         $value = "<a class='editable' data-id='$account_id->id_usuario' href=".$col['urlUser'].'/detail/'.$account_id->id_usuario.">$result->name</a>";
-                    }
+                    }*/
 
-                    /*if($col['urlUser']) {
+                    if($col['urlUser']) {
                         $account_id = DB::table('account')->where('id', $value)->first();
                         $result = DB::table('cms_users')->where('id', $account_id->id_usuario)->first();
 
-                        //$value = "<a id='editable_user' href=".$col['urlUser'].'/detail/'.$account_id->id_usuario.">$result->name</a> <span data-account='$value' data-user='$account_id->id_usuario' class=\"edit_button_list\"><i class=\"fa fa-edit\"></i></span>";
-                        $value = "<a id='editable_user' href=".$col['urlUser'].'/detail/'.$account_id->id_usuario.">$result->name</a>";
-                    }*/
+                        if ($result->name == '') {
+                            $value = "<label style='font-weight: normal;' class='editable_user' data-campo='id_usuario' data-iduser='$account_id->id_usuario' data-idaccount='$account_id->id'><span class='editable_user' style='color: red;'>".trans('crudbooster.no_data')."</span></label>";
+                        } else {
+                            $value = "<label style='font-weight: normal;' class='editable_user' data-campo='id_usuario' data-iduser='$account_id->id_usuario' data-idaccount='$account_id->id'><span class='editable_user'>$result->name</span></label>";
+
+                        }
+                    }
+
+                    if($col['urlEstado']) {
+                        $account_id = DB::table('account')->where('id', $value)->first();
+                        $result = DB::table('customer_type')->where('id', $account_id->estado)->first();
+
+                        if ($result->name == '') {
+                            $value = "<label style='font-weight: normal;' class='editable_estado' data-campo='estado' data-idestado='$account_id->estado' data-idaccount='$account_id->id'><span class='editable_estado' style='color: red;'>".trans('crudbooster.no_data')."</span></label>";
+                        } else {
+                            $value = "<label style='font-weight: normal;' class='editable_estado' data-campo='estado' data-idestado='$account_id->estado' data-idaccount='$account_id->id'><span class='editable_estado'>$result->name</span></label>";
+                        }
+                    }
 
                     if($col['urlUserQuote']) {
 		                $account_id = DB::table('account')->where('id', $value)->first();
