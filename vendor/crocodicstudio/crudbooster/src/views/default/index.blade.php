@@ -5,115 +5,52 @@
     <script type="text/javascript">
         $(document).ready(function() {
 
-            var td_user,campo_user,valor_user,id_user,id_user_user,id_account_user;
             var td_estado,campo_estado,valor_estado,id_estado,id_estado_estado,id_account_estado;
-            var datos_user = '';
             var datos_estado = '';
-            $(document).on("click","label.editable_user span.editable_user",function(e)
+            $(document).on("click","td",function(e)
             {
+                id_account_estado = $(this).siblings('*')[0].children[0].value;
+
                 e.preventDefault();
-                $("input:not(#id)").removeClass("editable_user");
-                td_user=$(this).closest("label");
-                campo_user=$(this).closest("label").data("campo");
-                id_user_user=$(this).closest("label").data("iduser");
-                id_account_user=$(this).closest("label").data("idaccount");
-                valor_user=$(this).html();
-                id_user=$(this).closest("tr").find("#id").val();
+                if($(this).html().length < 100) {
+                    //Reiniciamos el listado de users para el select
+                    datos_estado = '';
+                    campo_estado = 'estado';
+                    id_estado = $(this).html();
+                    valor_estado = $(this).html();
+                    td_estado=$(this).closest("td");
 
-                //Reiniciamos el listado de users para el select
-                datos_user = '';
-
-                //Obtener el listado de usuarios existentes en bd
-                $.ajax({
-                    type: "GET",
-                    url: "account/users",
-                    data: { campo: campo_user, valor: nuevovalor_user, id: id_user }
-                })
-                    .done(function(data) {
-                        for(var i=0;i<data.length;i++)
-                        {
-                            if (valor_user == data[i].name) {
-                                datos_user += '<option selected="true" value='+data[i].id+' >'+data[i].name+'</option>';
-                            } else {
-                                datos_user += '<option value='+data[i].id+' >'+data[i].name+'</option>';
+                    //Obtener el listado de usuarios existentes en bd
+                    $.ajax({
+                        type: "GET",
+                        url: "account/estados",
+                        data: { campo: campo_estado, valor: nuevovalor_estado, id: id_estado }
+                    })
+                        .done(function(data) {
+                            for(var i=0;i<data.length;i++)
+                            {
+                                if (valor_estado == data[i].name) {
+                                    datos_estado += '<option selected="true" value='+data[i].id+' >'+data[i].name+'</option>';
+                                } else {
+                                    datos_estado += '<option value='+data[i].id+' >'+data[i].name+'</option>';
+                                }
                             }
-                        }
-                        td_user.text("").html("" +
-                            "<select class='form-control' id='cms_users' name='"+campo_user+"' placeholder='Select' required>"
-                            + datos_user +
-                            "</select>" +
-                            " <a class='enlace guardar_user' href='#'><i class=\"fa fa-check-circle\"></i></a> " +
-                            "<a class='enlace cancelar_user' href='#'><i class=\"fa fa-times-circle\"></i></a>");
-                    });
+                            td_estado.text("").html("" +
+                                "<select class='form-control' id='cms_estados' name='"+campo_estado+"' placeholder='Select' required>"
+                                + datos_estado +
+                                "</select>" +
+                                " <a class='enlace guardar_estado' href='#'><i class=\"fa fa-check-circle\"></i></a> " +
+                                "<a class='enlace cancelar_estado' href='#'><i class=\"fa fa-times-circle\"></i></a>");
+                        });
+                }
 
-            });
-
-            $(document).on("click","label.editable_estado span.editable_estado",function(e)
-            {
-                e.preventDefault();
-                $("input:not(#id)").removeClass("editable_estado");
-                td_estado=$(this).closest("label");
-                campo_estado=$(this).closest("label").data("campo");
-                id_estado_estado=$(this).closest("label").data("iduser");
-                id_account_estado=$(this).closest("label").data("idaccount");
-                valor_estado=$(this).html();
-                id_estado=$(this).closest("tr").find("#id").val();
-
-                //Reiniciamos el listado de users para el select
-                datos_estado = '';
-
-                //Obtener el listado de usuarios existentes en bd
-                $.ajax({
-                    type: "GET",
-                    url: "account/estados",
-                    data: { campo: campo_estado, valor: nuevovalor_estado, id: id_estado }
-                })
-                    .done(function(data) {
-                        for(var i=0;i<data.length;i++)
-                        {
-                            if (valor_estado == data[i].name) {
-                                datos_estado += '<option selected="true" value='+data[i].id+' >'+data[i].name+'</option>';
-                            } else {
-                                datos_estado += '<option value='+data[i].id+' >'+data[i].name+'</option>';
-                            }
-                        }
-                        td_estado.text("").html("" +
-                            "<select class='form-control' id='cms_estados' name='"+campo_estado+"' placeholder='Select' required>"
-                            + datos_estado +
-                            "</select>" +
-                            " <a class='enlace guardar_estado' href='#'><i class=\"fa fa-check-circle\"></i></a> " +
-                            "<a class='enlace cancelar_estado' href='#'><i class=\"fa fa-times-circle\"></i></a>");
-                    });
-
-            });
-
-            $(document).on("click",".cancelar_user",function(e)
-            {
-                e.preventDefault();
-                td_user.html("<span class=\"editable_user\">"+valor_user+"</span></label>");
-                $("input:not(#id)").addClass("editable_user");
             });
 
             $(document).on("click",".cancelar_estado",function(e)
             {
                 e.preventDefault();
-                td_estado.html("<span class=\"editable_estado\">"+valor_estado+"</span></label>");
-                $("input:not(#id)").addClass("editable_estado");
-            });
-
-            var nuevovalor_user;
-            $(document).on("click",".guardar_user",function(e)
-            {
-                e.preventDefault();
-                nuevovalor_user=$('#cms_users').val();
-                $.ajax({
-                    type: "GET",
-                    url: "account/edituser",
-                    data: { campo: campo_user, valor: nuevovalor_user, id_user: id_user_user, id_account: id_account_user }
-                })
-                    .done(function( data ) {
-                        td_user.html("<td class=\"editable_user\" data-campo=\"id_usuario\" data-iduser="+nuevovalor_user+" data-idaccount="+id_account_user+"><span class=\"editable_user\">"+data+"</span></td>");
-                    });
+                td_estado.html(valor_estado);
+                window.location.href = 'http://ezcrm.us/crm/account';
             });
 
             var nuevovalor_estado;
@@ -127,9 +64,74 @@
                     data: { campo: campo_estado, valor: nuevovalor_estado, id_estado: id_estado_estado, id_account: id_account_estado }
                 })
                     .done(function( data ) {
-                        td_estado.html("<td class=\"editable_estado\" data-campo=\"estado\" data-iduser="+nuevovalor_estado+" data-idaccount="+id_account_estado+"><span class=\"editable_estado\">"+data+"</span></td>");
+                        td_estado.html(data);
                     });
             });
+
+            var td_user,campo_user,valor_user,id_user,id_user_user,id_account_user;
+            var datos_user = '';
+            $(document).on("click","td",function(e)
+            {
+                id_account_user = $(this).siblings('*')[0].children[0].value;
+
+                e.preventDefault();
+                if($(this).html().length < 100) {
+                    //Reiniciamos el listado de users para el select
+                    datos_user = '';
+                    campo_user = 'id_usuario';
+                    id_user = $(this).html();
+                    valor_user = $(this).html();
+                    td_user=$(this).closest("td");
+
+                    //Obtener el listado de usuarios existentes en bd
+                    $.ajax({
+                        type: "GET",
+                        url: "account/users",
+                        data: { campo: campo_user, valor: nuevovalor_user, id: id_user }
+                    })
+                        .done(function(data) {
+                            for(var i=0;i<data.length;i++)
+                            {
+                                if (valor_user == data[i].name) {
+                                    datos_user += '<option selected="true" value='+data[i].id+' >'+data[i].name+'</option>';
+                                } else {
+                                    datos_user += '<option value='+data[i].id+' >'+data[i].name+'</option>';
+                                }
+                            }
+                            td_user.text("").html("" +
+                                "<select class='form-control' id='cms_users' name='"+campo_user+"' placeholder='Select' required>"
+                                + datos_user +
+                                "</select>" +
+                                " <a class='enlace guardar_user' href='#'><i class=\"fa fa-check-circle\"></i></a> " +
+                                "<a class='enlace cancelar_user' href='#'><i class=\"fa fa-times-circle\"></i></a>");
+                        });
+                }
+
+            });
+
+            $(document).on("click",".cancelar_user",function(e)
+            {
+                e.preventDefault();
+                td_user.html(valor_user);
+                window.location.href = 'http://ezcrm.us/crm/account';
+            });
+
+            var nuevovalor_user;
+            $(document).on("click",".guardar_user",function(e)
+            {
+                e.preventDefault();
+                nuevovalor_user=$('#cms_users').val();
+                $.ajax({
+                    type: "GET",
+                    url: "account/edituser",
+                    data: { campo: campo_user, valor: nuevovalor_user, id_user: id_user_user, id_account: id_account_user }
+                })
+                    .done(function( data ) {
+                        td_user.html(data);
+                    });
+            });
+
+
         });
     </script>
 

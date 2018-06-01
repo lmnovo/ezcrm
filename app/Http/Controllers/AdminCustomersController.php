@@ -47,11 +47,10 @@
             $this->col[] = ["label"=>trans('crudbooster.phone'),"name"=>"telephone", "urlPhone"=>"account"];
             $this->col[] = ["label"=>trans('crudbooster.state'),"name"=>"state"];
             $this->col[] = ["label"=>trans('crudbooster.quotes'),"name"=>"quotes"];
-            //$this->col[] = ["label"=>trans('crudbooster.menu_Lead_Type'),"name"=>"estado","join"=>"customer_type,name"];
-            $this->col[] = ["label"=>trans('crudbooster.menu_Lead_Type'),"name"=>"id", "urlEstado"=>"estado"];
+            $this->col[] = ["label"=>trans('crudbooster.menu_Lead_Type'),"name"=>"estado","join"=>"customer_type,name"];
             $this->col[] = ["label"=>trans('crudbooster.creation_date'),"name"=>"date_created"];
             $this->col[] = ["label"=>trans('crudbooster.email'),"name"=>"email", "email"=>"email"];
-            $this->col[] = ["label"=>trans('crudbooster.assign_to'),"name"=>"id", "urlUser"=>"users"];
+            $this->col[] = ["label"=>trans('crudbooster.assign_to'),"name"=>"id_usuario","join"=>"cms_users,name"];
             $this->col[] = ["label"=>trans('crudbooster.notes'),"name"=>"notes"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 

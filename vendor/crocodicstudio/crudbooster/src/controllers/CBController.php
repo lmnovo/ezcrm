@@ -204,6 +204,7 @@ class CBController extends Controller {
 		$join_table_temp  = array();
 		$table            = $this->table;
 		$columns_table    = $this->columns_table;
+
 		foreach($columns_table as $index => $coltab) {
 
 			$join = @$coltab['join'];
@@ -551,7 +552,7 @@ class CBController extends Controller {
                         }
                     }
 
-                    if($col['urlEstado']) {
+                    /*if($col['urlEstado']) {
                         $account_id = DB::table('account')->where('id', $value)->first();
                         $result = DB::table('customer_type')->where('id', $account_id->estado)->first();
 
@@ -560,7 +561,7 @@ class CBController extends Controller {
                         } else {
                             $value = "<label style='font-weight: normal;' class='editable_estado' data-campo='estado' data-idestado='$account_id->estado' data-idaccount='$account_id->id'><span class='editable_estado'>$result->name</span></label>";
                         }
-                    }
+                    }*/
 
                     if($col['urlUserQuote']) {
 		                $account_id = DB::table('account')->where('id', $value)->first();
