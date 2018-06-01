@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -190,6 +192,59 @@
                 }
 
                 DB::table('user_trucks')->where('id', $quotes[$i]->id)->update(['profits' => floatval($ganancias)]);
+            }
+        }
+
+    });
+
+    Route::get('/proyects', function () {
+        $quotes = DB::table('user_trucks')->get();
+
+        for ($i=1760; $i>1545; $i--) {
+            $proyect = DB::table('proyects')->where('orders_id', $i)->first();
+            $quote = DB::table('user_trucks')->where('id', $i)->where('is_active', 0)->first();
+            $lead = DB::table('account')->where('id', $quote->id_account)->first();
+
+            if (count($quote) != 0) {
+                //Si existe la quote busco las fases asociadas
+                $fases= DB::table('fases')->where('orders_id', $quote->id)->orderby('id', 'asc')->get();
+
+                if (count($fases) == 0) {
+                    $sumarizedDataProyect = [
+                        'name' => $quote->truck_name,
+                        'customers_id' => $lead->id,
+                        'interesting' => $quote->interesting,
+                        'fases_type_id' => 11,
+                        'datetime' => Carbon::now(config('app.timezone')),
+                        'cms_users_id' => $lead->id_usuario,
+                        'orders_id' => $i,
+                    ];
+                    DB::table('proyects')->insert($sumarizedDataProyect);
+                }
+                else {
+                    $stepActual = 11;
+                    $fechaActual = Carbon::now(config('app.timezone'));
+                    $stepActualName = '';
+                    foreach ($fases as $item) {
+                        if(empty($item->name) || empty($item->notes) || empty($item->email) || empty($item->datetime) || empty($item->cms_users_id)) {
+                            $stepActual = $item->fases_type_id;
+                            $stepActualName = $item->name;
+                            break;
+                        }
+                        $fechaActual = $item->datetime;
+                    }
+
+                    $sumarizedDataProyect = [
+                        'name' => $quote->truck_name,
+                        'customers_id' => $lead->id,
+                        'interesting' => $quote->interesting,
+                        'fases_type_id' => $stepActual,
+                        'cms_users_id' => $lead->id_usuario,
+                        'datetime' => $fechaActual,
+                        'orders_id' => $i,
+                    ];
+                    DB::table('proyects')->where('orders_id', $i)->insert($sumarizedDataProyect);
+                }
             }
         }
 

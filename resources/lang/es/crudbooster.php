@@ -587,7 +587,10 @@ return [
     'text_email'  => 'Introduzca correo aquí...',
     'text_forgot'  => 'Su contraseña fue recuperada satisfactoriamente. A continuación le mostramos sus datos:',
 
-
+    'menu_Proyects'  => 'Proyectos',
+    'client'  => 'Cliente',
+    'status'  => 'Estado Actual (Completada)',
+    'quote_id'  => 'Id Cotización',
 
 
 

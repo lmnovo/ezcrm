@@ -1853,6 +1853,7 @@
 
                 DB::table('user_trucks')->where('id', $id)->update(['is_closed' => 1]);
 
+                //Getionando las fases
                 $phases = DB::table('fases')->where('customers_id', $lead_id->id_account)->where('orders_id', $id)->get();
 
                 if (count($phases) == 0) {
@@ -2038,20 +2039,59 @@
                     DB::table('client_quotes')->insert($sumarizedDataClientQuotes);
                 }
 
+                //Gestionando las fases
                 $phases = DB::table('fases')->where('customers_id', $lead_id->id_account)->where('orders_id', $id)->get();
 
                 if (count($phases) == 0) {
                     $phasesTemplate = DB::table('fases')->where('customers_id', 0)->get();
 
                     foreach ($phasesTemplate as $phase) {
-                        DB::table('fases')->insert([
-                            'customers_id'=>$lead_id->id_account,
-                            'email'=>$leads->email,
-                            'name'=>$phase->name,
-                            'fases_type_id'=>$phase->fases_type_id,
-                            'orders_id'=>$id,
-                            'cms_users_id'=>$leads->id_usuario,
-                        ]);
+                        //Establecemos la primera fase por defecto
+                        if ($phase->fases_type_id == 1) {
+                            DB::table('fases')->insert([
+                                'customers_id'=>$lead_id->id_account,
+                                'email'=>$leads->email,
+                                'datetime'=>Carbon::now(config('app.timezone')),
+                                'name'=>$phase->name,
+                                'notes'=>'Quote Closed',
+                                'fases_type_id'=>$phase->fases_type_id,
+                                'orders_id'=>$id,
+                                'cms_users_id'=>$leads->id_usuario,
+                            ]);
+
+                            //Actualizamos la tabla de proyectos
+                            $proyect = DB::table('proyects')->where('orders_id', $id)->first();
+                            if(count($proyect) == 0) {
+                                $sumarizedDataProyect = [
+                                    'name' => $lead_id->truck_name,
+                                    'customers_id' => $lead_id->id_account,
+                                    'interesting' => $lead_id->interesting,
+                                    'fases_type_id' => $phase->fases_type_id,
+                                    'datetime' => Carbon::now(config('app.timezone')),
+                                    'cms_users_id' => $leads->id_usuario,
+                                    'orders_id' => $id,
+                                ];
+                                DB::table('proyects')->insert($sumarizedDataProyect);
+                            } else {
+                                $sumarizedDataProyect = [
+                                    'name' => $lead_id->truck_name,
+                                    'customers_id' => $lead_id->id_account,
+                                    'interesting' => $lead_id->interesting,
+                                    'cms_users_id' => $lead_id->id_usuario,
+                                ];
+                                DB::table('proyects')->where('orders_id', $id)->update($sumarizedDataProyect);
+                            }
+
+                        } else {
+                            DB::table('fases')->insert([
+                                'customers_id'=>$lead_id->id_account,
+                                'email'=>$leads->email,
+                                'name'=>$phase->name,
+                                'fases_type_id'=>$phase->fases_type_id,
+                                'orders_id'=>$id,
+                                'cms_users_id'=>$leads->id_usuario,
+                            ]);
+                        }
                     }
 
                     //Enviamos correo al responsable de la fase creada
@@ -2656,6 +2696,8 @@
             $subject = 'Finished Phase';
 
             $user = DB::table('cms_users')->where('id', $assignto)->first();
+            $quote = DB::table('user_trucks')->where('id', $orders_id)->first();
+            $lead = DB::table('account')->where('id', $quote->id_account)->first();
 
             $to = [];
             $to[] = $email;
@@ -2673,11 +2715,33 @@
             }
 
             $date_limit = Carbon::createFromFormat("Y-m-d", $date_limit);
-
-
             $fase = DB::table('fases')->where('orders_id', $orders_id)->where('fases_type_id', $fase_id)->first();
 
             if (!empty($fase)) {
+                //Creamos el nuevo proyecto a partir de la Quote creada recientemente
+                $proyect = DB::table('proyects')->where('orders_id', $orders_id)->first();
+                if(count($proyect) == 0) {
+                    $sumarizedDataProyect = [
+                        'name' => $quote->truck_name,
+                        'customers_id' => $lead->id,
+                        'interesting' => $quote->interesting,
+                        'fases_type_id' => $fase_id,
+                        'datetime' => $date_limit,
+                        'cms_users_id' => $assignto,
+                        'orders_id' => $orders_id,
+                    ];
+                    DB::table('proyects')->insert($sumarizedDataProyect);
+                } else {
+                    $sumarizedDataProyect = [
+                        'name' => $quote->truck_name,
+                        'customers_id' => $lead->id,
+                        'interesting' => $quote->interesting,
+                        'fases_type_id' => $fase_id,
+                        'cms_users_id' => $assignto,
+                    ];
+                    DB::table('proyects')->where('orders_id', $orders_id)->update($sumarizedDataProyect);
+                }
+
                 DB::table('fases')->where('id', $fase->id)->update(['cms_users_id' => $assingto, 'email' => $email, 'name' => $name, 'datetime' => $date, 'notes' => $notes, 'updated_at' => Carbon::now(config('app.timezone'))]);
 
                 $phaseContent = DB::table('fases')->where('id', $fase->id)->first();
@@ -2902,6 +2966,29 @@
 
             if($request->get('send_email') == 'true') {
                 $this->getSendquote($orders_id);
+            }
+
+            //Creamos el nuevo proyecto a partir de la Quote creada recientemente
+            $proyect = DB::table('proyects')->where('orders_id', $orders_id)->first();
+            if(count($proyect) == 0) {
+                $sumarizedDataProyect = [
+                    'name' => $business_name,
+                    'customers_id' => $customer->id,
+                    'interesting' => $product_type_id,
+                    'fases_type_id' => 11,
+                    'datetime' => Carbon::now(config('app.timezone')),
+                    'cms_users_id' => $customer->id_usuario,
+                    'orders_id' => $orders_id,
+                ];
+                DB::table('proyects')->insert($sumarizedDataProyect);
+            } else {
+                $sumarizedDataProyect = [
+                    'name' => $business_name,
+                    'customers_id' => $customer->id,
+                    'interesting' => $product_type_id,
+                    'cms_users_id' => $customer->id_usuario,
+                ];
+                DB::table('proyects')->where('orders_id', $orders_id)->update($sumarizedDataProyect);
             }
 
             CRUDBooster::redirect(CRUDBooster::adminPath("orders"),trans("crudbooster.text_change_quotes"));

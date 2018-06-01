@@ -577,6 +577,10 @@ return [
     'text_email'  => 'Enter email here...',
     'text_forgot'  => 'Your password was recovered satisfactorily. From now on we show your data:',
 
+    'menu_Proyects'  => 'Proyects',
+    'client'  => 'Client',
+    'status'  => 'Status (Completed)',
+    'quote_id'  => 'Quote Id',
 
 
 ];
