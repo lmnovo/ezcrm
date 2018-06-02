@@ -2387,7 +2387,7 @@
                 'id' => $maxId,
                 'truck_date_created' => Carbon::now(config('app.timezone')),
                 'id_account' => $customer->id,
-                'from_where' => 0,
+                'from_where' => 2,
                 'interesting' => NULL,
                 'is_active' => 1
             ];
@@ -2852,7 +2852,7 @@
                         'item_name' => $appliances[1],
                         'price' => $appliances[4],
                         'cant' => $appliances[5],
-                        'from_where' => 0,
+                        'from_where' => 2,
                         'item_subcategory' => $appliances[2],
                         'descripcion_details' => $appliances[3],
                     ];
@@ -2889,7 +2889,9 @@
             $state = $request->get('state');
             $buildout_description = $request->get('buildout_description');
             $precio_builout = $request->get('buildout_price');
-            $sources  =  DB::table('sources')->where('id', 2)->first();
+
+            //$sources  =  DB::table('sources')->where('id', 2)->first();
+            $sources  =  $quote->from_where;
 
             if($state == 'TX') {
                 $taxitem = $request->get('taxitem');
@@ -2927,7 +2929,8 @@
                 'desc_buildout' => $buildout_description,
                 'precio_builout' => $precio_builout,
                 'tax_item' => $taxitem,
-                'from_where' => $sources->id,
+                //'from_where' => $sources->id,
+                'from_where' => $sources,
                 'id_account' => $customer->id,
                 'is_active' => 0,
                 'truck_date_created' => Carbon::now(config('app.timezone'))

@@ -39,7 +39,8 @@
             $this->col[] = ["label"=>trans('crudbooster.email'),"name"=>"email", "email"=>"email"];
             $this->col[] = ["label"=>trans('crudbooster.state'),"name"=>"state"];
             $this->col[] = ["label"=>trans('crudbooster.address'), "name"=>"address", "address"=>"true"];
-            $this->col[] = ["label"=>trans('crudbooster.assign_to'),"name"=>"id_usuario","urlUser"=>"users"];
+            //$this->col[] = ["label"=>trans('crudbooster.assign_to'),"name"=>"id_usuario","urlUser"=>"users"];
+            $this->col[] = ["label"=>trans('crudbooster.assign_to'),"name"=>"id_usuario","join"=>"cms_users,name"];
             $this->col[] = ["label"=>trans('crudbooster.date'),"name"=>"date_created"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 

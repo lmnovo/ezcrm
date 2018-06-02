@@ -581,6 +581,7 @@ return [
     'client'  => 'Client',
     'status'  => 'Status (Completed)',
     'quote_id'  => 'Quote Id',
+    'menu_Notifications'  => 'Notifications',
 
 
 ];

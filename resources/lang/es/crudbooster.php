@@ -591,6 +591,7 @@ return [
     'client'  => 'Cliente',
     'status'  => 'Estado Actual (Completada)',
     'quote_id'  => 'Id Cotización',
+    'menu_Notifications'  => 'Notificaciones',
 
 
 

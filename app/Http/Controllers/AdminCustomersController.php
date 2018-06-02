@@ -425,6 +425,20 @@
 	        //Your code here
 	    }
 
+
+        /*public function getIndex() {
+            //First, Add an auth
+            if(!CRUDBooster::isView()) CRUDBooster::redirect(CRUDBooster::adminPath(),trans('crudbooster.denied_access'));
+
+            //Create your own query
+            $data = [];
+            $data['page_title'] = 'Leads Data';
+            $data['result'] = DB::table('account')->where('is_client', 0)->paginate(100000);
+
+            //Create a view. Please use `cbView` method instead of view method from laravel.
+            $this->cbView('leads.index',$data);
+        }*/
+
 	    //Editar un Lead dado su "id"
         public function getEdit($id) {
             //Create an Auth
