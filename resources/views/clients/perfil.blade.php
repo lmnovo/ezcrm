@@ -276,7 +276,7 @@
                                                 {{--<a title="{{trans('crudbooster.print')}}" class='btn btn-danger btn-sm' href='#'><i class="fa fa-print"></i></a>--}}
                                                 <a title="{{trans('crudbooster.back_to_history')}}" class='btn btn-success btn-sm' href='{{CRUDBooster::adminPath("orders/change-quotes/$quote->id")}}'><i class="fa fa-arrow-left"></i></a>
                                                 <a title="{{trans('crudbooster.invoice')}}" class='btn btn-yahoo btn-sm' href='{{CRUDBooster::mainpath("create-invoice/$quote->id")}}'><i class="fa fa-hand-o-right"></i></a>
-                                                <a title="{{trans('crudbooster.current_phases')}}" class='btn btn-twitter btn-sm' href='{{CRUDBooster::adminpath("orders/detail/$quote->id")}}' target="_blank"><i class="fa fa-clock-o"></i></a>
+                                                <a title="{{trans('crudbooster.current_phases')}}" class='btn btn-twitter btn-sm' href='{{CRUDBooster::adminpath("orders/detail/$quote->id")}}'><i class="fa fa-clock-o"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach

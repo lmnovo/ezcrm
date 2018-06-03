@@ -579,9 +579,15 @@ return [
 
     'menu_Proyects'  => 'Proyects',
     'client'  => 'Client',
-    'status'  => 'Status (Completed)',
+    'status'  => 'Status',
+    'status_name'  => 'Step Name',
     'quote_id'  => 'Quote Id',
     'menu_Notifications'  => 'Notifications',
+    'closed_date'  => 'Start Date',
+    'Management Notifications'  => 'Notifications Management',
+    'english'  => 'English',
+    'spanish'  => 'Spanish',
+    'proyects_management'  => 'Proyects Management',
 
 
 ];

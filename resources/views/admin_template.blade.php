@@ -28,10 +28,6 @@
 
     <link rel='stylesheet' href='{{asset("vendor/crudbooster/assets/css/main.css").'?r='.time()}}'/>
 
-
-
-
-
     <!-- load css -->
     <style type="text/css">
         @if($style_css)

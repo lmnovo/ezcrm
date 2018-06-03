@@ -2048,7 +2048,7 @@
                     foreach ($phasesTemplate as $phase) {
                         //Establecemos la primera fase por defecto
                         if ($phase->fases_type_id == 1) {
-                            DB::table('fases')->insert([
+                            $faseId = DB::table('fases')->insertGetId([
                                 'customers_id'=>$lead_id->id_account,
                                 'email'=>$leads->email,
                                 'datetime'=>Carbon::now(config('app.timezone')),
@@ -2067,6 +2067,7 @@
                                     'customers_id' => $lead_id->id_account,
                                     'interesting' => $lead_id->interesting,
                                     'fases_type_id' => $phase->fases_type_id,
+                                    'fases_id' => $faseId,
                                     'datetime' => Carbon::now(config('app.timezone')),
                                     'cms_users_id' => $leads->id_usuario,
                                     'orders_id' => $id,
@@ -2077,6 +2078,9 @@
                                     'name' => $lead_id->truck_name,
                                     'customers_id' => $lead_id->id_account,
                                     'interesting' => $lead_id->interesting,
+                                    'fases_type_id' => $phase->fases_type_id,
+                                    'fases_id' => $faseId,
+                                    'datetime' => Carbon::now(config('app.timezone')),
                                     'cms_users_id' => $lead_id->id_usuario,
                                 ];
                                 DB::table('proyects')->where('orders_id', $id)->update($sumarizedDataProyect);
@@ -2726,6 +2730,7 @@
                         'customers_id' => $lead->id,
                         'interesting' => $quote->interesting,
                         'fases_type_id' => $fase_id,
+                        'fases_id' => $fase->id,
                         'datetime' => $date_limit,
                         'cms_users_id' => $assignto,
                         'orders_id' => $orders_id,
@@ -2737,6 +2742,8 @@
                         'customers_id' => $lead->id,
                         'interesting' => $quote->interesting,
                         'fases_type_id' => $fase_id,
+                        'fases_id' => $fase->id,
+                        'datetime' => $date_limit,
                         'cms_users_id' => $assignto,
                     ];
                     DB::table('proyects')->where('orders_id', $orders_id)->update($sumarizedDataProyect);
@@ -2978,7 +2985,8 @@
                     'name' => $business_name,
                     'customers_id' => $customer->id,
                     'interesting' => $product_type_id,
-                    'fases_type_id' => 11,
+                    'fases_type_id' => 0,
+                    'fases_id' => 0,
                     'datetime' => Carbon::now(config('app.timezone')),
                     'cms_users_id' => $customer->id_usuario,
                     'orders_id' => $orders_id,

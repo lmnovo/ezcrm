@@ -589,9 +589,15 @@ return [
 
     'menu_Proyects'  => 'Proyectos',
     'client'  => 'Cliente',
-    'status'  => 'Estado Actual (Completada)',
+    'status'  => 'Estado Actual',
+    'status_name'  => 'Nombre de Paso',
     'quote_id'  => 'Id Cotización',
     'menu_Notifications'  => 'Notificaciones',
+    'closed_date'  => 'Fecha de Inicio',
+    'Management Notifications'  => 'Gestionar Notificaciones',
+    'english'  => 'Inglés',
+    'spanish'  => 'Español',
+    'proyects_management'  => 'Gestionar Proyectos',
 
 
 

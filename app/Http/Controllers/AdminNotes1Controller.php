@@ -309,6 +309,12 @@
 	    | 
 	    */
 	    public function hook_before_delete($id) {
+	        $notas = DB::table('eazy_notes')->where('id', $id)->first();
+            $notas = DB::table('eazy_notes')->where('customers_id', $notas->customers_id)->where('deleted_at', null)->get();
+
+	        if(count($notas) == 1) {
+                DB::table('account')->where('id', $notas[0]->customers_id)->update(['notes'=>0]);
+            }
 	        //Your code here
 
 	    }

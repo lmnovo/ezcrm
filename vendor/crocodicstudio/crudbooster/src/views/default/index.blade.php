@@ -5,15 +5,31 @@
     <script type="text/javascript">
         $(document).ready(function() {
 
+            $('#modalNotification').on('click',function(){
+                $('#modal-default').modal('show');
+            });
+
             var td_user,campo_user,valor_user,id_user,id_user_user,id_account_user,isclient,url_action;
             var datos_user = '';
             $(document).on("click","td",function(e)
             {
-                id_account_user = $(this).siblings('*')[0].children[0].value;
-                //isclient = $(this).siblings('*')[1].children[0].children[0].src.length;
-                //isclient = $(this).siblings('*')[1];
-                //console.log(isclient);
+                //Conocer la posición de la oolumna y la fila seleccionada
+                var $d = $(this);
+                var id_row = $d.parent().children().html();
+                var col = $d.parent().children().index($d);
+                var row = $d.parent().parent().children().index($d.parent());
 
+
+                //Editando el campo "Status" en el listado de "Proyects"
+                var col_text = $('th:nth-child(5)').text();
+                var patternEnglish = /.*Step/;
+                var patternSpanish = /.*Paso/;
+                if( (col == 4 || col == 5) && (patternEnglish.test(col_text) || patternSpanish.test(col_text))) {
+                    e.preventDefault();
+                    window.location.href = 'http://ezcrm.us/crm/orders/detail/'+id_row;
+                }
+
+                id_account_user = $(this).siblings('*')[0].children[0].value;
                 url_action = "account/edituser";
 
                 e.preventDefault();
@@ -202,8 +218,12 @@
       </div>
     </div>
 
+
+
    @if(!is_null($post_index_html) && !empty($post_index_html))
        {!! $post_index_html !!}
    @endif
+
+
 
 @endsection

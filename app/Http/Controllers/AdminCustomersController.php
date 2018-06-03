@@ -46,8 +46,8 @@
             $this->col[] = ["label"=>trans('crudbooster.lastname'), "name"=>"lastname"];
             $this->col[] = ["label"=>trans('crudbooster.phone'),"name"=>"telephone", "urlPhone"=>"account"];
             $this->col[] = ["label"=>trans('crudbooster.state'),"name"=>"state"];
-            $this->col[] = ["label"=>trans('crudbooster.quotes'),"name"=>"quotes"];
             $this->col[] = ["label"=>trans('crudbooster.menu_Lead_Type'),"name"=>"estado","join"=>"customer_type,name"];
+            $this->col[] = ["label"=>trans('crudbooster.quotes'),"name"=>"quotes"];
             $this->col[] = ["label"=>trans('crudbooster.creation_date'),"name"=>"date_created"];
             $this->col[] = ["label"=>trans('crudbooster.email'),"name"=>"email", "email"=>"email"];
             $this->col[] = ["label"=>trans('crudbooster.assign_to'),"name"=>"id_usuario","join"=>"cms_users,name"];
@@ -326,10 +326,15 @@
             $user_id = (CRUDBooster::myId());
 
             if ($id != 1) {
-                $query->where(['is_client' => 0])->where('id_usuario', $user_id);
+                $query->where(['is_client' => 0])
+                    ->where('id_usuario', $user_id)
+                    ->where('estado', '!=', 2)
+                    ->where('estado', '!=', 3);
             }
             else {
-                $query->where(['is_client' => 0]);
+                $query->where(['is_client' => 0])
+                    ->where('estado', '!=', 2)
+                    ->where('estado', '!=', 3);
             }
 	    }
 
@@ -491,6 +496,7 @@
             ];
 
             DB::table('eazy_notes')->insertGetId($sumarizedData);
+            DB::table('account')->where('id', $request->get('customers_id'))->update(['notes'=>1]);
 
             return 1;
         }

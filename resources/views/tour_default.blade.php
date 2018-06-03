@@ -35,10 +35,12 @@
             <img style="margin: 10%;" width="90%" src="{{asset('assets/images/default.png')}}">
         </div>
 
-        <div class="col-md-8 col-sm-8">
-            <div id="crm_register_button" style="display: block;">
-                <h2 style="margin-top: 10%;margin-left: 10%;margin-right: 10%;margin-bottom: 5%; color: #204d74; text-align: center; font-family: 'Droid Arabic Naskh', serif;">{{trans("crudbooster.text_tour_promotion")}} </h2>
-                <input id="crm_gratis" style="padding: 15px; font-size: 18px; margin-left: 35%" type='button' class='btn btn-primary' value='{{ trans('crudbooster.crm_gratis') }}'/>
+        <div class="col-md-8 col-sm-8" style="text-align: center;">
+            <div id="crm_register_button" style="display: block; text-align: center;">
+                <h3 style="margin-top: 10%;margin-left: 10%;margin-right: 10%;margin-bottom: 5%; color: #204d74; text-align: center; font-family: 'Droid Arabic Naskh', serif;">{{trans("crudbooster.text_tour_promotion")}} </h3>
+                <div style="text-align: center">
+                    <input id="crm_gratis" style="padding: 15px; font-size: 18px;" type='button' class='btn btn-primary' value='{{ trans('crudbooster.crm_gratis') }}'/>
+                </div>
             </div>
 
             <div id="crm_register_form" style="display: none;">

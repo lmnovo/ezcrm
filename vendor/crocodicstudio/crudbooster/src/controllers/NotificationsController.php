@@ -60,8 +60,27 @@ class NotificationsController extends CBController {
 
     public function getRead($id) {
         DB::table('cms_notifications')->where('id',$id)->update(['is_read'=>1]);
-        $row = DB::table('cms_notifications')->where('id',$id)->first();
-        return redirect($row->url);        
+        /*$row = DB::table('cms_notifications')->where('id',$id)->first();
+        return redirect($row->url);*/
+    }
+
+    public function getUnread($id) {
+        DB::table('cms_notifications')->where('id',$id)->update(['is_read'=>0]);
+    }
+
+    public function getReadone(\Illuminate\Http\Request $request) {
+        DB::table('cms_notifications')->where('id',$request->get('id'))->update(['is_read'=>1]);
+        return 1;
+    }
+
+    public function getReadall() {
+        $notifications = DB::table('cms_notifications')->get();
+
+        foreach ($notifications as $notification) {
+            DB::table('cms_notifications')->where('id',$notification->id)->update(['is_read'=>1]);
+        }
+
+        return 1;
     }
     
 }

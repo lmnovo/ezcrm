@@ -97,6 +97,7 @@ use Carbon\Carbon;
     Route::get('crm/tour/first_steps', function () { return view('tour_first_steps'); });
     Route::get('crm/tour/menu_management', function () { return view('tour_menu_management'); });
     Route::get('crm/tour/configuration_privileges', function () { return view('tour_privileges_configuration'); });
+    Route::get('crm/tour/proyects_management', function () { return view('tour_proyects_management'); });
 
     Route::get('lang/{lang}', function ($lang) {
         session(['lang' => $lang]);
@@ -198,9 +199,8 @@ use Carbon\Carbon;
     });
 
     Route::get('/proyects', function () {
-        $quotes = DB::table('user_trucks')->get();
 
-        for ($i=1760; $i>1545; $i--) {
+        for ($i=1767; $i>1700; $i--) {
             $proyect = DB::table('proyects')->where('orders_id', $i)->first();
             $quote = DB::table('user_trucks')->where('id', $i)->where('is_active', 0)->first();
             $lead = DB::table('account')->where('id', $quote->id_account)->first();
@@ -214,7 +214,8 @@ use Carbon\Carbon;
                         'name' => $quote->truck_name,
                         'customers_id' => $lead->id,
                         'interesting' => $quote->interesting,
-                        'fases_type_id' => 11,
+                        'fases_type_id' => 0,
+                        'fases_id' => 0,
                         'datetime' => Carbon::now(config('app.timezone')),
                         'cms_users_id' => $lead->id_usuario,
                         'orders_id' => $i,
@@ -222,12 +223,14 @@ use Carbon\Carbon;
                     DB::table('proyects')->insert($sumarizedDataProyect);
                 }
                 else {
-                    $stepActual = 11;
+                    $stepActual = 0;
+                    $faseIdActual = 0;
                     $fechaActual = Carbon::now(config('app.timezone'));
                     $stepActualName = '';
                     foreach ($fases as $item) {
                         if(empty($item->name) || empty($item->notes) || empty($item->email) || empty($item->datetime) || empty($item->cms_users_id)) {
                             $stepActual = $item->fases_type_id;
+                            $faseIdActual = $item->id;
                             $stepActualName = $item->name;
                             break;
                         }
@@ -239,6 +242,7 @@ use Carbon\Carbon;
                         'customers_id' => $lead->id,
                         'interesting' => $quote->interesting,
                         'fases_type_id' => $stepActual,
+                        'fases_id' => $faseIdActual,
                         'cms_users_id' => $lead->id_usuario,
                         'datetime' => $fechaActual,
                         'orders_id' => $i,
@@ -275,6 +279,16 @@ use Carbon\Carbon;
                 }
             }
 
+    });
+
+    Route::get('/notes', function () {
+        for ($i=29; $i>1; $i--) {
+            $q = DB::table('eazy_notes')->where('id', $i)->first();
+
+            if ($q != null) {
+                DB::table('account')->where('id', $q->customers_id)->update(['notes'=>1]);
+            }
+        }
     });
 
     //Route::get('/admin/wizard/statistics', function () {

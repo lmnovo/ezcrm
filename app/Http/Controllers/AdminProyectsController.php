@@ -34,9 +34,10 @@
 			$this->col[] = ["label"=>trans('crudbooster.name'),"name"=>"name"];
 			$this->col[] = ["label"=>trans('crudbooster.client'),"name"=>"customers_id","join"=>"account,name"];
 			$this->col[] = ["label"=>trans('crudbooster.interesed'),"name"=>"interesting","join"=>"type,type"];
-			$this->col[] = ["label"=>trans('crudbooster.status'),"name"=>"fases_type_id","join"=>"fases_type,name"];
-			$this->col[] = ["label"=>trans('crudbooster.date'),"name"=>"datetime"];
-            $this->col[] = ["label"=>trans('crudbooster.assigned_to'),"name"=>"customers_id","urlUserQuote"=>"users"];
+			$this->col[] = ["label"=>trans('crudbooster.step'),"name"=>"fases_type_id","join"=>"fases_type,id"];
+			$this->col[] = ["label"=>trans('crudbooster.status_name'),"name"=>"fases_id","join"=>"fases,name"];
+			$this->col[] = ["label"=>trans('crudbooster.closed_date'),"name"=>"datetime"];
+            $this->col[] = ["label"=>trans('crudbooster.assigned_to'),"name"=>"cms_users_id","join"=>"cms_users,name"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
