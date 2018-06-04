@@ -11,8 +11,9 @@
         });
 
         var id_read;
-        $(document).on("click","#get_read",function(e) {
+        $('a#get_read').on('click',function(e){
             e.preventDefault();
+
             id_read = $(this).data('id');
             //Actualizo el valor de la notificación
             //$("span[id*='is_read_']").text('READ');
@@ -28,8 +29,9 @@
         $(document).on("click","#get_read_all",function(e) {
             e.preventDefault();
             //Actualizar como leída todas las notificaciones seleccionada
+            $('#modal-notifications').modal('hide');
+
             $.get("http://ezcrm.us/crm/notifications/readall", { id: id_read }, function(data){
-                $('#modal-notifications').modal('hide');
                 location.href="http://ezcrm.us/crm";
             });
         });
@@ -76,15 +78,9 @@
                             </td>
                             <td style="text-align: center;">
                                 <div class='button_action' style='text-align:center;'>
-                                        @if($item->is_read == 0)
-                                            <a id="get_read" data-id="{{ $item->id }}" class='btn btn-xs btn-primary btn-detail' title='Read'>
-                                                <i class='fa fa-thumbs-o-up'></i>
-                                            </a>
-                                        @else
-                                            <a class='btn btn-xs btn-primary btn-detail' title='Read' href='http://ezcrm.us/crm/notifications/unread/{{ $item->id }}'>
-                                                <i class='fa fa-thumbs-o-down'></i>
-                                            </a>
-                                        @endif
+                                    <a id="get_read" data-id="{{ $item->id }}" class='btn btn-xs btn-primary btn-detail' title='Read'>
+                                        <i class='fa fa-thumbs-o-up'></i>
+                                    </a>
 
                                     <a class='btn btn-xs btn-warning btn-delete' title='Delete' href='javascript:;' onclick='swal({
                                     title: "Are you sure ?",

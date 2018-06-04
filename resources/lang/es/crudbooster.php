@@ -99,7 +99,7 @@ return [
 
     'Privileges_Roles'    => 'Sección de Seguridad',
     'Module_Generator'    => 'Módulos',
-    'List_Privilege'      => 'Lista de Privilegios',
+    'List_Privilege'      => 'Roles',
     'List_Statistic'      => 'Generador de Reportes',
 
 	
@@ -158,7 +158,7 @@ return [
     'Privileges'    	  => 'Privilegios',
     'Add_New_Privilege'   => 'Añadir Nuevo Privilegio',
     'add_user'            => 'Añadir Usuario',
-    'List_users'          => 'Lista de Usuarios',
+    'List_users'          => 'Usuarios',
     'Menu_Management'     => 'Gestión de Menús',
     'Add_New_Setting'     => 'Añadir Nuevo Ajuste',
     'Add_New_Module'      => 'Añadir Nuevo Módulo',
@@ -598,6 +598,11 @@ return [
     'english'  => 'Inglés',
     'spanish'  => 'Español',
     'proyects_management'  => 'Gestionar Proyectos',
+    'showing'  => 'Mostrando de',
+    'To'  => 'a',
+    'of'  => 'de',
+    'results'  => 'resultados',
+
 
 
 

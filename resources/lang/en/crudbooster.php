@@ -145,9 +145,9 @@ return [
     'controller_route_404' => 'Controller / Route Not Found',
     'home'                 => 'Home',
 
-    'Privileges_Roles'    => 'Security Session',
+    'Privileges_Roles'    => 'System Login',
     'Module_Generator'    => 'Modules',
-    'List_Privilege'      => 'List Privileges',
+    'List_Privilege'      => 'Roles',
     'List_Statistic'      => 'Charts',
     'profit'      => 'Profits %',
     'save_and_submit'      => 'Save and Submit Email',
@@ -157,7 +157,7 @@ return [
     'Add_New_Privilege'   => 'Add New Privilege',
 
     'add_user'            => 'Add User',
-    'List_users'          => 'List Users',
+    'List_users'          => 'Users',
     'Menu_Management'     => 'Menu Management',
     'Add_New_Setting'     => 'Add New Setting',
     'Add_New_Module'      => 'Add New Module',
@@ -588,6 +588,10 @@ return [
     'english'  => 'English',
     'spanish'  => 'Spanish',
     'proyects_management'  => 'Proyects Management',
+    'showing'  => 'Showing',
+    'To'  => 'to',
+    'of'  => 'of',
+    'results'  => 'results',
 
 
 ];

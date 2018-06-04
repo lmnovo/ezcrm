@@ -39,6 +39,7 @@ class cronEmail extends Command
      */
     public function handle()
     {
+        //Gestiona el envío automático de emails a los usuarios que cumplen años de edad
         $happyBirthday_users = DB::table('cms_users')->get();
         $to = [];
 
@@ -54,11 +55,13 @@ class cronEmail extends Command
                     $to[] = $happy->email;
                 }
 
+
                 $edad = $actual_date->diffInYears($birthday);
             }
         }
 
         $template = DB::table('cms_email_templates')->where('slug', 'HappyBirthday')->first();
+
         $html = $template->content;
         $subject = $template->subject;
 
@@ -78,6 +81,6 @@ class cronEmail extends Command
             $message->subject($subject);
         });
 
-        //echo('Enviado Email de Felicitación a los que cumplen años hoy');
+        echo('Enviado Email de Felicitación a los que cumplen años hoy');
     }
 }

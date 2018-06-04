@@ -200,7 +200,7 @@ use Carbon\Carbon;
 
     Route::get('/proyects', function () {
 
-        for ($i=1767; $i>1700; $i--) {
+        for ($i=1870; $i>1700; $i--) {
             $proyect = DB::table('proyects')->where('orders_id', $i)->first();
             $quote = DB::table('user_trucks')->where('id', $i)->where('is_active', 0)->first();
             $lead = DB::table('account')->where('id', $quote->id_account)->first();

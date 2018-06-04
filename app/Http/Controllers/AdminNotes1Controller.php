@@ -309,14 +309,19 @@
 	    | 
 	    */
 	    public function hook_before_delete($id) {
-	        $notas = DB::table('eazy_notes')->where('id', $id)->first();
-            $notas = DB::table('eazy_notes')->where('customers_id', $notas->customers_id)->where('deleted_at', null)->get();
+	        $nota = DB::table('eazy_notes')->where('id', $id)->first();
+            $notas = DB::table('eazy_notes')->where('customers_id', $nota->customers_id)->where('deleted_at', null)->get();
 
-	        if(count($notas) == 1) {
-                DB::table('account')->where('id', $notas[0]->customers_id)->update(['notes'=>0]);
+	        if ($nota->is_client == 0) {
+                if(count($notas) == 1) {
+                    DB::table('account')->where('id', $notas[0]->customers_id)->update(['notes'=>0]);
+                }
             }
-	        //Your code here
-
+            else {;
+                if(count($notas) == 1) {
+                    DB::table('clients')->where('id', $notas[0]->customers_id)->update(['notes'=>0]);
+                }
+            }
 	    }
 
 	    /* 

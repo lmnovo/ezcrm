@@ -222,7 +222,14 @@
                                             <a href='{{CRUDBooster::adminpath("users/detail/$lead->id_usuario")}}'>{{ $assign_to->fullname }}</a>
                                             <span title="{{trans('crudbooster.edit')}}" class="edit_user"><i class="fa fa-edit"></i></span>
                                         </td>
-                                    <td></td><td></td>
+                                    <td><strong>{{trans('crudbooster.notes')}}</strong></td>
+                                    <td>
+                                        @if( $lead->notes == 1)
+                                                Yes
+                                            @else
+                                                No
+                                        @endif
+                                    </td>
                                 </tr>
 
                             </tbody>

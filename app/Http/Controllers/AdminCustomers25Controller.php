@@ -42,6 +42,8 @@
             //$this->col[] = ["label"=>trans('crudbooster.assign_to'),"name"=>"id_usuario","urlUser"=>"users"];
             $this->col[] = ["label"=>trans('crudbooster.assign_to'),"name"=>"id_usuario","join"=>"cms_users,name"];
             $this->col[] = ["label"=>trans('crudbooster.date'),"name"=>"date_created"];
+            //$this->col[] = ["label"=>trans('crudbooster.quotes'),"name"=>"quotes"];
+            $this->col[] = ["label"=>trans('crudbooster.notes'),"name"=>"notes"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
@@ -530,9 +532,11 @@
                 'created_at' => Carbon::now(config('app.timezone')),
                 'name' => $name,
                 'customers_id' => $customers_id,
+                'is_client' => 1,
             ];
 
             DB::table('eazy_notes')->insertGetId($sumarizedData);
+            DB::table('clients')->where('id', $request->get('customers_id'))->update(['notes'=>1]);
 
             return 1;
         }
@@ -780,7 +784,7 @@
             $data['lead'] = DB::table('clients')
                 ->select(DB::raw('states.name as abbreviation'), 'clients.name', 'clients.lastname',
                     'clients.telephone', 'clients.id', 'clients.email', 'clients.id', 'clients.address', 'clients.date_created',
-                    'clients.zip_code', 'clients.estado', 'clients.id_usuario', 'clients.city'
+                    'clients.zip_code', 'clients.estado', 'clients.id_usuario', 'clients.city', 'clients.quotes', 'clients.notes'
                 )
                 ->leftJoin('states', 'states.abbreviation', '=', 'clients.state')
                 ->where('clients.id',$id)->first();

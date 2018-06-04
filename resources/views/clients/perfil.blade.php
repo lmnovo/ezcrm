@@ -209,11 +209,26 @@
 
                                 <tr>
                                     <td>{{trans('crudbooster.zipcode')}}</td><td>{{ $lead->zip_code }}</td>
+                                    <td><strong>{{trans('crudbooster.quotes')}}</strong></td><td>{{ $lead->quotes }}</td>
+
+                                </tr>
+
+                                <tr>
                                     <td><strong>{{trans('crudbooster.assign_to')}}</strong></td>
                                     <td class='editable' data-campo='id_usuario'>
                                         <a href='{{CRUDBooster::adminpath("users/detail/$lead->id_usuario")}}'>{{ $assign_to->fullname }}</a>
                                         <span title="{{trans('crudbooster.edit')}}" class="edit_button"><i class="fa fa-edit"></i></span>
                                     </td>
+                                    <td><strong>{{trans('crudbooster.notes')}}</strong></td>
+                                    <td>
+                                        @if( $lead->notes == 1)
+                                            Yes
+                                        @else
+                                            No
+                                        @endif
+                                    </td>
+
+
                                 </tr>
 
                             </tbody>

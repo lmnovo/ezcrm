@@ -493,6 +493,7 @@
                 'created_at' => Carbon::now(config('app.timezone')),
                 'name' => $name,
                 'customers_id' => $customers_id,
+                'is_client' => 0,
             ];
 
             DB::table('eazy_notes')->insertGetId($sumarizedData);
@@ -578,7 +579,7 @@
             $data['lead'] = DB::table('account')
                 ->select('account.state', 'account.name', 'account.lastname',
                     'account.telephone', 'account.id', 'account.email', 'account.id', 'account.address', 'account.date_created',
-                    'account.zip_code', 'account.estado', 'account.id_usuario', 'account.city', 'account.quotes'
+                    'account.zip_code', 'account.estado', 'account.id_usuario', 'account.city', 'account.quotes', 'account.notes'
                 )
                 ->where('account.id',$id)->first();
 
