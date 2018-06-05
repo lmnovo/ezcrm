@@ -282,11 +282,20 @@ use Carbon\Carbon;
     });
 
     Route::get('/notes', function () {
+
         for ($i=29; $i>1; $i--) {
             $q = DB::table('eazy_notes')->where('id', $i)->first();
 
             if ($q != null) {
-                DB::table('account')->where('id', $q->customers_id)->update(['notes'=>1]);
+                DB::table('account')->where('id', $q->customers_id)->update(['notes'=>'Yes']);
+            }
+        }
+
+        for ($i=29; $i>1; $i--) {
+            $q = DB::table('eazy_notes')->where('id', $i)->first();
+
+            if ($q != null) {
+                DB::table('clients')->where('id', $q->customers_id)->update(['notes'=>'Yes']);
             }
         }
     });

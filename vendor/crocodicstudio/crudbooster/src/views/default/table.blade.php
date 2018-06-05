@@ -366,6 +366,9 @@
                                   @elseif( $col['label'] == 'State' or $col['label'] == 'Source')
                                     <option typeallow='all' {{ (CRUDBooster::getTypeFilter($col["field_with"]) == '=')?"selected":"" }} value='='>{{trans("crudbooster.filter_equal_to")}}</option>
 
+                                  @elseif( $col['label'] == 'Notes' or $col['label'] == 'Notas')
+                                    <option typeallow='all' {{ (CRUDBooster::getTypeFilter($col["field_with"]) == '=')?"selected":"" }} value='='>{{trans("crudbooster.filter_equal_to")}}</option>
+
                                   @elseif( $col['label'] == 'Estado' or $col['label'] == 'Source')
                                     <option typeallow='all' {{ (CRUDBooster::getTypeFilter($col["field_with"]) == '=')?"selected":"" }} value='='>{{trans("crudbooster.filter_equal_to")}}</option>
 
@@ -428,6 +431,14 @@
                                     <option></option>
                                     <option>Lead</option>
                                     <option>Client</option>
+                                  </select>
+                                  <br>
+
+                              @elseif( $col['label'] == 'Notes' || $col['label'] == 'Notas')
+                                  <select id="notes_filter" class="filter-value form-control" name='filter_column[{{$col["field_with"]}}][value]' value='{{ (!is_array(CRUDBooster::getValueFilter($col["field_with"])))?CRUDBooster::getValueFilter($col["field_with"]):"" }}'>
+                                      <option></option>
+                                      <option value="Yes">Yes</option>
+                                      <option value="No">No</option>
                                   </select>
                                   <br>
 

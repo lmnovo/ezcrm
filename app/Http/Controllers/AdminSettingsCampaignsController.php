@@ -436,7 +436,8 @@
             foreach ($leads_send_id as $lead_send) {
                 DB::table('campaigns_leads')->insert([
                     'campaigns_id' => $lastId,
-                    'leads_id' => $lead_send
+                    'leads_id' => $lead_send,
+                    'created_at' => Carbon::now(config('app.timezone')),
                 ]);
             }
 
