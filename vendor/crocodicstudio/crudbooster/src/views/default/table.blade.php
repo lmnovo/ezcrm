@@ -152,40 +152,44 @@
 
 
                     <tfoot>
-                    <tr>
-                      <?php if($button_bulk_action):?>
-                      <th>&nbsp;</th>
-                      <?php endif;?>
 
-                      <?php if($show_numbering):?>
-                      <th>&nbsp;</th>
-                      <?php endif;?>
-
-                      <?php
-                        foreach($columns as $col) {
-                            if($col['visible']===FALSE) continue;
-                            $colname = $col['label'];
-                            $width = ($col['width'])?:"auto";
-                            echo "<th width='$width'>$colname</th>";
-                        }
-                      ?>
-
-                      @if($button_table_action)
-                        @if(CRUDBooster::isUpdate() || CRUDBooster::isDelete() || CRUDBooster::isRead())
-                        <th> - </th>
-                        @endif
-                      @endif
-                    </tr>
                     </tfoot>
                   </table>
 
                   </form><!--END FORM TABLE-->
 
-            <p>{!! urldecode(str_replace("/?","?",$result->appends(Request::all())->render())) !!}</p>
+            <p style="padding-left: 2%; font-weight: bold">
+                <?php
+                    if ($result->currentPage() == 1) {
+                        if ($result->perPage() > $result->total()) {
+                            if ($result->total() == 0) {
+                                $startPage = 0;
+                                $endPage = $result->total();
+                            }
+                            else {
+                                $startPage = 1;
+                                $endPage = $result->total();
+                            }
+                        }
+                        else {
+                            $startPage = 1;
+                            $endPage = $result->perPage() * $result->currentPage();
+                        }
+                    }
+                    elseif ($result->currentPage() == $result->lastPage()) {
+                        $startPage = $result->perPage() * ($result->currentPage()-1) + 1;
+                        $endPage = $result->total();
+                    } else {
+                        $startPage = $result->perPage() * $result->currentPage() - ($result->perPage() - 1);
+                        $endPage = $result->perPage() * $result->currentPage();
+                    }
+                    echo ( trans('crudbooster.showing').' '.$startPage.' '.trans('crudbooster.To').' '.$endPage.' '.trans('crudbooster.of').' '.$result->total().' '.trans('crudbooster.results'));
+                ?>
+            </p>
 
-
-
-
+            <div style="text-align: right;">
+                <p>{!! urldecode(str_replace("/?","?",$result->appends(Request::all())->render())) !!}</p>
+            </div>
 
             @if($columns)
             <script>

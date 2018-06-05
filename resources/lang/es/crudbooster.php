@@ -178,6 +178,9 @@ return [
     'SUPERADMIN'          => 'SUPERADMIN',
 
     'Campaings_Sent'     => 'Campaña Enviada Correctamente!',
+    'new_template'       => 'Crear Plantilla',
+    'Campañas Automatizadas'       => 'Campañas Automatizadas',
+    'menu_Campañas Automatizadas'       => 'Campañas Automatizadas',
 
 
     'click_here' => 'Haz click aquí',

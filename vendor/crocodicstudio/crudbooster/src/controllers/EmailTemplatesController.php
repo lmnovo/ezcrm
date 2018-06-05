@@ -21,7 +21,7 @@
 	        $this->table              = "cms_email_templates";
 	        $this->primary_key        = "id";
 	        $this->title_field        = "name";
-	        $this->limit              = 20;
+	        $this->limit              = 10;
 	        $this->orderby      	  = ["id"=>"desc"];
 	        $this->global_privilege   = FALSE;
 	        
@@ -47,7 +47,7 @@
 			$this->form[] = array("label"=>trans('crudbooster.template_name'),"name"=>"name","type"=>"text","required"=>TRUE,"validation"=>"required|min:3");
 			//$this->form[] = array("label"=>"Slug","type"=>"text","name"=>"slug","required"=>true,'validation'=>'required|unique:cms_email_templates,slug');
 			$this->form[] = array("label"=>trans('crudbooster.subject'),"name"=>"subject","type"=>"text","required"=>TRUE,"validation"=>"required|min:3|max:255");
-            $this->form[] = ['label'=>'Date','name'=>'created_at','type'=>'date','validation'=>'required|date'];
+            //$this->form[] = ['label'=>'Date','name'=>'created_at','type'=>'date','validation'=>'required|date'];
 			$this->form[] = array("label"=>trans('crudbooster.content'),"name"=>"content","type"=>"wysiwyg","required"=>TRUE,"validation"=>"required");
 
 			//$this->form[] = array("label"=>"Description","name"=>"description","type"=>"text","required"=>TRUE,"validation"=>"required|min:3|max:255");

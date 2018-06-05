@@ -155,6 +155,9 @@ return [
 
 
     'Add_New_Privilege'   => 'Add New Privilege',
+    'new_template'       => 'New Template',
+    'Campañas Automatizadas'       => 'Campaigns Automations',
+    'menu_Campañas Automatizadas'       => 'Campaigns Automations',
 
     'add_user'            => 'Add User',
     'List_users'          => 'Users',
