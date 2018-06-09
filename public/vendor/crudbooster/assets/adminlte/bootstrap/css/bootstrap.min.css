@@ -2490,6 +2490,8 @@ table th[class*="col-"] {
   table.table_class_orders th:nth-child(6),
   table.table_class_orders td:nth-child(8),
   table.table_class_orders th:nth-child(8),
+  table.table_class_orders td:nth-child(10),
+  table.table_class_orders th:nth-child(10),
   table.table_class_orders td:nth-child(9),
   table.table_class_orders th:nth-child(9){display: none;}
 

@@ -25,7 +25,7 @@
 			$this->button_show = false;
 			$this->button_filter = true;
 			$this->button_import = false;
-			$this->button_export = false;
+			$this->button_export = true;
 			$this->table = "user_trucks";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
@@ -34,12 +34,14 @@
 			$this->col[] = ["label"=>trans('crudbooster.Business_Name'),"name"=>"truck_name"];
             $this->col[] = ["label"=>trans('crudbooster.interesed'),"name"=>"interesting","join"=>"type,type"];
             $this->col[] = ["label"=>trans('crudbooster.lead_name'),"name"=>"id_account", "urlLeadQuote"=>"account"];
+            //$this->col[] = ["label"=>trans('crudbooster.lead_name'),"name"=>"id_account","join"=>"account,name"];
             $this->col[] = ["label"=>trans('crudbooster.creation_date'),"name"=>"truck_date_created"];
             $this->col[] = ["label"=>trans('crudbooster.budget'),"name"=>"truck_budget","callback_php"=>'number_format($row->truck_budget)'];
             $this->col[] = ["label"=>trans('crudbooster.assigned_to'),"name"=>"id_account","urlUserQuote"=>"users"];
             $this->col[] = ["label"=>trans('crudbooster.source'),"name"=>"from_where","join"=>"sources,name"];
             $this->col[] = ["label"=>"Total","name"=>"truck_aprox_price"];
             $this->col[] = ["label"=>trans('crudbooster.profit'),"name"=>"profits"];
+            $this->col[] = ["label"=>trans('crudbooster.financing'),"name"=>"financing"];
 
 			# END COLUMNS DO NOT REMOVE THIS LINE
 

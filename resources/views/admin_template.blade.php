@@ -114,7 +114,7 @@
             @endif
 
             @if($button_import && CRUDBooster::getCurrentMethod() == 'getIndex')
-            <a href="{{ CRUDBooster::mainpath('import-data') }}" id='btn_import_data' data-url-parameter='{{$build_query}}' title='Import Data' class="btn btn-sm btn-primary btn-import-data">
+                  <a href="{{ CRUDBooster::mainpath('import-data') }}" id='btn_import_data' data-url-parameter='{{$build_query}}' title='Import Data' class="btn btn-sm btn-primary btn-import-data">
               <i class="fa fa-download"></i> {{trans("crudbooster.button_import")}}
             </a>
             @endif

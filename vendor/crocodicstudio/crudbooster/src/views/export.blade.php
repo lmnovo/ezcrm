@@ -4,7 +4,9 @@
 <table border='1' width='100%' cellpadding='3' cellspacing="0" style='border-collapse: collapse;font-size:12px'>
   <thead>
   <tr>
-    <?php    
+    <?php
+      $columns[count($columns)]['name'] = "Email";
+
     foreach($columns as $col) {
 
       if(Request::get('columns')) {
@@ -13,7 +15,15 @@
         }
       }
       $colname = $col['label'];
-      echo "<th style='background:#eeeeee'>$colname</th>";
+      if ($colname == 'Nombre del Prospecto') {
+          echo "<th style='background:#eeeeee'>Información del Prospecto</th>";
+      }
+      elseif ($colname == 'Lead Name') {
+          echo "<th style='background:#eeeeee'>Lead Information</th>";
+      }
+      else {
+          echo "<th style='background:#eeeeee'>$colname</th>";
+      }
     }
     ?>
   </tr>
@@ -34,9 +44,40 @@
             continue;
         }
       }
-      
-    $value = @$row->{$col['field']};
-    $title = @$row->{$title_field};
+
+      if ($col['field'] == 'id_account' && ($col['label'] == 'Lead Name' || $col['label'] == 'Nombre del Prospecto') ) {
+          $lead = DB::table('account')->where('id', @$row->{$col['field']})->first();
+
+          if(count($lead) == 0) {
+              $value = '-';
+          }
+          elseif ($col['label'] = 'Lead Name') {
+              $value = 'Name: '.$lead->name.' '.$lead->lastname.'  <br> Email: ('.$lead->email.')'.'  <br> Telephone: ('.$lead->telephone.')';
+          }
+          else {
+              $value = 'Nombre: '.$lead->name.' '.$lead->lastname.'  <br> Correo: ('.$lead->email.')'.'  <br> Teléfono: ('.$lead->telephone.')';
+          }
+
+      }
+      elseif ($col['field'] == 'id_account' && ($col['label'] == 'Assigned To' || $col['label'] == 'Responsable') ) {
+          $account_id = DB::table('account')->where('id', @$row->{$col['field']})->first();
+          $lead = DB::table('cms_users')->where('id', $account_id->id_usuario)->first();
+
+          if(count($lead) == 0) {
+              $value = '-';
+          }
+          elseif ($col['label'] = 'Assigned To') {
+              $value = 'Name: '.$lead->name.' '.$lead->lastname.'  <br> Email: ('.$lead->email.')'.'  <br> Telephone: ('.$lead->phone.')';
+          }
+          else {
+              $value = 'Nombre: '.$lead->name.' '.$lead->lastname.'  <br> Correo: ('.$lead->email.')'.'  <br> Teléfono: ('.$lead->phone.')';
+          }
+
+      }
+      else {
+          $value = @$row->{$col['field']};
+      }
+      $title = @$row->{$title_field};
 
     if(@$col['image']) {
       if($value=='') {
