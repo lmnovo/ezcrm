@@ -339,7 +339,7 @@
                                     <option typeallow='all' {{ (CRUDBooster::getTypeFilter($col["field_with"]) == '=')?"selected":"" }} value='='>{{trans("crudbooster.filter_equal_to")}}</option>
 
                                   @elseif( $col['label'] == 'Name' or $col['label'] == 'Last Name' or $col['label'] == 'Business Name' or $col['label'] == 'Address' or $col['label'] == 'City' or $col['label'] == 'Template' or $col['label'] == 'Phase Type')
-                                    <option {{ (CRUDBooster::getTypeFilter($col["field_with"]) == 'like')?"selected":"" }} value='like'>{{trans("crudbooster.filter_like")}}</option>
+                                    <option {{ (CRUDBooster::getTypeFilter($col["field_with"]) == 'like')?"selected":"" }} value='like'>{{trans("crudbooster.filter_equal_to")}}</option>
 
                                   @elseif( $col['label'] == 'Nombre' or $col['label'] == 'Apellido' or $col['label'] == 'Business Name' or $col['label'] == 'Address' or $col['label'] == 'City' or $col['label'] == 'Template' or $col['label'] == 'Phase Type')
                                     <option {{ (CRUDBooster::getTypeFilter($col["field_with"]) == 'like')?"selected":"" }} value='like'>{{trans("crudbooster.filter_like")}}</option>

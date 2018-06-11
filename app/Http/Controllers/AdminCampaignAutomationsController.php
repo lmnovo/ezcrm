@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
-	use Session;
+	use Carbon\Carbon;
+    use Session;
 	use Request;
 	use DB;
 	use CRUDBooster;
@@ -30,16 +31,23 @@
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Name","name"=>"name"];
+            $this->col[] = ["label"=>"Type","name"=>"type"];
+            $this->col[] = ["label"=>"Name","name"=>"name"];
+            //$this->col[] = ["label"=>"Total Sent","name"=>"total_sent"];
+            $this->col[] = ["label"=>"Template","name"=>"cms_email_templates_id", "join"=>"cms_email_templates,name"];
+            $this->col[] = ["label"=>"Date to Send","name"=>"date_to_send"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Name','name'=>'name','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter'];
+            $this->form[] = ['label'=>'To','name'=>'to','type'=>'text','validation'=>'required','width'=>'col-sm-10'];
+            $this->form[] = ['label'=>'Name','name'=>'name','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter'];
 			$this->form[] = ['label'=>'Subject','name'=>'subject','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-            $this->form[] = ['label'=>'Date','name'=>'created_at','type'=>'date','validation'=>'required|date'];
-            $this->form[] = array("label"=>trans('crudbooster.content'),"name"=>"content","type"=>"wysiwyg","required"=>TRUE,"validation"=>"required");
-			# END FORM DO NOT REMOVE THIS LINE
+            $this->form[] = ['label'=>'Date to Send','name'=>'date_to_send','type'=>'date','validation'=>'required|date','width'=>'col-sm-10'];
+            $this->form[] = ['label'=>trans('crudbooster.content'),'name'=>'content','type'=>'wysiwyg','width'=>'col-sm-10'];
+            $this->form[] = ['label'=>trans('crudbooster.templates'),'name'=>'cms_email_templates_id','type'=>'select2','width'=>'col-sm-9','datatable'=>'cms_email_templates,name'];
+
+            # END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
@@ -150,7 +158,35 @@
 	        | $this->script_js = "function() { ... }";
 	        |
 	        */
-	        $this->script_js = NULL;
+            $this->script_js = "
+	        	$(function() {     
+	        	    $('#to').attr('readonly','true');	        	    
+	        	    $('input[name=submit]').val('Send');
+	        	    //$('section[class=content-header] h1').text('Campaigns');	    
+	        	    //$('div[class=panel-heading] strong').text('Campaigns');
+	        	    
+	        	    var template = '<div style=\"margin-right: 15px; margin-left: 15px\"><a class=\"btn btn-warning pull-right\" title=\"New Template\" href=\"http://ezcrm.us/crm/email_templates/add\"><i class=\"fa fa-envelope-o\"></i></a></div>';
+	        	    	 
+	        	    $('#form-group-cms_email_templates_id').append(template);	 
+	        	    	        	    
+	        	    $('#cms_email_templates_id').on('change',function(){
+                          var id = $('#cms_email_templates_id').val();
+                          $('.note-editing-area:nth-child(3) p').html('');
+                          $.ajax
+                            ({
+                                url: '../templates/'+id,
+                                data: '',
+                                type: 'get',
+                                success: function(data)
+                                {
+                                    $('#subject').val(data[0].subject);
+                                    $('.note-editing-area:nth-child(3) p').append(data[0].content);
+                                }
+                            });
+                     });
+	        	                              
+             })
+	        ";
 
 
             /*
@@ -283,8 +319,81 @@
 	    | @id       = current id 
 	    | 
 	    */
-	    public function hook_before_edit(&$postdata,$id) {        
-	        //Your code here
+	    public function hook_before_edit(&$postdata,$id) {
+            $toArray = [];
+            $toTemp = explode("; ", $postdata['to']);
+
+            $isMail = strpos($toTemp[0], "@");
+
+            if ($isMail == false) {
+                //Obtengo el/los Leads seleccionado
+                $leadsSelected = DB::table('account')->whereIn('telephone', $toTemp)->get();
+
+            } else {
+                //Obtengo el/los Leads seleccionado
+                $leadsSelected = DB::table('account')->whereIn('email', $toTemp)->get();
+            }
+
+            DB::table('campaign_automations')->where('id', $id)->update(['is_active' => 1]);
+            $campaignsDelete = DB::table('campaign_automations')->where('is_active', 0)->delete();
+
+            //Comprobar si la campaña es de envío de SMS o Email
+            $campaignsType = DB::table('campaign_automations')->where('id', $id)->first();
+
+            if($postdata['cms_email_templates_id'] != 0) {
+                $template = CRUDBooster::first('cms_email_templates',['id'=>$postdata['cms_email_templates_id']]);
+                $html = $template->content;
+                $subject = $postdata['subject'];
+            } else {
+                $html = $postdata['content'];
+                $subject = $postdata['subject'];
+            }
+
+            if ($isMail == false) {
+                //Obtengo arreglo de phones asociados a los Leads seleccionados para enviar campaña
+                foreach ($leadsSelected as $item) {
+                    $to[] = $item->telephone;
+                    $leads_send_id[] = $item->id;
+                }
+            } else {
+                //Obtengo arreglo de emails asociados a los Leads seleccionados para enviar campaña
+                foreach ($leadsSelected as $item) {
+                    //validamos antes de incluir los emails
+                    if ($this->validarEmail($item->email)) {
+                        $to[] = $item->email;
+                        $leads_send_id[] = $item->id;
+                    }
+                }
+            }
+
+            $template_id = null;
+            $template_name = $subject;
+            if ($template != null) {
+                $template_id = $template->id;
+                $template_name = $template->name;
+            }
+
+            //Guardar registro de campañas enviadas
+            $sumarizedData = [
+                'name' => $template_name,
+                'content' => $html,
+                'subject' => $subject,
+                'date_to_send' => $postdata['date_to_send'],
+                'cms_email_templates_id' => $template_id,
+            ];
+
+            DB::table('campaign_automations')->where('id', $id)->update($sumarizedData);
+
+            //Insertar relación de Leads y Campañas enviadas
+            foreach ($leads_send_id as $lead_send) {
+                DB::table('campaigns_leads')->insert([
+                    'campaigns_id' => $id,
+                    'leads_id' => $lead_send,
+                    'created_at' => Carbon::now(config('app.timezone')),
+                ]);
+            }
+
+            CRUDBooster::redirect(CRUDBooster::adminPath('campaign_automations'),trans("crudbooster.text_send_campaign"));
 
 	    }
 
@@ -323,6 +432,25 @@
 	        //Your code here
 
 	    }
+
+        //Función para la validación de los correos electrónicos (emails)
+        public function validarEmail($email) {
+            if (preg_match(
+                '/[\w-\.]{1,}@([\w-]{2,}\.)*([\w-]{1,}\.)[\w-]{2,4}/',
+                $email)) {
+                return true;
+            }
+            return false;
+        }
+
+
+        public function getTemplates($id) {
+            $data = DB::table('cms_email_templates')
+                ->where('id', $id)
+                ->get();
+
+            return $data;
+        }
 
 
 

@@ -61,21 +61,21 @@
                                 <td>{{ trans('crudbooster.Type_Campaign') }}</td><td>{{ $row->type }}</td>
                             </tr>
                             <tr>
-                                <td>{{ trans('crudbooster.Total_Sent') }}</td><td>{{ $row->total_send }}</td>
+                                <td>{{ trans('crudbooster.Total_Sent') }}</td><td>{{ $total_sent }}</td>
                             </tr>
 
 
-                        @foreach ($senders as $sender)
-                            <tr>
-                                @if ($loop->first)
+                            @foreach ($senders as $sender)
+                                <tr>
+                                    @if ($loop->first)
                                         <td>{{ trans('crudbooster.Sent_To') }}</td><td>{{ $sender }}</td>
                                     @else
                                         <td></td><td>{{ $sender }}</td>
-                                @endif
-                            </tr>
+                                    @endif
+                                </tr>
 
 
-                        @endforeach
+                            @endforeach
 
 
                             </tbody>

@@ -33,8 +33,11 @@
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>trans('crudbooster.name'),"name"=>"subject"];
-			$this->col[] = ["label"=>trans('crudbooster.email_templates'),"name"=>"cms_email_templates_id","join"=>"cms_email_templates,name"];
+            $this->col[] = ["label"=>"Type","name"=>"type"];
+            $this->col[] = ["label"=>"Name","name"=>"name"];
+            $this->col[] = ["label"=>"Total Sent","name"=>"total_sent"];
+            $this->col[] = ["label"=>"Template","name"=>"cms_email_templates_id", "join"=>"cms_email_templates,name"];
+            $this->col[] = ["label"=>"Creation Date","name"=>"created_at"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
@@ -156,8 +159,8 @@
 	        	$(function() {     
 	        	    $('#to').attr('readonly','true');	        	    
 	        	    $('input[name=submit]').val('Send');
-	        	    $('section[class=content-header] h1').text('Send Campaign');	    
-	        	    $('div[class=panel-heading] strong').text('Send Campaign');
+	        	    //$('section[class=content-header] h1').text('Campaigns');	    
+	        	    //$('div[class=panel-heading] strong').text('Campaigns');
 	        	    
 	        	    var template = '<div style=\"margin-right: 15px; margin-left: 15px\"><a class=\"btn btn-warning pull-right\" title=\"New Template\" href=\"http://ezcrm.us/crm/email_templates/add\"><i class=\"fa fa-envelope-o\"></i></a></div>';
 	        	    var schedule_email = '<div style=\"margin-right: 15px; \"><a style=\"margin-left: 5px; \" class=\"btn btn-primary pull-right\" title=\"Schedule Email\" href=\"http://ezcrm.us/crm/campaign_automations/add\"><i class=\"fa fa-calendar-plus-o\"></i></a></div>';
@@ -344,7 +347,7 @@
             if($postdata['cms_email_templates_id'] != 0) {
                 $template = CRUDBooster::first('cms_email_templates',['id'=>$postdata['cms_email_templates_id']]);
                 $html = $template->content;
-                $subject = $template->subject;
+                $subject = $postdata['subject'];
             } else {
                 $html = $postdata['content'];
                 $subject = $postdata['subject'];
@@ -421,31 +424,29 @@
             }
 
             //Guardar registro de campañas enviadas
-            $lastId = DB::table('campaigns')->insertGetId([
+            $sumarizedData = [
                 'name' => $template_name,
                 'content' => $html,
-                'total_send' => count($leads_send_id),
-                'cms_email_templates_id' => $template_id,
-                'id_settings_campaigns' => $id,
+                'total_sent' => count($leads_send_id),
+                'subject' => $subject,
                 'created_at' => Carbon::now(config('app.timezone')),
-                'updated_at' => Carbon::now(config('app.timezone')),
-                'id_cms_users' => CRUDBooster::myId()
-            ]);
+                'cms_email_templates_id' => $template_id,
+            ];
+
+            DB::table('settings_campaigns')->where('id', $id)->update($sumarizedData);
 
             //Insertar relación de Leads y Campañas enviadas
             foreach ($leads_send_id as $lead_send) {
                 DB::table('campaigns_leads')->insert([
-                    'campaigns_id' => $lastId,
+                    'campaigns_id' => $id,
                     'leads_id' => $lead_send,
                     'created_at' => Carbon::now(config('app.timezone')),
                 ]);
             }
 
-            $lastId = DB::table('campaigns')->max('id');
-
             //Notificación de envío de campaña de tipo campaña
             $config['content'] = trans("crudbooster.text_notification_success_1")."'".$template_name."' ".trans("crudbooster.text_notification_success_2");
-            $config['to'] = CRUDBooster::adminPath('campaigns/detail/'.$lastId);
+            $config['to'] = CRUDBooster::adminPath('campaigns/detail/'.$id);
 
 
             if (CRUDBooster::myId() != 1) {
@@ -457,7 +458,7 @@
 
             CRUDBooster::sendNotification($config);
 
-            CRUDBooster::redirect(CRUDBooster::adminPath('campaigns'),trans("crudbooster.text_send_campaign"));
+            CRUDBooster::redirect(CRUDBooster::adminPath('settings_campaigns'),trans("crudbooster.text_send_campaign"));
 	    }
 
 	    /* 
@@ -526,6 +527,32 @@
                 return true;
             }
             return false;
+        }
+
+        public function getDetail($id) {
+            //Create an Auth
+            if(!CRUDBooster::isRead() && $this->global_privilege==FALSE || $this->button_edit==FALSE) {
+                CRUDBooster::redirect(CRUDBooster::adminPath(),trans("crudbooster.denied_access"));
+            }
+
+            $data = [];
+            $data['page_title'] = trans("crudbooster.campaigns_details");
+            $data['row'] = DB::table('settings_campaigns')->where('id',$id)->first();
+
+            $senders = $data['row']->to;
+            $senders = explode(";", $senders);
+            $data['senders'] = $senders;
+
+            $data['account'] = DB::table('campaigns_leads')
+                ->select(['account.name','account.lastname', 'account.email'])
+                ->join('account', 'account.id', '=', 'campaigns_leads.leads_id')
+                ->where('campaigns_leads.campaigns_id', $id)
+                ->get();
+
+            $data['total_sent'] = count($data['account']);
+
+            //Please use cbView method instead view method from laravel
+            $this->cbView('campaigns.show',$data);
         }
 
 

@@ -131,6 +131,7 @@ class AdminCustomersController extends \crocodicstudio\crudbooster\controllers\C
         $this->button_selected = array();
         $this->button_selected[] = ['label'=>'Send Email','icon'=>'fa fa-envelope-o','name'=>'send_email'];
         $this->button_selected[] = ['label'=>'Send SMS','icon'=>'fa fa-phone','name'=>'send_sms'];
+        $this->button_selected[] = ['label'=>'Send Schedule Email','icon'=>'fa fa-calendar-plus-o','name'=>'send_email_schedule'];
 
 
         /*
@@ -307,8 +308,12 @@ class AdminCustomersController extends \crocodicstudio\crudbooster\controllers\C
         if ($button_name == 'send_email')
         {
             $this->getSendEmail($id_selected);
-        } else {
+        }
+        elseif($button_name == 'send_sms') {
             $this->getSendSms($id_selected);
+        }
+        elseif($button_name == 'send_email_schedule') {
+            $this->getSendEmailSchedule($id_selected);
         }
     }
 
@@ -612,7 +617,6 @@ class AdminCustomersController extends \crocodicstudio\crudbooster\controllers\C
 
     //Enviar SMS dado el id de Lead
     public function getSendSms($id) {
-
         $to = null;
 
         if(gettype($id) == 'array') {
@@ -709,6 +713,59 @@ class AdminCustomersController extends \crocodicstudio\crudbooster\controllers\C
 
         //Open Edit Campaign
         CRUDBooster::redirect(CRUDBooster::adminPath('settings_campaigns/edit/'.$lastId),trans("crudbooster.text_open_edit_campaign"));
+
+    }
+
+
+    //Enviar Schedule Email dado el id de Lead
+    public function getSendEmailSchedule($id) {
+        $emails = [];
+
+        if(gettype($id) == 'array') {
+            $customers = DB::table('account')->whereIn('id', $id)->get();
+
+            foreach ($customers as $item) {
+                if (!empty($item->email)) {
+                    $emails[] = $item->email;
+                }
+            }
+
+        } else {
+            $customers = DB::table('account')->where('id', $id)->first();
+
+            if (!empty($customers->email)) {
+                $emails[] = $customers->email;
+            }
+        }
+
+        $emailArray = '';
+        $cant = count($emails);
+        for ($i = 0; $i < count($emails); $i++) {
+            if ($i == 0) {
+                $emailArray	= $emails[$i];
+            } else {
+                $emailArray	= $emailArray.'; '.$emails[$i];
+            }
+        }
+
+        $sumarizedData = [
+            'created_at' => Carbon::now(config('app.timezone')),
+            'to' => $emailArray,
+            'subject' => '',
+            'content' => '',
+            'type' => 'Email',
+            'cms_email_templates_id' => null,
+            'cms_users_id' => CRUDBooster::myId()
+        ];
+
+        $maxId = DB::table('campaign_automations')->select(\Illuminate\Support\Facades\DB::raw('MAX(id) as id'))->first();
+        $maxId = $maxId->id + 1;
+        $lastId = DB::table('campaign_automations')->insertGetId($sumarizedData);
+
+        DB::table('account')->where('id',$lastId)->update(['id'=> $maxId ]);
+
+        //Open Edit Campaign
+        CRUDBooster::redirect(CRUDBooster::adminPath('campaign_automations/edit/'.$lastId),trans("crudbooster.text_open_edit_campaign"));
 
     }
 
