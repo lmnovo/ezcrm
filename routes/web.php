@@ -13,6 +13,9 @@ use Carbon\Carbon;
 |
 */
 
+    Route::get('ajaxImageUpload', ['uses'=>'AjaxImageUploadController@ajaxImageUpload']);
+    Route::post('ajaxImageUpload', ['as'=>'ajaxImageUpload','uses'=>'ImageUploadController@imageUploadPost']);
+
     Route::get('/', function () {
         return view('welcome');
     });
@@ -133,7 +136,7 @@ use Carbon\Carbon;
                     // Add color and link on event
                     [
                         'color' => $color->description,
-                        'url' => 'http://ezcrm.us/crm/eazy_tasks/detail/'.$value->id,
+                        'url' => 'http://127.0.0.1:8000/crm/eazy_tasks/detail/'.$value->id,
                     ]
                 );
             }
@@ -264,20 +267,22 @@ use Carbon\Carbon;
             );*/
 
             $result = \Illuminate\Support\Facades\DB::select( DB::raw("
-                        SELECT count(id) as cant, id_account 
+                        SELECT count(id) as cant, id_account
                         FROM user_trucks 
+                        WHERE is_active = 0
                         GROUP BY id_account                                            
                         ")
             );
 
             \Illuminate\Support\Facades\DB::commit();
 
-            for ($i=900; $i>800; $i--) {
-                $q = DB::table('account')->where('id', $result[$i]->id_account)->first();
-                if ($q != null) {
-                    DB::table('account')->where('id', $result[$i]->id_account)->update(['quotes' => $result[$i]->cant]);
-                }
+        for ($i=count($result); $i>count($result)-51; $i--) {
+            $q = DB::table('account')->where('id', $result[$i]->id_account)->first();
+
+            if ($q != null) {
+                DB::table('account')->where('id', $result[$i]->id_account)->update(['quotes' => $result[$i]->cant]);
             }
+        }
 
     });
 
@@ -479,7 +484,7 @@ use Carbon\Carbon;
         }
 
         $data['quote_type_data'] = explode(',',$data['quote_type_data']);
-        $data['quote_type_data'] = $data['quote_type_data'][1].','.$data['quote_type_data'][2].','.$data['quote_type_data'][3].',';
+        $data['quote_type_data'] = $data['quote_type_data'][2].','.$data['quote_type_data'][3].','.$data['quote_type_data'][4].',';
 
         $data['quotes_2017'] = '';
         $data['quotes_2018'] = '';

@@ -201,7 +201,7 @@ class AdminCustomersController extends \crocodicstudio\crudbooster\controllers\C
                             type:  'get',
                             dataType: 'json',
                             success : function(data) {
-                                window.location.href = 'http://ezcrm.us/crm/account/detail/'+customers_id;                                                        
+                                window.location.href = 'http://127.0.0.1:8000/crm/account/detail/'+customers_id;                                                        
                             }
                          });  
                     });
@@ -221,7 +221,7 @@ class AdminCustomersController extends \crocodicstudio\crudbooster\controllers\C
                             type:  'get',
                             dataType: 'json',
                             success : function(data) {
-                               window.location.href = 'http://ezcrm.us/crm/account/detail/'+lead_id; 
+                               window.location.href = 'http://127.0.0.1:8000/crm/account/detail/'+lead_id; 
                                $('#taskLeadModal').modal('hide');
                             }
                          }); 
@@ -341,6 +341,27 @@ class AdminCustomersController extends \crocodicstudio\crudbooster\controllers\C
                 ->where('estado', '!=', 2)
                 ->where('estado', '!=', 3);
         }
+
+        \Illuminate\Support\Facades\DB::beginTransaction();
+        $result = \Illuminate\Support\Facades\DB::select( DB::raw("
+                        SELECT count(id) as cant, id_account
+                        FROM user_trucks 
+                        WHERE is_active = 0
+                        GROUP BY id_account
+                        ORDER BY id_account DESC
+                        LIMIT 10                        
+                        ")
+        );
+        \Illuminate\Support\Facades\DB::commit();
+
+        for ($i=count($result)-1; $i>count($result)-11; $i--) {
+            $q = DB::table('account')->where('id', $result[$i]->id_account)->first();
+
+            if ($q != null) {
+                DB::table('account')->where('id', $result[$i]->id_account)->update(['quotes' => $result[$i]->cant]);
+            }
+        }
+
     }
 
     /*

@@ -194,7 +194,7 @@ class AdminController extends CBController {
         }
 
         $data['quote_type_data'] = explode(',',$data['quote_type_data']);
-        $data['quote_type_data'] = $data['quote_type_data'][1].','.$data['quote_type_data'][2].','.$data['quote_type_data'][3].',';
+        $data['quote_type_data'] = $data['quote_type_data'][2].','.$data['quote_type_data'][3].','.$data['quote_type_data'][4].',';
 
         $data['quotes_2017'] = '';
         $data['quotes_2018'] = '';

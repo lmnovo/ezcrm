@@ -124,7 +124,8 @@ return [
     'profit'      => 'Ganancias %',
     'save_and_submit'      => 'Guardar y Enviar Correo',
     'email_send_text'      => 'El correo con la información de la cotización, ha sido enviada correctamente',
-	
+    'email_send_text_error'      => 'Ha fallado al enviar los datos de la cotización',
+
 
 	'export_dialog_title'            =>"Exportar Datos",
 	'export_dialog_filename'         =>'Nombre Fichero',
@@ -572,6 +573,8 @@ return [
     'task_users_name'  => 'Etapa Finalizada',
 
     'appliance_creation'  => 'Creación de Appliances',
+    'retail_price'  => 'Precio Costo',
+    'quote_data'  => 'Datos de la Cotización',
     'add'  => 'Agregar',
     'Appliances Inside'  => 'Appliances Inside',
     'task_creation'  => 'Agregar Tarea',
@@ -605,8 +608,20 @@ return [
     'To'  => 'a',
     'of'  => 'de',
     'results'  => 'resultados',
+    'new'  => 'Nuevo',
+    'cost'  => 'Costo',
+    'cost_price'  => 'Precio de Costo',
+    'appliance_creation_new'  => 'Agregar Nuevo Producto',
+    'weight'  => 'Peso',
+    'category_creation_new'  => 'Agregar Nueva Categoría',
+    'subcategory_creation_new'  => 'Agregar Nueva Subcategoría',
+    'subcategory'  => 'Subcategoría',
 
 
+    'messageLog_1'  => 'La Cotización: "',
+    'messageLog_2'  => '" fue enviada a los correos: ',
+    'messageLog_2_error'  => '" no fue enviada a los correos fallidos: ',
+    'failed_emails'  => 'Correos Fallidos: ',
 
 
 ];

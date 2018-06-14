@@ -46,7 +46,7 @@
             <div id="crm_register_form" style="display: none;">
 
 
-                <form class="form-horizontal" method="get" id="form" enctype="multipart/form-data" action="http://ezcrm.us/register_client">
+                <form class="form-horizontal" method="get" id="form" enctype="multipart/form-data" action="http://127.0.0.1:8000/register_client">
 
                     <h2 style="text-align: center;"><img width="20%" src="{{asset('vendor/crudbooster/assets/logo_eazycrm.png')}}"></h2>
 

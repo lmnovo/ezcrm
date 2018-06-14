@@ -152,6 +152,7 @@ return [
     'profit'      => 'Profits %',
     'save_and_submit'      => 'Save and Submit Email',
     'email_send_text'      => 'The email with the data of the quote, has been sent correctly',
+    'email_send_text_error'      => 'Failed to save the data!',
 
 
     'Add_New_Privilege'   => 'Add New Privilege',
@@ -306,6 +307,15 @@ return [
     'chart_5'  => 'Quotes by States',
     'by_months'  => 'by months',
     'all_times'  => 'all times',
+    'new'  => 'New',
+    'cost'  => 'Cost',
+    'cost_price'  => 'Cost Price',
+    'appliance_creation_new'  => 'Add New Appliance',
+    'subcategory_creation_new'  => 'Add New Subcategory',
+    'weight'  => 'Weight',
+    'category_creation_new'  => 'Add New Category',
+    'category'  => 'Category',
+    'subcategory'  => 'Subcategory',
 
     'text_information'  => 'Statistics',
     'text_quick_tour'  => 'Quick Tour Here!',
@@ -564,6 +574,7 @@ return [
     'task_users_name'  => 'Finished Phase',
 
     'appliance_creation'  => 'Appliance Creation',
+    'retail_price'  => 'Retail Price',
     'add'  => 'Add',
     'task_creation'  => 'Add Task',
     'crm_gratis'  => 'Begin with Free EazyCRM',
@@ -581,6 +592,7 @@ return [
     'text_forgot'  => 'Your password was recovered satisfactorily. From now on we show your data:',
 
     'menu_Proyects'  => 'Proyects',
+    'quote_data'  => 'Quote´s Data',
     'client'  => 'Client',
     'status'  => 'Status',
     'status_name'  => 'Step Name',
@@ -595,6 +607,11 @@ return [
     'To'  => 'to',
     'of'  => 'of',
     'results'  => 'results',
+
+    'messageLog_1'  => 'The Quote: "',
+    'messageLog_2'  => '" was sent to the mails: ',
+    'messageLog_2_error'  => '" was not sent to the failed mails: ',
+    'failed_emails'  => 'Failed Mails: ',
 
 
 ];

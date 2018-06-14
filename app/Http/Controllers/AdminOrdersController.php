@@ -31,16 +31,16 @@
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>trans('crudbooster.Business_Name'),"name"=>"truck_name"];
-            $this->col[] = ["label"=>trans('crudbooster.interesed'),"name"=>"interesting","join"=>"type,type"];
-            $this->col[] = ["label"=>trans('crudbooster.lead_name'),"name"=>"id_account", "urlLeadQuote"=>"account"];
+			$this->col[] = ["label"=>trans('crudbooster.Business_Name'),"name"=>"truck_name","width"=>"15%"];
+            $this->col[] = ["label"=>trans('crudbooster.interesed'),"name"=>"interesting","join"=>"type,type","width"=>"8%"];
+            $this->col[] = ["label"=>trans('crudbooster.lead_name'),"name"=>"id_account", "urlLeadQuote"=>"account","width"=>"10%"];
             //$this->col[] = ["label"=>trans('crudbooster.lead_name'),"name"=>"id_account","join"=>"account,name"];
-            $this->col[] = ["label"=>trans('crudbooster.creation_date'),"name"=>"truck_date_created"];
-            $this->col[] = ["label"=>trans('crudbooster.budget'),"name"=>"truck_budget","callback_php"=>'number_format($row->truck_budget)'];
-            $this->col[] = ["label"=>trans('crudbooster.assigned_to'),"name"=>"id_account","urlUserQuote"=>"users"];
-            $this->col[] = ["label"=>trans('crudbooster.source'),"name"=>"from_where","join"=>"sources,name"];
+            $this->col[] = ["label"=>trans('crudbooster.creation_date'),"name"=>"truck_date_created","width"=>"10%"];
+            $this->col[] = ["label"=>trans('crudbooster.budget'),"name"=>"truck_budget","callback_php"=>'number_format($row->truck_budget)',"width"=>"7%"];
+            $this->col[] = ["label"=>trans('crudbooster.assigned_to'),"name"=>"id_account","urlUserQuote"=>"users","width"=>"10%"];
+            $this->col[] = ["label"=>trans('crudbooster.source'),"name"=>"from_where","join"=>"sources,name","width"=>"7%"];
             $this->col[] = ["label"=>"Total","name"=>"truck_aprox_price"];
-            $this->col[] = ["label"=>trans('crudbooster.profit'),"name"=>"profits"];
+            $this->col[] = ["label"=>trans('crudbooster.profit'),"name"=>"profits","width"=>"8%"];
             $this->col[] = ["label"=>trans('crudbooster.financing'),"name"=>"financing"];
 
 			# END COLUMNS DO NOT REMOVE THIS LINE
@@ -226,7 +226,7 @@
                             type:  'get',
                             dataType: 'json',
                             success : function(data) {
-                                window.location.href = 'http://ezcrm.us/crm/orders/edit/'+quotes_id;                                                        
+                                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/'+quotes_id;                                                        
                             }
                          });  
                     });                    
@@ -260,6 +260,33 @@
                                     $('#total').val(total);
                                     
                                     updateTotales()
+                                }
+                            }
+                         });
+                     });                    
+                     
+                    
+                    //Editar y Guardar el Precio de Costo del Appliance
+                    $('#edit_precio_retail').on('click',function(){
+                        $('#price2_retail').removeAttr('disabled');
+                        $('#save_precio_retail').css('display','inline');
+                        $(this).css('display','none');
+                    });
+                     
+                     $('#save_precio_retail').on('click',function(){
+                         $('#price2_retail').removeAttr('disabled');
+                         $('#save_precio_retail').css('display','inline');
+                         $(this).css('display','none');
+                         $.ajax({
+                            url: '../updateprecioretail',
+                            data: \"id=\"+$('#appliance_inside_category').val()+\"&precio=\"+$('#price2_retail').val(),
+                            type:  'get',
+                            dataType: 'json',
+                            success : function(data) {
+                                if(data==true){
+                                    $('#price2_retail').attr('disabled','true');
+                                    $('#save_precio_retail').css('display','none');
+                                    $('#edit_precio_retail').css('display','inline');
                                 }
                             }
                          });
@@ -563,6 +590,81 @@
                         $('#applianceModal').modal('show');                        
                     });
                     
+                    //Agregando Nueva Categoría de Appliance
+                    $('#newCategoryApplianceModal').on('click','#addCategoryCategory',function(){
+                        var categoria = $('#category_category_name').val();                         
+                    
+                        $.ajax({
+                                url:  '../addcategory',
+                                data: \"&categoria=\"+categoria,
+                                type:  'get',
+                                dataType: 'json',
+                                success : function(data) {
+                                    if(data == 1) {
+                                        $('#newCategoryApplianceModal').modal('hide');
+                                        $('#category_category_name').val('');
+                                        newApplianceModal();
+                                        
+                                    }                                                                                                  
+                                }
+                             });    
+                             
+                                      
+                    });
+                    
+                    
+                    //Agregando Nueva Subcategoría de Appliance
+                    $('#newSubCategoryApplianceModal').on('click','#addSubCategory',function(){
+                        var categoria = $('#appliance_subcategory').val();                         
+                        var subcategoria = $('#subcategory_name').val();                         
+                    
+                        $.ajax({
+                                url:  '../addsubcategory',
+                                data: \"&categoria=\"+categoria+\"&subcategoria=\"+subcategoria,
+                                type:  'get',
+                                dataType: 'json',
+                                success : function(data) {
+                                    if(data == 1) {
+                                        $('#newSubCategoryApplianceModal').modal('hide');
+                                        $('#appliance_subcategory').val('');
+                                        $('#subcategory_name').val('');
+                                        
+                                        $.ajax({
+                                          url: '../appliancescategories/',
+                                          data: '',
+                                          type:  'get',
+                                          dataType: 'json',
+                                          success : function(data) {
+                                            $('#appliance_new').append('<option value=\"\"></option>'); 
+                                            for(var i=0;i<data.length;i++)
+                                            {
+                                               $('#appliance_new').append('<option value=\"'+data[i].id+'\">'+data[i].category+'</option>');
+                                            }                                  
+                                            
+                                          }
+                                       });
+                                        
+                                        $('#newApplianceModal').modal('show');
+                                                                                
+                                    }                                                                                                  
+                                }
+                             });
+                    });
+                    
+                    $('#newCategoryApplianceModal').on('click','#closeCategoryCategory',function(){
+                        $('#category_category_name').val('');                         
+                        $('#newCategoryApplianceModal').modal('hide');
+                        newApplianceModal();
+                    });
+                    
+                    $('#newSubCategoryApplianceModal').on('click','#closeSubCategory',function(){
+                        $('#subcategory_name').val(''); 
+                        $('#newSubCategoryApplianceModal').modal('hide'); 
+                        $('#select2-appliance_subcategory-container').html('**Select Data**');   
+                        newApplianceModal();
+                    });
+                    
+                    
                     $('#applianceModal').on('change','#appliance',function(){
                        $('#product').html('');
                        $('#appliance_inside_category').html('');
@@ -635,13 +737,14 @@
                             success : function(data) {
                                  $('#description').val(data[0].description);
                                  $('#price2').val(data[0].price);
+                                 $('#price2_retail').val(data[0].retail_price);
                                  $('#quantity').val(1);
                                  $('#total').val(data[0].price);                                 
                                 
                                  if(data[0].imagen==null) 
-                                   $('#imagen').attr('src','http://ezcrm.us/assets/images/appliances/no_photo.jpg');
+                                   $('#imagen').attr('src','http://127.0.0.1:8000/assets/images/appliances/no_photo.jpg');
                                  else
-                                   $('#imagen').attr('src','http://ezcrm.us/assets/images/appliances/'+data[0].imagen);
+                                   $('#imagen').attr('src','http://127.0.0.1:8000/assets/images/appliances/'+data[0].imagen);
                                    $('#modal-loading').modal('hide');
                                    
                                    updateTotales()
@@ -757,7 +860,7 @@
                        $('#appliance').val('');
                        $('#product').val('');
                        $('#appliance_inside_category').val(''); 
-                       $('#imagen').attr('src','http://ezcrm.us/assets/images/appliances/no_photo.jpg');
+                       $('#imagen').attr('src','http://127.0.0.1:8000/assets/images/appliances/no_photo.jpg');
                        
                        actualizar_total();
                        $('#applianceModal').modal('hide');    
@@ -771,7 +874,92 @@
                         var cant=$('#quantity').val();
                         var total=parseFloat(price)*parseFloat(cant);
                         $('#total').val(total);                        
-                    });                   
+                    });     
+                    
+                    //Agregar nuevo appliance
+                    $('#applianceModal').on('click','#addNew',function(){
+                        newApplianceModal();
+                    });
+                    
+                    //Agregar nueva subcategoría
+                    $('#newApplianceModal').on('click','#edit_appliance_new',function(){
+                        $('#newApplianceModal').modal('hide');
+                        $('#newSubCategoryApplianceModal').modal('show');
+                        $.ajax({
+                          url: '../appliancescategories/',
+                          data: '',
+                          type:  'get',
+                          dataType: 'json',
+                          success : function(data) {
+                            $('#appliance_subcategory').append('<option value=\"\"></option>'); 
+                            for(var i=0;i<data.length;i++)
+                            {
+                               $('#appliance_subcategory').append('<option value=\"'+data[i].id+'\">'+data[i].category+'</option>');
+                            }                                
+                            
+                          }
+                       });
+                
+                    });
+                    
+                    function newApplianceModal() {
+                        $('#applianceModal').modal('hide');                                             
+                        
+                        $.ajax({
+                          url: '../appliancescategories/',
+                          data: '',
+                          type:  'get',
+                          dataType: 'json',
+                          success : function(data) {
+                            $('#appliance_new').append('<option value=\"\"></option>'); 
+                            for(var i=0;i<data.length;i++)
+                            {
+                               $('#appliance_new').append('<option value=\"'+data[i].id+'\">'+data[i].category+'</option>');
+                            }                                  
+                            
+                          }
+                       });
+                        
+                        $('#newApplianceModal').modal('show');
+                    }           
+                    
+                    $('#newApplianceModal').on('change','#appliance_new',function(){
+                       $('#modal-loading').modal('show');                       
+                       $('#appliance_inside_category_new').val('');
+                       $('#description_new').val('');
+                       $('#price2_new').val('');
+                       $('#price2_retail_new').val('');
+                       var categoria = $('#appliance_new').val();
+                       $('#select2-product_new-container').html('**Select Data**');
+
+                       $.ajax({
+                                url:  '../applianceslist',
+                                data: \"&categoria=\"+categoria,
+                                type:  'get',
+                                dataType: 'json',
+                                success : function(data) {
+                                  $('#product_new').append('<option value=\"\"></option>');
+                                  for(var i=0;i<data.length;i++)
+                                  {
+                                     $('#product_new').append('<option value=\"'+data[i].id+'\">'+data[i].name+'</option>');
+                                  }
+                                  
+                                  $('#modal-loading').modal('hide');
+                                  
+                                }
+                             });
+                    }); 
+                    
+                    $('#newApplianceModal').on('change','#product_new',function(){
+                       $('#modal-loading').modal('show');        
+                                      
+                       $('#appliance_inside_category_new').val('');
+                       $('#description_new').val('');
+                       $('#price2_new').val('');
+                       $('#price2_retail_new').val('');
+                       
+                       $('#modal-loading').modal('hide');
+                    });   
                                        
                     
                     
@@ -919,7 +1107,7 @@
                             var input = $( this );
                             if(input.is( \":checked\" ))
                             {
-                                $('#registration').val('430.00');
+                                $('#registration').val('450.00');
                             }
                             else
                             {
@@ -1187,6 +1375,33 @@
             ];
 
             DB::table('buildout')->insertGetId($sumarizedData);
+
+            return 1;
+        }
+
+        //Agregar Categoría de Appliance a la base de datos
+        public function getAddcategory(\Illuminate\Http\Request $request) {
+            $sumarizedData = [
+                'category' => $request->get('categoria'),
+                'state' => 1,
+            ];
+
+            DB::table('appliance')->insertGetId($sumarizedData);
+
+            return 1;
+        }
+
+
+        //Agregar Categoría de Appliance a la base de datos
+        public function getAddsubcategory(\Illuminate\Http\Request $request)
+        {
+            $sumarizedData = [
+                'id_appliance' => $request->get('categoria'),
+                'name' => $request->get('subcategoria'),
+                'id_type' => 4,
+            ];
+
+            DB::table('appliance_inside')->insertGetId($sumarizedData);
 
             return 1;
         }
@@ -1498,18 +1713,103 @@
                 //return $html;
             }
 
-            $subject = 'Quote Data';
+            $subject = trans('crudbooster.quote_data');
 
+            $toTemp = explode(", ", $to);
+            $emails = [];
+            $emailsFailed = [];
+            foreach ($toTemp as $item) {
+                //validamos antes de incluir los emails
+                if ($this->validarEmail($item)) {
+                    $emails[] = $item;
+                } else {
+                    $emailsFailed[] = $item;
+                }
+            }
+
+            if(count($emails) != 0) {
                 //Send Email with notification End Step
-                \Mail::send("crudbooster::emails.blank", ['content' => $html], function ($message) use ($to, $subject, $toArray) {
+                \Mail::send("crudbooster::emails.blank", ['content' => $html], function ($message) use ($to, $subject, $emails) {
                     $message->priority(1);
-                    $message->to($toArray);
+                    $message->to($emails);
 
                     $message->subject($subject);
                 });
 
+                $emailTemp = '';
+                foreach ($emails as $item) {
+                    if ($emailTemp != '') {
+                        $emailTemp = $emailTemp.', '.$item;
+                    } else {
+                        $emailTemp = $item;
+                    }
+                }
+
+                $emailFailedTemp = '';
+                foreach ($emailsFailed as $item) {
+                    if ($emailFailedTemp != '') {
+                        $emailFailedTemp = $emailFailedTemp.', '.$item;
+                    } else {
+                        $emailFailedTemp = $item;
+                    }
+                }
+
+                $message_1 = trans('crudbooster.messageLog_1');
+                $message_2 = trans('crudbooster.messageLog_2');
+                $message_3 = trans('crudbooster.failed_emails');
+
+                if (count($emailsFailed) != 0) {
+                    CRUDBooster::insertLog($message_1.$row->truck_name.$message_2.$emailTemp.'. ('.$message_3.$emailFailedTemp.')');
+                } else {
+                    CRUDBooster::insertLog($message_1.$row->truck_name.$message_2.$emailTemp);
+                }
+
                 CRUDBooster::redirect($_SERVER['HTTP_REFERER'], trans('crudbooster.email_send_text'), "success");
 
+            } else {
+                $emailTemp = '';
+                foreach ($emails as $item) {
+                    if ($emailTemp != '') {
+                        $emailTemp = $emailTemp.', '.$item;
+                    } else {
+                        $emailTemp = $item;
+                    }
+                }
+
+                $emailFailedTemp = '';
+                foreach ($emailsFailed as $item) {
+                    if ($emailFailedTemp != '') {
+                        $emailFailedTemp = $emailFailedTemp.', '.$item;
+                    } else {
+                        $emailFailedTemp = $item;
+                    }
+                }
+
+                $message_1 = trans('crudbooster.messageLog_1');
+                $message_2 = trans('crudbooster.messageLog_2');
+                $message_3 = trans('crudbooster.failed_emails');
+
+                if (count($emailsFailed) != 0) {
+                    CRUDBooster::insertLog($message_1.$row->truck_name.$message_2.$emailTemp.'. ('.$message_3.$emailFailedTemp.')');
+                } else {
+                    CRUDBooster::insertLog($message_1.$row->truck_name.$message_2.$emailTemp);
+                }
+
+                CRUDBooster::redirect($_SERVER['HTTP_REFERER'], trans('crudbooster.email_send_text_error'), "warning");
+            }
+
+
+        }
+
+
+        //Función para la validación de los correos electrónicos (emails)
+        public function validarEmail($email) {
+            if (preg_match(
+                '/[\w-\.]{1,}@([\w-]{2,}\.)*([\w-]{1,}\.)[\w-]{2,4}/',
+                $email)) {
+                return true;
+            }
+            return false;
         }
 
 
@@ -1805,17 +2105,62 @@
                 //return $html;
             }
 
-            $subject = 'Quote Data';
+            $subject = trans('crudbooster.quote_data');
 
-            //Send Email with notification End Step
-            \Mail::send("crudbooster::emails.blank", ['content' => $html], function ($message) use ($to, $subject) {
-                $message->priority(1);
-                $message->to($to);
+            $toTemp = explode(", ", $to);
+            $emails = [];
+            $emailsFailed = [];
+            foreach ($toTemp as $item) {
+                //validamos antes de incluir los emails
+                if ($this->validarEmail($item)) {
+                    $emails[] = $item;
+                } else {
+                    $emailsFailed[] = $item;
+                }
+            }
 
-                $message->subject($subject);
-            });
+            if(count($emails) != 0) {
+                //Send Email with notification End Step
+                \Mail::send("crudbooster::emails.blank", ['content' => $html], function ($message) use ($to, $subject, $emails) {
+                    $message->priority(1);
+                    $message->to($emails);
 
-            CRUDBooster::redirect($_SERVER['HTTP_REFERER'], trans('crudbooster.email_send_text'), "success");
+                    $message->subject($subject);
+                });
+
+                $emailTemp = '';
+                foreach ($emails as $item) {
+                    if ($emailTemp != '') {
+                        $emailTemp = $emailTemp.', '.$item;
+                    } else {
+                        $emailTemp = $item;
+                    }
+                }
+
+                $emailFailedTemp = '';
+                foreach ($emailsFailed as $item) {
+                    if ($emailFailedTemp != '') {
+                        $emailFailedTemp = $emailFailedTemp.', '.$item;
+                    } else {
+                        $emailFailedTemp = $item;
+                    }
+                }
+
+                $message_1 = trans('crudbooster.messageLog_1');
+                $message_2 = trans('crudbooster.messageLog_2');
+                $message_3 = trans('crudbooster.failed_emails');
+
+                if (count($emailsFailed) != 0) {
+                    CRUDBooster::insertLog($message_1.$row->truck_name.$message_2.$emailTemp.'. ('.$message_3.$emailFailedTemp.')');
+                } else {
+                    CRUDBooster::insertLog($message_1.$row->truck_name.$message_2.$emailTemp);
+                }
+
+                CRUDBooster::redirect($_SERVER['HTTP_REFERER'], trans('crudbooster.email_send_text'), "success");
+
+            } else {
+                CRUDBooster::redirect($_SERVER['HTTP_REFERER'], trans('crudbooster.email_send_text_error'), "warning");
+            }
 
         }
 
@@ -1880,7 +2225,7 @@
                         $subject = trans("crudbooster.text_steps_first");
 
                         $html = "<p>".trans("crudbooster.text_dear")." $usuario_email->fullname, ".trans("crudbooster.text_steps_first")."</p>
-                                   <a href='http://ezcrm.us/crm/orders/detail/$id'>".trans("crudbooster.text_details_here")."</a>
+                                   <a href='http://127.0.0.1:8000/crm/orders/detail/$id'>".trans("crudbooster.text_details_here")."</a>
                             <p>".trans("crudbooster.phase_sign")." Chef Units</p>";
 
                         //Send Email with notification End Step
@@ -2108,7 +2453,7 @@
                         $subject = trans("crudbooster.text_steps_first");
 
                         $html = "<p>".trans("crudbooster.text_dear")." $usuario_email->fullname, ".trans("crudbooster.text_steps_first")."</p>
-                                   <a href='http://ezcrm.us/crm/orders/detail/$id'>".trans("crudbooster.text_details_here")."</a>
+                                   <a href='http://127.0.0.1:8000/crm/orders/detail/$id'>".trans("crudbooster.text_details_here")."</a>
                             <p>".trans("crudbooster.phase_sign")." Chef Units</p>";
 
                         //Send Email with notification End Step
@@ -3036,6 +3381,15 @@
             return $data;
         }
 
+        //Función que permite guardar el "Precio de Costo" de la "Appliance" (retail_price)
+        public function getUpdateprecioretail(\Illuminate\Http\Request $request) {
+            $price= $request->get('precio');
+            $id= $request->get('id');
+            $data = DB::table('appliance_inside_category')->where('id', $id)->update(['retail_price' => $price]);
+
+            return $data;
+        }
+
         //Función que permite guardar el "Registration" de la "Quote"
         public function getUpdateregistration(\Illuminate\Http\Request $request) {
             $registration= $request->get('registration');
@@ -3218,8 +3572,6 @@
 
         public function getSearchappliances(\Illuminate\Http\Request $request) {
             $id=$request->get('id');
-
-
             $data = DB::table('appliance_inside_category')
                 ->where('id', $id)
                 ->get();

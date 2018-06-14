@@ -22,7 +22,7 @@
             $(this).parent().parent("td").parent().hide();
 
             //Actualizar como leída la notificaciones seleccionada
-            $.get("http://ezcrm.us/crm/notifications/readone", { id: id_read}, function(data){
+            $.get("http://127.0.0.1:8000/crm/notifications/readone", { id: id_read}, function(data){
             });
         });
 
@@ -31,8 +31,8 @@
             //Actualizar como leída todas las notificaciones seleccionada
             $('#modal-notifications').modal('hide');
 
-            $.get("http://ezcrm.us/crm/notifications/readall", { id: id_read }, function(data){
-                location.href="http://ezcrm.us/crm";
+            $.get("http://127.0.0.1:8000/crm/notifications/readall", { id: id_read }, function(data){
+                location.href="http://127.0.0.1:8000/crm";
             });
         });
 
@@ -65,7 +65,7 @@
                     @foreach($query as $item)
                         <tr style="padding: 2px;">
                             <td style="padding: 2px;">
-                                <a href="http://ezcrm.us/crm/notifications/read/{{ $item->id }}">
+                                <a href="http://127.0.0.1:8000/crm/notifications/read/{{ $item->id }}">
                                     {{ $item->content }}
                                 </a>
                             </td>
@@ -91,7 +91,7 @@
                                     confirmButtonText: "Yes!",
                                     cancelButtonText: "No",
                                     closeOnConfirm: false },
-                                    function(){  location.href="http://ezcrm.us/crm/notifications/delete/{{ $item->id }}" });'><i class='fa fa-trash'></i>
+                                    function(){  location.href="http://127.0.0.1:8000/crm/notifications/delete/{{ $item->id }}" });'><i class='fa fa-trash'></i>
                                     </a>
                                 </div>
                             </td>

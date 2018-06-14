@@ -16,8 +16,8 @@
     <link href="{{ asset("vendor/crudbooster/assets/adminlte/dist/css/skins/_all-skins.min.css")}}" rel="stylesheet" type="text/css" />
 
 
-    <link rel="stylesheet" type="text/css" href="http://ezcrm.us/vendor/crudbooster/assets/summernote/summernote.css">
-    <script type="text/javascript" src="http://ezcrm.us/vendor/crudbooster/assets/summernote/summernote.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:8000/vendor/crudbooster/assets/summernote/summernote.css">
+    <script type="text/javascript" src="http://127.0.0.1:8000/vendor/crudbooster/assets/summernote/summernote.js"></script>
 
     <!-- support rtl-->
     @if (App::getLocale() == 'ar')
@@ -61,7 +61,7 @@
                 var data = new FormData();
                 data.append("userfile", image);
                 $.ajax({
-                    url: 'http://ezcrm.us/admin/fases/upload-summernote',
+                    url: 'http://127.0.0.1:8000/admin/fases/upload-summernote',
                     cache: false,
                     contentType: false,
                     processData: false,

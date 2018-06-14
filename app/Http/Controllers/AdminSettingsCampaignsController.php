@@ -162,8 +162,8 @@
 	        	    //$('section[class=content-header] h1').text('Campaigns');	    
 	        	    //$('div[class=panel-heading] strong').text('Campaigns');
 	        	    
-	        	    var template = '<div style=\"margin-right: 15px; margin-left: 15px\"><a class=\"btn btn-warning pull-right\" title=\"New Template\" href=\"http://ezcrm.us/crm/email_templates/add\"><i class=\"fa fa-envelope-o\"></i></a></div>';
-	        	    var schedule_email = '<div style=\"margin-right: 15px; \"><a style=\"margin-left: 5px; \" class=\"btn btn-primary pull-right\" title=\"Schedule Email\" href=\"http://ezcrm.us/crm/campaign_automations/add\"><i class=\"fa fa-calendar-plus-o\"></i></a></div>';
+	        	    var template = '<div style=\"margin-right: 15px; margin-left: 15px\"><a class=\"btn btn-warning pull-right\" title=\"New Template\" href=\"http://127.0.0.1:8000/crm/email_templates/add\"><i class=\"fa fa-envelope-o\"></i></a></div>';
+	        	    var schedule_email = '<div style=\"margin-right: 15px; \"><a style=\"margin-left: 5px; \" class=\"btn btn-primary pull-right\" title=\"Schedule Email\" href=\"http://127.0.0.1:8000/crm/campaign_automations/add\"><i class=\"fa fa-calendar-plus-o\"></i></a></div>';
 	        	    	 
 	        	    $('#form-group-cms_email_templates_id').append(schedule_email);	 
 	        	    $('#form-group-cms_email_templates_id').append(template);	 

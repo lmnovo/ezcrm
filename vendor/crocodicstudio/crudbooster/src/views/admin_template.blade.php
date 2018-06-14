@@ -14,18 +14,11 @@
     <!-- Theme style -->
     <link href="{{ asset("vendor/crudbooster/assets/adminlte/dist/css/AdminLTE.min.css")}}" rel="stylesheet" type="text/css" />
     <link href="{{ asset("vendor/crudbooster/assets/adminlte/dist/css/skins/_all-skins.min.css")}}" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="http://ezcrm.us/vendor/crudbooster/assets/summernote/summernote.css">
-    <script type="text/javascript" src="http://ezcrm.us/vendor/crudbooster/assets/summernote/summernote.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:8000/vendor/crudbooster/assets/summernote/summernote.css">
+    <script type="text/javascript" src="http://127.0.0.1:8000/vendor/crudbooster/assets/summernote/summernote.js"></script>
 
-    <link rel='stylesheet' href='http://ezcrm.us/vendor/crudbooster/assets/select2/dist/css/select2.min.css'/>
-    <script src='http://ezcrm.us/vendor/crudbooster/assets/select2/dist/js/select2.full.min.js'></script>
-
-
-
-
-
-
-
+    <link rel='stylesheet' href='http://127.0.0.1:8000/vendor/crudbooster/assets/select2/dist/css/select2.min.css'/>
+    <script src='http://127.0.0.1:8000/vendor/crudbooster/assets/select2/dist/js/select2.full.min.js'></script>
 
     <style type="text/css">
         .select2-container--default .select2-selection--single {border-radius: 0px !important}
@@ -86,8 +79,10 @@
     <script type="text/javascript">
         $(function() {
             $('#appliance').select2();
+            $('#appliance_new').select2();
             $('#product').select2();
             $('#appliance_inside_category').select2();
+            $('#appliance_subcategory').select2();
             //$('#buildout_name').select2();
             $('#sizes').select2();
             $('#state').select2();
@@ -193,7 +188,7 @@
                 var data = new FormData();
                 data.append("userfile", image);
                 $.ajax({
-                    url: 'http://ezcrm.us/admin/fases/upload-summernote',
+                    url: 'http://127.0.0.1:8000/admin/fases/upload-summernote',
                     cache: false,
                     contentType: false,
                     processData: false,

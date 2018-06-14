@@ -31,6 +31,9 @@
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
 			$this->col[] = ["label"=>"Name","name"=>"name"];
+			$this->col[] = ["label"=>"Created At","name"=>"created_at","width"=>"50"];
+			$this->col[] = ["label"=>"Updated At","name"=>"updated_at","width"=>"100"];
+			$this->col[] = ["label"=>"Deleted At","name"=>"deleted_at"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
@@ -40,7 +43,7 @@
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ['label'=>'Name','name'=>'name','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter'];
+			//$this->form[] = ['label'=>'Name','name'=>'name','type'=>'filemanager','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','filemanager_type'=>'file'];
 			# OLD END FORM
 
 			/* 

@@ -1,28 +1,61 @@
 @extends('crudbooster::admin_template')
 @section('content')
 
-    <script src='http://ezcrm.us/p/jquery-ui.custom.min.js'></script>
-    <script src="http://ezcrm.us/p/jquery.ui.touch-punch.min.js"></script>
-    <script src="http://ezcrm.us/p/chosen.jquery.min.js"></script>
-    <script src="http://ezcrm.us/p/spinbox.min.js"></script>
-    <script src="http://ezcrm.us/p/bootstrap-datepicker.min.js"></script>
-    {{--<script src="http://ezcrm.us/p/bootstrap-timepicker.min.js"></script>--}}
-    <script src="http://ezcrm.us/p/moment.min.js"></script>
-    <script src="http://ezcrm.us/p/daterangepicker.min.js"></script>
-    <script src="http://ezcrm.us/p/bootstrap-datetimepicker.min.js"></script>
-    <script src="http://ezcrm.us/p/bootstrap-colorpicker.min.js"></script>
-    <script src="http://ezcrm.us/p/jquery.knob.min.js"></script>
-    <script src="http://ezcrm.us/p/autosize.min.js"></script>
-    <script src="http://ezcrm.us/p/jquery.inputlimiter.min.js"></script>
-    <script src="http://ezcrm.us/p/bootstrap-tag.min.js"></script>
+    <script src='http://127.0.0.1:8000/p/jquery-ui.custom.min.js'></script>
+    <script src="http://127.0.0.1:8000/p/jquery.ui.touch-punch.min.js"></script>
+    <script src="http://127.0.0.1:8000/p/chosen.jquery.min.js"></script>
+    <script src="http://127.0.0.1:8000/p/spinbox.min.js"></script>
+    <script src="http://127.0.0.1:8000/p/bootstrap-datepicker.min.js"></script>
+    {{--<script src="http://127.0.0.1:8000/p/bootstrap-timepicker.min.js"></script>--}}
+    <script src="http://127.0.0.1:8000/p/moment.min.js"></script>
+    <script src="http://127.0.0.1:8000/p/daterangepicker.min.js"></script>
+    <script src="http://127.0.0.1:8000/p/bootstrap-datetimepicker.min.js"></script>
+    <script src="http://127.0.0.1:8000/p/bootstrap-colorpicker.min.js"></script>
+    <script src="http://127.0.0.1:8000/p/jquery.knob.min.js"></script>
+    <script src="http://127.0.0.1:8000/p/autosize.min.js"></script>
+    <script src="http://127.0.0.1:8000/p/jquery.inputlimiter.min.js"></script>
+    <script src="http://127.0.0.1:8000/p/bootstrap-tag.min.js"></script>
 
     <!-- ace scripts -->
-    <script src="http://ezcrm.us/p/ace-elements.min.js"></script>
-    <script src="http://ezcrm.us/p/ace.min.js"></script>
+    <script src="http://127.0.0.1:8000/p/ace-elements.min.js"></script>
+    <script src="http://127.0.0.1:8000/p/ace.min.js"></script>
 
     <script>
         $(document).ready(function()
         {
+
+            $('#newApplianceModal').on('click','#edit_category_new',function(){
+                $('#newCategoryApplianceModal').modal('show');
+                $('#newApplianceModal').modal('hide');
+
+            });
+
+
+            $("body").on("click",".upload-image",function(e){
+                $(this).parents("form").ajaxForm(options);
+            });
+
+            var options = {
+                complete: function(response)
+                {
+                    if($.isEmptyObject(response.responseJSON.error)){
+                        $("input[name='title']").val('');
+                        alert('Image Upload Successfully.');
+                    }else{
+                        printErrorMsg(response.responseJSON.error);
+                    }
+                }
+            };
+
+            function printErrorMsg (msg) {
+                $(".print-error-msg").find("ul").html('');
+                $(".print-error-msg").css('display','block');
+                $.each( msg, function( key, value ) {
+                    $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
+                });
+            }
+
+
             var td,campo,valor,id;
             $(document).on("click","td.editable span",function(e)
             {
@@ -58,7 +91,7 @@
                     $('#total_appliance').html(nuevovalor * $('#price_appliance').text());
                     td.html("<span>"+nuevovalor+"</span>");
                     $("td:not(#id)").addClass("editable");
-                    window.location.href = 'http://ezcrm.us/crm/orders/edit/'+msg;
+                    window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/'+msg;
                 });
             });
 
@@ -340,8 +373,6 @@
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </button>
                             </td>
-
-
                         </tr>
                     @endforeach
 
@@ -541,7 +572,7 @@
                                             confirmButtonText: '{{trans('crudbooster.yes')}}',
                                             cancelButtonText: '{{trans('crudbooster.no')}}',
                                             closeOnConfirm: false },
-                                            function(){  location.href='http://ezcrm.us/crm/notes_quotes/delete/{{ $note->id }}' });"><i class="fa fa-trash"></i>
+                                            function(){  location.href='http://127.0.0.1:8000/crm/notes_quotes/delete/{{ $note->id }}' });"><i class="fa fa-trash"></i>
                                     </a>
                                 </div>
                             </div>
@@ -614,6 +645,32 @@
         </div><!-- /.modal-dialog -->
     </div>
 
+    <div class="modal fade" tabindex="-1" role="dialog" id="failed-sendEmailPersonal">
+        <div class="modal-dialog modal-lg" style="width: 35%"  role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #337ab7; color: white;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{{trans('crudbooster.title_success_send_email_quote')}}</h4>
+                </div>
+                <form id="form_envioquote" action="" method="post" class="form-horizontal">
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="form-group">
+                                {{trans('crudbooster.email_send_text_error')}}
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{trans('crudbooster.close')}}</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
     <div class="modal fade" tabindex="-1" role="dialog" id="modal-sendEmailPersonal">
         <div class="modal-dialog modal-lg" role="document" style="width: 70%">
             <div class="modal-content">
@@ -650,8 +707,8 @@
         </div><!-- /.modal-dialog -->
     </div>
 
-    <div class="modal fade" tabindex="-1" role="dialog" id="applianceModal" style="position: relative;">
-        <div class="modal-dialog modal-lg" role="document">
+    <div class="modal fade" tabindex="-1" role="dialog" id="applianceModal" style="position: relative;" >
+        <div class="modal-dialog modal-lg" role="document"  style=" width: 90%">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #337ab7; color: white;">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -665,48 +722,48 @@
                             <div class="col-md-7">
                                 <div class="form-group">
                                     <label for="appliance" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.category')}}</label>
-                                    <div class="col-md-8">
+                                    <div class="col-md-9">
                                         <select class="form-control" id="appliance" name="appliance" placeholder="Select" style="width: 100%" required="required">
                                         </select>
                                     </div>
-                                    <div class="col-md-1">
+                                    {{--<div class="col-md-1">
                                         <a href="{{CRUDBooster::adminpath("appliances_categories/add")}}" target="_blank" title="Add Category" id="" class="btn btn-success btn-sm">
                                             <i class="fa fa-plus-circle"></i>
                                         </a>
-                                    </div>
+                                    </div>--}}
                                 </div>
 
                                 <div class="form-group">
                                     <label for="product" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.appliance')}}</label>
-                                    <div class="col-md-8">
+                                    <div class="col-md-9">
                                         <select class="form-control" id="product" name="product" placeholder="Select" style="width: 100%" required>
                                         </select>
                                     </div>
-                                    <div class="col-md-1">
+                                    {{--<div class="col-md-1">
                                         <a href="{{CRUDBooster::adminpath("appliances_inside/add")}}" target="_blank" title="Add Appliance" id="" class="btn btn-success btn-sm">
                                             <i class="fa fa-plus-circle"></i>
                                         </a>
-                                    </div>
+                                    </div>--}}
                                 </div>
 
                                 <div class="form-group">
                                     <label for="appliance_inside_category" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.detail')}}</label>
-                                    <div class="col-md-8">
+                                    <div class="col-md-9">
                                         <select required class="form-control" id="appliance_inside_category" name="appliance_inside_category" placeholder="Select" style="width: 100%" >
 
                                         </select>
                                     </div>
-                                    <div class="col-md-1">
+                                    {{--<div class="col-md-1">
                                         <a href="{{CRUDBooster::adminpath("appliances/add")}}" target="_blank" title="Add Details" id="" class="btn btn-success btn-sm">
                                             <i class="fa fa-plus-circle"></i>
                                         </a>
-                                    </div>
+                                    </div>--}}
                                 </div>
 
                                 <div class="form-group">
                                     <label for="description" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.description')}}</label>
                                     <div class="col-md-9 col-xs-12 col-sm-9">
-                                        <textarea rows="6" class="form-control" id="description" placeholder="Description" readonly="true"></textarea>
+                                        <textarea rows="6" class="form-control" id="description" placeholder="{{trans('crudbooster.description')}}" readonly="true"></textarea>
                                     </div>
                                 </div>
 
@@ -714,7 +771,7 @@
                                     <label for="price2" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.price')}}</label>
                                     <div class="col-md-9 col-xs-12 col-sm-9">
                                         <div class="input-group">
-                                            <input class="form-control number" id="price2" name="price2"  placeholder="Price" type="text" required disabled/>
+                                            <input class="form-control number" id="price2" name="price2"  placeholder="{{trans('crudbooster.price')}}" type="text" required disabled/>
                                             <span class="input-group-btn">
                                                 <button class="btn btn-default" type="button" id="edit_precio"><span class="glyphicon glyphicon-edit"></span></button>
                                                 <button class="btn btn-default" type="button" id="save_precio" style="display: none;"><span class="glyphicon glyphicon-floppy-disk"></span></button>
@@ -724,9 +781,22 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label for="price2" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.retail_price')}}</label>
+                                    <div class="col-md-9 col-xs-12 col-sm-9">
+                                        <div class="input-group">
+                                            <input class="form-control number" id="price2_retail" name="price2_retail"  placeholder="{{trans('crudbooster.retail_price')}}" type="text" required disabled/>
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button" id="edit_precio_retail"><span class="glyphicon glyphicon-edit"></span></button>
+                                                <button class="btn btn-default" type="button" id="save_precio_retail" style="display: none;"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
                                     <label for="quantity" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.quantity')}}</label>
                                     <div class="col-md-9 col-xs-12 col-sm-9">
-                                        <input class="form-control int" id="quantity" name="quantity" placeholder="Quantity" required/>
+                                        <input class="form-control int" id="quantity" name="quantity" placeholder="{{trans('crudbooster.quantity')}}" required/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -743,6 +813,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-dark" data-dismiss="modal">{{trans('crudbooster.close')}}</button>
+                        <button type="button" class="btn btn-success " id="addNew">{{trans('crudbooster.new')}}</button>
                         <button type="button" class="btn btn-primary " id="addSave">{{trans('crudbooster.add')}}</button>
                     </div>
 
@@ -752,7 +823,184 @@
         </div><!-- /.modal-dialog -->
     </div>
 
+    <div class="modal fade" tabindex="-1" role="dialog" id="newApplianceModal" style="position: relative;">
+        <div class="modal-dialog modal-lg" role="document"  style=" width: 90%">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #337ab7; color: white;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{{trans('crudbooster.appliance_creation_new')}}</h4>
+                </div>
 
+                {!! Form::open(array('route' => 'ajaxImageUpload','enctype' => 'multipart/form-data', 'class' => 'form-horizontal')) !!}
+
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <label for="appliance" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.category')}}</label>
+                                    <div class="col-md-8">
+                                        <select required class="form-control" id="appliance_new" name="appliance" placeholder="Select" style="width: 100%" >
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <a title="" id="edit_category_new" class="btn btn-success btn-sm">
+                                            <i class="glyphicon glyphicon-edit"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="product" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.appliance')}}</label>
+                                    <div class="col-md-8">
+                                        <select required class="form-control" id="product_new" name="product_new" placeholder="Select" style="width: 100%" >
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <a href="#" title="" id="edit_appliance_new" class="btn btn-success btn-sm">
+                                            <i class="glyphicon glyphicon-edit"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="appliance_inside_category" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.detail')}}</label>
+                                    <div class="col-md-8">
+                                        <input required class="form-control number" id="appliance_inside_category_new" name="appliance_inside_category_new"  placeholder="{{trans('crudbooster.detail')}}" type="text"/>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="description" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.description')}}</label>
+                                    <div class="col-md-9 col-xs-12 col-sm-9">
+                                        <textarea required rows="6" class="form-control" id="description_new" placeholder="{{trans('crudbooster.description')}}"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="price2" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.cost')}}</label>
+                                    <div class="col-md-9">
+                                        <div class="input-group">
+                                            <input required class="form-control number" id="price2_new" name="price2_new"  placeholder="{{trans('crudbooster.cost_price')}}" type="text"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="price2" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.retail_price')}}</label>
+                                    <div class="col-md-9">
+                                        <div class="input-group">
+                                            <input required class="form-control number" id="price2_retail_new" name="price2_retail_new"  placeholder="{{trans('crudbooster.retail_price')}}" type="text"/>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="weight_new" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.weight')}}</label>
+                                    <div class="col-md-9">
+                                        <div class="input-group">
+                                            <input class="form-control number" id="weight_new" name="weight_new"  placeholder="{{trans('crudbooster.weight')}}" value="0" type="text"/>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-5">
+                                    {!! Form::file('image', array('class' => 'image', 'required')) !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">{{trans('crudbooster.close')}}</button>
+                        <button type="submit" class="btn btn-primary" id="">{{trans('crudbooster.save')}}</button>
+                    </div>
+
+                {!! Form::close() !!}
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="newCategoryApplianceModal">
+        <div class="modal-dialog modal-lg" role="document"  style=" width: 90%">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #337ab7; color: white;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{{trans('crudbooster.category_creation_new')}}</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="col-md-7">
+                            <form id="form_product" data-parsley-validate  action="" method="post" class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="category_category_name" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.category')}}</label>
+                                    <div class="col-md-9">
+                                        <div class="input-group">
+                                            <input class="form-control number" id="category_category_name" name="category_category_name"  placeholder="{{trans('crudbooster.category')}}" type="text"/>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" id="closeCategoryCategory">{{trans('crudbooster.close')}}</button>
+                    <button type="submit" class="btn btn-primary" id="addCategoryCategory">{{trans('crudbooster.save')}}</button>
+                </div>
+
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="newSubCategoryApplianceModal">
+        <div class="modal-dialog modal-lg" role="document"  style=" width: 90%">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #337ab7; color: white;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{{trans('crudbooster.subcategory_creation_new')}}</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="col-md-7">
+                            <form id="form_product" data-parsley-validate  action="" method="post" class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="appliance" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.category')}}</label>
+                                    <div class="col-md-8">
+                                        <select class="form-control" id="appliance_subcategory" name="appliance_subcategory" placeholder="Select" style="width: 100%" required="required">
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="category_category_name" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.subcategory')}}</label>
+                                    <div class="col-md-9">
+                                        <div class="input-group">
+                                            <input class="form-control number" id="subcategory_name" name="subcategory_name"  placeholder="{{trans('crudbooster.subcategory')}}" type="text"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" id="closeSubCategory">{{trans('crudbooster.close')}}</button>
+                    <button type="submit" class="btn btn-primary" id="addSubCategory">{{trans('crudbooster.save')}}</button>
+                </div>
+
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
 
     <div class="modal fade" tabindex="-1" role="dialog" id="Build_OutGModal">
         <div class="modal-dialog" role="document">
