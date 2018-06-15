@@ -11,7 +11,7 @@
 
 			# START CONFIGURATION DO NOT REMOVE THIS LINE
 			$this->title_field = "name";
-			$this->limit = "10";
+			$this->limit = "50";
 			$this->orderby = "id,asc";
 			$this->global_privilege = false;
 			$this->button_table_action = true;

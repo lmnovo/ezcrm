@@ -21,7 +21,7 @@ class ModulsController extends CBController {
 		$this->table               = 'cms_moduls';
 		$this->primary_key         = 'id';
 		$this->title_field         = "name";
-		$this->limit               = 100;
+		$this->limit               = 50;
 		$this->button_add 		   = false;
 		$this->button_export       = false;
 		$this->button_import       = false;

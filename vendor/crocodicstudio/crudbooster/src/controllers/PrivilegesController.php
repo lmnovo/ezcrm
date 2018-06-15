@@ -25,6 +25,7 @@ class PrivilegesController extends CBController {
 		$this->title_field = "name";	
 		$this->button_import = false;
 		$this->button_show = false;
+        $this->limit         = 50;
 		$this->button_export = false;
 		$this->button_action_style = 'button_icon';	
 		$this->button_detail = false;

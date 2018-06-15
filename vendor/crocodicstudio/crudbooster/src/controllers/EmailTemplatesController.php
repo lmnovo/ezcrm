@@ -21,7 +21,7 @@
 	        $this->table              = "cms_email_templates";
 	        $this->primary_key        = "id";
 	        $this->title_field        = "name";
-	        $this->limit              = 10;
+	        $this->limit              = 50;
 	        $this->orderby      	  = ["id"=>"desc"];
 	        $this->global_privilege   = FALSE;
 	        

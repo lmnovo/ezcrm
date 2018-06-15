@@ -21,7 +21,7 @@ use CRUDBooster;
 	        $this->table              = "cms_menus";
 	        $this->primary_key        = "id";
 	        $this->title_field        = "name";
-	        $this->limit              = 20;
+	        $this->limit              = 50;
 	        $this->orderby      	  = ["id"=>"desc"];
 	        
 			$this->button_table_action = TRUE;   

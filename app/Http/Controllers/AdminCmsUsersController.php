@@ -12,6 +12,7 @@ class AdminCmsUsersController extends \crocodicstudio\crudbooster\controllers\CB
 		# START CONFIGURATION DO NOT REMOVE THIS LINE
 		$this->table               = 'cms_users';
 		$this->primary_key         = 'id';
+        $this->limit = "50";
 		$this->title_field         = "name";
 		$this->button_action_style = 'button_icon';	
 		$this->button_import 	   = FALSE;	

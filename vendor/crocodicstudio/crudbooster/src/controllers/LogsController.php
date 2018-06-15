@@ -19,7 +19,7 @@ class LogsController extends CBController {
 	public function cbInit() {		
 		$this->table         = 'cms_logs';
 		$this->primary_key   = 'id';
-        $this->limit         = 10;
+        $this->limit         = 50;
 		$this->title_field   = "ipaddress";
 		$this->button_bulk_action = true;
 		$this->button_export = false;
