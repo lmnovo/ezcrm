@@ -837,7 +837,7 @@
                         <div class="container-fluid">
                             <div class="col-md-7">
                                 <div class="form-group">
-                                    <label for="appliance" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.category')}}</label>
+                                    <label for="appliance" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.category')}}*</label>
                                     <div class="col-md-8">
                                         <select required class="form-control" id="appliance_new" name="appliance" placeholder="Select" style="width: 100%" >
                                         </select>
@@ -850,7 +850,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="product" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.appliance')}}</label>
+                                    <label for="product" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.appliance')}}*</label>
                                     <div class="col-md-8">
                                         <select required class="form-control" id="product_new" name="product_new" placeholder="Select" style="width: 100%" >
                                         </select>
@@ -863,46 +863,37 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="appliance_inside_category" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.detail')}}</label>
-                                    <div class="col-md-8">
+                                    <label for="appliance_inside_category" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.detail')}}*</label>
+                                    <div class="col-md-9">
                                         <input required class="form-control number" id="appliance_inside_category_new" name="appliance_inside_category_new"  placeholder="{{trans('crudbooster.detail')}}" type="text"/>
-
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="description" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.description')}}</label>
+                                    <label for="description" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.description')}}*</label>
                                     <div class="col-md-9 col-xs-12 col-sm-9">
                                         <textarea required rows="6" class="form-control" id="description_new" placeholder="{{trans('crudbooster.description')}}"></textarea>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="price2" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.cost')}}</label>
+                                    <label class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.cost')}}*</label>
                                     <div class="col-md-9">
-                                        <div class="input-group">
-                                            <input required class="form-control number" id="price2_new" name="price2_new"  placeholder="{{trans('crudbooster.cost_price')}}" type="text"/>
-                                        </div>
+                                        <input required class="form-control number" id="price2_new" name="price2_new"  placeholder="{{trans('crudbooster.cost_price')}}" type="text"/>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="price2" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.retail_price')}}</label>
+                                    <label class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.retail_price')}}*</label>
                                     <div class="col-md-9">
-                                        <div class="input-group">
-                                            <input required class="form-control number" id="price2_retail_new" name="price2_retail_new"  placeholder="{{trans('crudbooster.retail_price')}}" type="text"/>
-
-                                        </div>
+                                        <input required class="form-control number" id="price2_retail_new" name="price2_retail_new"  placeholder="{{trans('crudbooster.retail_price')}}" type="text"/>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="weight_new" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.weight')}}</label>
+                                    <label class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.weight')}}</label>
                                     <div class="col-md-9">
-                                        <div class="input-group">
-                                            <input class="form-control number" id="weight_new" name="weight_new"  placeholder="{{trans('crudbooster.weight')}}" value="0" type="text"/>
-
-                                        </div>
+                                        <input class="form-control number" id="weight_new" name="weight_new"  placeholder="{{trans('crudbooster.weight')}}" value="0" type="text"/>
                                     </div>
                                 </div>
 
