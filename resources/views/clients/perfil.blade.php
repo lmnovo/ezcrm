@@ -50,7 +50,7 @@
             $(document).on("click",".cancelar",function(e)
             {
                 e.preventDefault();
-                td.html("<a href=http://127.0.0.1:8000/crm/users/detail/"+id_user+">"+valor+"</a> <span title='{{trans('crudbooster.edit')}}' class=\"edit_button\"><i class=\"fa fa-edit\"></i></span>");
+                td.html("<a href=http://ezcrm.us/crm/users/detail/"+id_user+">"+valor+"</a> <span title='{{trans('crudbooster.edit')}}' class=\"edit_button\"><i class=\"fa fa-edit\"></i></span>");
                 $("input:not(#id)").addClass("editable");
             });
 
@@ -65,7 +65,7 @@
                     data: { campo: campo, valor: nuevovalor, id_user: id_user, id_client: id_client }
                 })
                     .done(function( data ) {
-                        td.html("<a href=http://127.0.0.1:8000/crm/users/detail/"+nuevovalor+">"+data+"</a> <span title='{{trans('crudbooster.edit')}}' class=\"edit_button\"><i class=\"fa fa-edit\"></i></span>");
+                        td.html("<a href=http://ezcrm.us/crm/users/detail/"+nuevovalor+">"+data+"</a> <span title='{{trans('crudbooster.edit')}}' class=\"edit_button\"><i class=\"fa fa-edit\"></i></span>");
                     });
             });
 
@@ -127,7 +127,7 @@
                                             <a data-lightbox="roadtrip" href="{{CRUDBooster::mainpath("$lead->photo")}}"><img style="max-width:150px" title="Photo" src="{{CRUDBooster::mainpath("$lead->photo")}}"></a>
                                         @endif
 
-                                        {{--<a class='btn btn-success pull-right' style="margin: 2px" href='http://127.0.0.1:8000/crm/fases?parent_table=customers&parent_columns=name&parent_id=3289&return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Fcustomers25%3Fm%3D62&foreign_key=customers_id&label=Phases'><i class="fa fa-step-forward"></i> Process</a>--}}
+                                        {{--<a class='btn btn-success pull-right' style="margin: 2px" href='http://ezcrm.us/crm/fases?parent_table=customers&parent_columns=name&parent_id=3289&return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Fcustomers25%3Fm%3D62&foreign_key=customers_id&label=Phases'><i class="fa fa-step-forward"></i> Process</a>--}}
                                         <a title="{{trans('crudbooster.send_email')}}" class='btn btn-success pull-right' style="margin: 2px" href='{{CRUDBooster::mainpath("send-email/$id")}}'><i class="fa fa-envelope"></i></a>
                                         <a title="{{trans('crudbooster.send_sms')}}" class='btn btn-primary pull-right' style="margin: 2px" href='{{CRUDBooster::mainpath("send-sms/$id")}}'><i class="glyphicon glyphicon-phone"></i></a>
                                         {{--<a title="Add Quote" class='btn btn-warning pull-right' style="margin: 2px" href='{{CRUDBooster::adminpath("customers25/quotes/$id")}}'><i class="fa fa-edit"></i></a>--}}
@@ -144,7 +144,7 @@
                                                     confirmButtonText: '{{trans('crudbooster.yes')}}',
                                                     cancelButtonText: '{{trans('crudbooster.no')}}',
                                                     closeOnConfirm: false },
-                                                    function(){  location.href='http://127.0.0.1:8000/crm/customers25/delete/{{ $id }}' });"><i class="fa fa-trash"></i>
+                                                    function(){  location.href='http://ezcrm.us/crm/customers25/delete/{{ $id }}' });"><i class="fa fa-trash"></i>
                                             </a>
                                         <a title="{{trans('crudbooster.edit')}}" class='btn btn-success pull-right' style="margin: 2px" href='{{CRUDBooster::adminpath("customers25/edit/$id")}}'><i class="fa fa-pencil"></i></a>
                                 </tr>
@@ -287,8 +287,7 @@
                                             <td>{{$quote->financing}}</td>
                                             <td>{{$quote->truck_aprox_price}}</td>
                                             <td style="text-align: center;">
-                                                <a title="Print" class='btn btn-danger btn-sm' href='{{CRUDBooster::adminPath("orders/print-quote/$quote->id")}}'><i class="fa fa-print"></i></a>
-                                                {{--<a title="{{trans('crudbooster.print')}}" class='btn btn-danger btn-sm' href='#'><i class="fa fa-print"></i></a>--}}
+                                                <a title="Print" target="_blank" class='btn btn-danger btn-sm' href='{{CRUDBooster::adminPath("orders/print-quote/$quote->id")}}'><i class="fa fa-print"></i></a>
                                                 <a title="{{trans('crudbooster.back_to_history')}}" class='btn btn-success btn-sm' href='{{CRUDBooster::adminPath("orders/change-quotes/$quote->id")}}'><i class="fa fa-arrow-left"></i></a>
                                                 <a title="{{trans('crudbooster.invoice')}}" class='btn btn-yahoo btn-sm' href='{{CRUDBooster::mainpath("create-invoice/$quote->id")}}'><i class="fa fa-hand-o-right"></i></a>
                                                 <a title="{{trans('crudbooster.current_phases')}}" class='btn btn-twitter btn-sm' href='{{CRUDBooster::adminpath("orders/detail/$quote->id")}}'><i class="fa fa-clock-o"></i></a>
@@ -367,7 +366,7 @@
                                                         confirmButtonText: '{{trans('crudbooster.yes')}}',
                                                         cancelButtonText: '{{trans('crudbooster.no')}}',
                                                         closeOnConfirm: false },
-                                                        function(){  location.href='http://127.0.0.1:8000/crm/orders/delete/{{ $quote->id }}' });"><i class="fa fa-trash"></i>
+                                                        function(){  location.href='http://ezcrm.us/crm/orders/delete/{{ $quote->id }}' });"><i class="fa fa-trash"></i>
                                                 </a>
                                             </td>
                                         </tr>
@@ -419,8 +418,8 @@
                                 <td>{{$task->date}}</td>
                                 <td>{{$task->created_at}}</td>
                                 <td style="text-align: center">
-                                    <a class="btn btn-xs btn-primary btn-detail" title="{{trans('crudbooster.detail')}}" href="http://127.0.0.1:8000/crm/eazy_tasks_clients/detail/{{$task->id}}?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fcrm%2Feazy_tasks_clients%3Fforeign_key%3Dclients_id%26label%3DTasks%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dclients%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fcrm%252Fclients%253Fm%253D50"><i class="fa fa-eye"></i></a>
-                                    <a class="btn btn-xs btn-success btn-edit" title="{{trans('crudbooster.edit')}}" href="http://127.0.0.1:8000/crm/eazy_tasks_clients/edit/{{$task->id}}?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fcrm%2Feazy_tasks_clients%3Fforeign_key%3Dclients_id%26label%3DTasks%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dclients%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fcrm%252Fclients%253Fm%253D50&parent_id=3288&parent_field="><i class="fa fa-pencil"></i></a>
+                                    <a class="btn btn-xs btn-primary btn-detail" title="{{trans('crudbooster.detail')}}" href="http://ezcrm.us/crm/eazy_tasks_clients/detail/{{$task->id}}?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fcrm%2Feazy_tasks_clients%3Fforeign_key%3Dclients_id%26label%3DTasks%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dclients%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fcrm%252Fclients%253Fm%253D50"><i class="fa fa-eye"></i></a>
+                                    <a class="btn btn-xs btn-success btn-edit" title="{{trans('crudbooster.edit')}}" href="http://ezcrm.us/crm/eazy_tasks_clients/edit/{{$task->id}}?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fcrm%2Feazy_tasks_clients%3Fforeign_key%3Dclients_id%26label%3DTasks%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dclients%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fcrm%252Fclients%253Fm%253D50&parent_id=3288&parent_field="><i class="fa fa-pencil"></i></a>
                                     <a class="btn btn-xs btn-warning btn-delete" title="{{trans('crudbooster.delete')}}" href="javascript:;" onclick="swal({
                                             title: '{{trans('crudbooster.are_you_sure')}}',
                                             text: '{{trans('crudbooster.message_delete')}}',
@@ -445,7 +444,7 @@
 
                 <div class='panel panel-default'>
                     <div class='panel-heading' style="background-color: #337ab7; color: white;"><strong><i class="fa fa-file-text-o"></i> {{trans('crudbooster.Notes')}}</strong></div>
-                    {{--<a title="{{trans('crudbooster.add_note')}}" class='btn btn-danger pull-right' style="margin: 2px" href='http://127.0.0.1:8000/crm/eazy_notes/add?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Fnotes%3Fforeign_key%3Dcustomers_id%26label%3DNotes%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dcustomers%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Fcustomers%253Fm%253D50&parent_id={{$id}}&parent_field=customers_id'><i class="fa fa-file-text-o"></i></a>--}}
+                    {{--<a title="{{trans('crudbooster.add_note')}}" class='btn btn-danger pull-right' style="margin: 2px" href='http://ezcrm.us/crm/eazy_notes/add?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Fnotes%3Fforeign_key%3Dcustomers_id%26label%3DNotes%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dcustomers%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Fcustomers%253Fm%253D50&parent_id={{$id}}&parent_field=customers_id'><i class="fa fa-file-text-o"></i></a>--}}
                 </div>
 
                     <?php
@@ -471,7 +470,7 @@
                                                 confirmButtonText: '{{trans('crudbooster.yes')}}',
                                                 cancelButtonText: '{{trans('crudbooster.no')}}',
                                                 closeOnConfirm: false },
-                                                function(){  location.href='http://127.0.0.1:8000/crm/notes/delete/{{ $note->id }}' });"><i class="fa fa-trash"></i>
+                                                function(){  location.href='http://ezcrm.us/crm/notes/delete/{{ $note->id }}' });"><i class="fa fa-trash"></i>
                                         </a>
                                     </div>
                                 </div>

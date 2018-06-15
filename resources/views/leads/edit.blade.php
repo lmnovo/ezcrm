@@ -457,7 +457,7 @@
                     <div class="col-sm-10">
 
 
-                        <a href="http://127.0.0.1:8000/crm/customers25?" class="btn btn-default"><i class="fa fa-chevron-circle-left"></i> Back</a>
+                        <a href="http://ezcrm.us/crm/customers25?" class="btn btn-default"><i class="fa fa-chevron-circle-left"></i> Back</a>
 
 
                         <input type="submit" name="submit" value="Save" class="btn btn-success">

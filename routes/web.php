@@ -136,7 +136,7 @@ use Carbon\Carbon;
                     // Add color and link on event
                     [
                         'color' => $color->description,
-                        'url' => 'http://127.0.0.1:8000/crm/eazy_tasks/detail/'.$value->id,
+                        'url' => 'http://ezcrm.us/crm/eazy_tasks/detail/'.$value->id,
                     ]
                 );
             }
@@ -171,14 +171,14 @@ use Carbon\Carbon;
             if (!empty($quote_updated)) {
                 //Para el cálculo de las Ganancias debemos obtener la mitad del precio del TRUCK, TRAILER, CART, etc
                 if($quote_updated->price_item == 0 || $quote_updated->price_item == null) {
-                    $ganancias += floatval($quote_updated->truck_price_range) / 2;
+                    $ganancias += floatval($quote_updated->truck_price_range) * 30 / 100;
                 } else {
-                    $ganancias += floatval($quote_updated->price_item) / 2;
+                    $ganancias += floatval($quote_updated->price_item) * 30 / 100;
                 }
 
                 //Para el cálculo de las Ganancias debemos obtener la mitad del precio del Buildout
                 if($quote_updated->precio_builout != 0) {
-                    $ganancias += floatval($quote_updated->precio_builout) / 2;
+                    $ganancias += floatval($quote_updated->precio_builout) * 30 / 100;
                 }
 
                 $profits  = DB::table('truck_items')->where('id_truck', $quotes[$i]->id)->get();

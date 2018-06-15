@@ -1,24 +1,24 @@
 @extends('crudbooster::admin_template')
 @section('content')
 
-    <script src='http://127.0.0.1:8000/p/jquery-ui.custom.min.js'></script>
-    <script src="http://127.0.0.1:8000/p/jquery.ui.touch-punch.min.js"></script>
-    <script src="http://127.0.0.1:8000/p/chosen.jquery.min.js"></script>
-    <script src="http://127.0.0.1:8000/p/spinbox.min.js"></script>
-    <script src="http://127.0.0.1:8000/p/bootstrap-datepicker.min.js"></script>
-    {{--<script src="http://127.0.0.1:8000/p/bootstrap-timepicker.min.js"></script>--}}
-    <script src="http://127.0.0.1:8000/p/moment.min.js"></script>
-    <script src="http://127.0.0.1:8000/p/daterangepicker.min.js"></script>
-    <script src="http://127.0.0.1:8000/p/bootstrap-datetimepicker.min.js"></script>
-    <script src="http://127.0.0.1:8000/p/bootstrap-colorpicker.min.js"></script>
-    <script src="http://127.0.0.1:8000/p/jquery.knob.min.js"></script>
-    <script src="http://127.0.0.1:8000/p/autosize.min.js"></script>
-    <script src="http://127.0.0.1:8000/p/jquery.inputlimiter.min.js"></script>
-    <script src="http://127.0.0.1:8000/p/bootstrap-tag.min.js"></script>
+    <script src='http://ezcrm.us/p/jquery-ui.custom.min.js'></script>
+    <script src="http://ezcrm.us/p/jquery.ui.touch-punch.min.js"></script>
+    <script src="http://ezcrm.us/p/chosen.jquery.min.js"></script>
+    <script src="http://ezcrm.us/p/spinbox.min.js"></script>
+    <script src="http://ezcrm.us/p/bootstrap-datepicker.min.js"></script>
+    {{--<script src="http://ezcrm.us/p/bootstrap-timepicker.min.js"></script>--}}
+    <script src="http://ezcrm.us/p/moment.min.js"></script>
+    <script src="http://ezcrm.us/p/daterangepicker.min.js"></script>
+    <script src="http://ezcrm.us/p/bootstrap-datetimepicker.min.js"></script>
+    <script src="http://ezcrm.us/p/bootstrap-colorpicker.min.js"></script>
+    <script src="http://ezcrm.us/p/jquery.knob.min.js"></script>
+    <script src="http://ezcrm.us/p/autosize.min.js"></script>
+    <script src="http://ezcrm.us/p/jquery.inputlimiter.min.js"></script>
+    <script src="http://ezcrm.us/p/bootstrap-tag.min.js"></script>
 
     <!-- ace scripts -->
-    <script src="http://127.0.0.1:8000/p/ace-elements.min.js"></script>
-    <script src="http://127.0.0.1:8000/p/ace.min.js"></script>
+    <script src="http://ezcrm.us/p/ace-elements.min.js"></script>
+    <script src="http://ezcrm.us/p/ace.min.js"></script>
 
     <script>
         $(document).ready(function()
@@ -27,9 +27,17 @@
             $('#newApplianceModal').on('click','#edit_category_new',function(){
                 $('#newCategoryApplianceModal').modal('show');
                 $('#newApplianceModal').modal('hide');
-
             });
 
+            $('#newApplianceModal').on('click','#edit_product_new',function(){
+                $('#newSubCategoryApplianceModal').modal('show');
+                $('#newApplianceModal').modal('hide');
+            });
+
+            $('#applianceModal').on('click','#edit_product_new',function(){
+                $('#newSubCategoryApplianceModal').modal('show');
+                $('#applianceModal').modal('hide');
+            });
 
             $("body").on("click",".upload-image",function(e){
                 $(this).parents("form").ajaxForm(options);
@@ -91,7 +99,7 @@
                     $('#total_appliance').html(nuevovalor * $('#price_appliance').text());
                     td.html("<span>"+nuevovalor+"</span>");
                     $("td:not(#id)").addClass("editable");
-                    window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/'+msg;
+                    window.location.href = 'http://ezcrm.us/crm/orders/edit/'+msg;
                 });
             });
 
@@ -572,7 +580,7 @@
                                             confirmButtonText: '{{trans('crudbooster.yes')}}',
                                             cancelButtonText: '{{trans('crudbooster.no')}}',
                                             closeOnConfirm: false },
-                                            function(){  location.href='http://127.0.0.1:8000/crm/notes_quotes/delete/{{ $note->id }}' });"><i class="fa fa-trash"></i>
+                                            function(){  location.href='http://ezcrm.us/crm/notes_quotes/delete/{{ $note->id }}' });"><i class="fa fa-trash"></i>
                                     </a>
                                 </div>
                             </div>
@@ -603,7 +611,7 @@
             <button type="submit" id="check_send_email" title="{{trans('crudbooster.save_and_submit')}}" class="btn btn-primary"><i class="fa fa-envelope"></i></button>
             <a class="btn btn-yahoo" title="{{trans('crudbooster.create_invoice')}}" style="margin: 2px" href="{{CRUDBooster::mainpath("create-invoice/$id")}}"><i class="fa fa-hand-o-right"></i> </a>
             <a title="{{trans('crudbooster.send_email')}}" id="send-email-personal" class="btn btn-success" style="margin: 2px" href="#"><i class="fa fa-envelope-o"></i></a>
-            <a title="{{trans('crudbooster.print')}}" class='btn btn-danger' href='{{CRUDBooster::adminPath("orders/print-quote/$id")}}'><i class="fa fa-print"></i></a>
+            <a title="{{trans('crudbooster.print')}}" class='btn btn-danger' target="_blank" href='{{CRUDBooster::adminPath("orders/print-quote/$id")}}'><i class="fa fa-print"></i></a>
         </div>
 
         </form>
@@ -722,28 +730,28 @@
                             <div class="col-md-7">
                                 <div class="form-group">
                                     <label for="appliance" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.category')}}</label>
-                                    <div class="col-md-9">
+                                    <div class="col-md-8">
                                         <select class="form-control" id="appliance" name="appliance" placeholder="Select" style="width: 100%" required="required">
                                         </select>
                                     </div>
-                                    {{--<div class="col-md-1">
-                                        <a href="{{CRUDBooster::adminpath("appliances_categories/add")}}" target="_blank" title="Add Category" id="" class="btn btn-success btn-sm">
-                                            <i class="fa fa-plus-circle"></i>
+                                    <div class="col-md-1">
+                                        <a href="#" title="" id="edit_appliance_new" class="btn btn-success btn-sm">
+                                            <i class="glyphicon glyphicon-plus-sign"></i>
                                         </a>
-                                    </div>--}}
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="product" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.appliance')}}</label>
-                                    <div class="col-md-9">
+                                    <div class="col-md-8">
                                         <select class="form-control" id="product" name="product" placeholder="Select" style="width: 100%" required>
                                         </select>
                                     </div>
-                                    {{--<div class="col-md-1">
-                                        <a href="{{CRUDBooster::adminpath("appliances_inside/add")}}" target="_blank" title="Add Appliance" id="" class="btn btn-success btn-sm">
-                                            <i class="fa fa-plus-circle"></i>
+                                    <div class="col-md-1">
+                                        <a title="" id="edit_product_new" class="btn btn-success btn-sm">
+                                            <i class="glyphicon glyphicon-plus-sign"></i>
                                         </a>
-                                    </div>--}}
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
@@ -768,10 +776,10 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="price2" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.price')}}</label>
+                                    <label for="price2" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.cost')}}</label>
                                     <div class="col-md-9 col-xs-12 col-sm-9">
                                         <div class="input-group">
-                                            <input class="form-control number" id="price2" name="price2"  placeholder="{{trans('crudbooster.price')}}" type="text" required disabled/>
+                                            <input class="form-control number" id="price2" name="price2"  placeholder="{{trans('crudbooster.cost_price')}}" type="text" required disabled/>
                                             <span class="input-group-btn">
                                                 <button class="btn btn-default" type="button" id="edit_precio"><span class="glyphicon glyphicon-edit"></span></button>
                                                 <button class="btn btn-default" type="button" id="save_precio" style="display: none;"><span class="glyphicon glyphicon-floppy-disk"></span></button>
@@ -844,7 +852,7 @@
                                     </div>
                                     <div class="col-md-1">
                                         <a title="" id="edit_category_new" class="btn btn-success btn-sm">
-                                            <i class="glyphicon glyphicon-edit"></i>
+                                            <i class="glyphicon glyphicon-plus-sign"></i>
                                         </a>
                                     </div>
                                 </div>
@@ -856,8 +864,8 @@
                                         </select>
                                     </div>
                                     <div class="col-md-1">
-                                        <a href="#" title="" id="edit_appliance_new" class="btn btn-success btn-sm">
-                                            <i class="glyphicon glyphicon-edit"></i>
+                                        <a title="" id="edit_product_new" class="btn btn-success btn-sm">
+                                            <i class="glyphicon glyphicon-plus-sign"></i>
                                         </a>
                                     </div>
                                 </div>

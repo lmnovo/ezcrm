@@ -226,7 +226,7 @@
                             type:  'get',
                             dataType: 'json',
                             success : function(data) {
-                                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/'+quotes_id;                                                        
+                                window.location.href = 'http://ezcrm.us/crm/orders/edit/'+quotes_id;                                                        
                             }
                          });  
                     });                    
@@ -742,9 +742,9 @@
                                  $('#total').val(data[0].price);                                 
                                 
                                  if(data[0].imagen==null) 
-                                   $('#imagen').attr('src','http://127.0.0.1:8000/assets/images/appliances/no_photo.jpg');
+                                   $('#imagen').attr('src','http://ezcrm.us/assets/images/appliances/no_photo.jpg');
                                  else
-                                   $('#imagen').attr('src','http://127.0.0.1:8000/assets/images/appliances/'+data[0].imagen);
+                                   $('#imagen').attr('src','http://ezcrm.us/assets/images/appliances/'+data[0].imagen);
                                    $('#modal-loading').modal('hide');
                                    
                                    updateTotales()
@@ -860,7 +860,7 @@
                        $('#appliance').val('');
                        $('#product').val('');
                        $('#appliance_inside_category').val(''); 
-                       $('#imagen').attr('src','http://127.0.0.1:8000/assets/images/appliances/no_photo.jpg');
+                       $('#imagen').attr('src','http://ezcrm.us/assets/images/appliances/no_photo.jpg');
                        
                        actualizar_total();
                        $('#applianceModal').modal('hide');    
@@ -898,8 +898,26 @@
                             }                                
                             
                           }
-                       });
-                
+                       });                
+                    });
+                    
+                    $('#applianceModal').on('click','#edit_appliance_new',function(){
+                        $('#applianceModal').modal('hide');
+                        $('#newSubCategoryApplianceModal').modal('show');
+                        $.ajax({
+                          url: '../appliancescategories/',
+                          data: '',
+                          type:  'get',
+                          dataType: 'json',
+                          success : function(data) {
+                            $('#appliance_subcategory').append('<option value=\"\"></option>'); 
+                            for(var i=0;i<data.length;i++)
+                            {
+                               $('#appliance_subcategory').append('<option value=\"'+data[i].id+'\">'+data[i].category+'</option>');
+                            }                                
+                            
+                          }
+                       });                
                     });
                     
                     function newApplianceModal() {
@@ -924,6 +942,7 @@
                     }           
                     
                     $('#newApplianceModal').on('change','#appliance_new',function(){
+                       $('#product_new').html('');
                        $('#modal-loading').modal('show');                       
                        $('#appliance_inside_category_new').val('');
                        $('#description_new').val('');
@@ -1222,6 +1241,46 @@
             $id = (CRUDBooster::isSuperadmin());
             $user_id = (CRUDBooster::myId());
 
+            //Calculo el profits para los últimos 10 quotes,
+            //previendo el cálculo de las quotes creadas en la app3d y webform
+            $quotes = DB::table('user_trucks')->where('is_active', 0)->limit(10)->orderby('id','DESC')->get();
+
+            for ($i=9; $i>=0; $i--) {
+                $quote_updated = DB::table('user_trucks')->where('id', $quotes[$i]->id)->first();
+
+                $ganancias = 0;
+
+                if (!empty($quote_updated)) {
+                    //Para el cálculo de las Ganancias debemos obtener la mitad del precio del TRUCK, TRAILER, CART, etc
+                    if($quote_updated->price_item == 0 || $quote_updated->price_item == null) {
+                        $ganancias += floatval($quote_updated->truck_price_range) * 30 / 100;
+                    } else {
+                        $ganancias += floatval($quote_updated->price_item) * 30 / 100;
+                    }
+
+                    //Para el cálculo de las Ganancias debemos obtener la mitad del precio del Buildout
+                    if($quote_updated->precio_builout != 0) {
+                        $ganancias += floatval($quote_updated->precio_builout) * 30 / 100;
+                    }
+
+                    $profits  = DB::table('truck_items')->where('id_truck', $quotes[$i]->id)->get();
+
+                    foreach ($profits as $profit) {
+                        $precio = DB::table('appliance_inside_category')->where('name', $profit->item_subcategory)->first();
+                        $precio = ($precio->price) - ($precio->retail_price);
+                        $ganancias += $precio;
+                    }
+
+                    if (empty($quote_updated->truck_aprox_price)) {
+                        $ganancias = 0;
+                    } else {
+                        $ganancias = round(($ganancias * 100 / floatval($quote_updated->truck_aprox_price)), 2);
+                    }
+
+                    DB::table('user_trucks')->where('id', $quotes[$i]->id)->update(['profits' => floatval($ganancias)]);
+                }
+            }
+
             if ($id != 1) {
                 $query->join('account', 'account.id', '=', 'user_trucks.id_account')
                     ->where('account.id_usuario', $user_id)
@@ -1235,6 +1294,8 @@
                     ->where('user_trucks.is_active', 0)
                 ;
             }
+
+
 
 	    }
 
@@ -2225,7 +2286,7 @@
                         $subject = trans("crudbooster.text_steps_first");
 
                         $html = "<p>".trans("crudbooster.text_dear")." $usuario_email->fullname, ".trans("crudbooster.text_steps_first")."</p>
-                                   <a href='http://127.0.0.1:8000/crm/orders/detail/$id'>".trans("crudbooster.text_details_here")."</a>
+                                   <a href='http://ezcrm.us/crm/orders/detail/$id'>".trans("crudbooster.text_details_here")."</a>
                             <p>".trans("crudbooster.phase_sign")." Chef Units</p>";
 
                         //Send Email with notification End Step
@@ -2453,7 +2514,7 @@
                         $subject = trans("crudbooster.text_steps_first");
 
                         $html = "<p>".trans("crudbooster.text_dear")." $usuario_email->fullname, ".trans("crudbooster.text_steps_first")."</p>
-                                   <a href='http://127.0.0.1:8000/crm/orders/detail/$id'>".trans("crudbooster.text_details_here")."</a>
+                                   <a href='http://ezcrm.us/crm/orders/detail/$id'>".trans("crudbooster.text_details_here")."</a>
                             <p>".trans("crudbooster.phase_sign")." Chef Units</p>";
 
                         //Send Email with notification End Step
@@ -3294,16 +3355,17 @@
             $quote_updated = DB::table('user_trucks')->where('id', $orders_id)->first();
             $ganancias = 0;
 
-            //Para el cálculo de las Ganancias debemos obtener la mitad del precio del TRUCK, TRAILER, CART, etc
+            //Para el cálculo de las Ganancias debemos obtener el 30% del precio del TRUCK, TRAILER, CART, etc
             if($quote_updated->price_item == 0 || $quote_updated->price_item == null) {
-                $ganancias += floatval($quote_updated->truck_price_range) / 2;
+                $ganancias += floatval($quote_updated->truck_price_range) * 30 / 100;
+
             } else {
-                $ganancias += floatval($quote_updated->price_item) / 2;
+                $ganancias += floatval($quote_updated->price_item) * 30 / 100;
             }
 
-            //Para el cálculo de las Ganancias debemos obtener la mitad del precio del Buildout
+            //Para el cálculo de las Ganancias debemos obtener el 30% del precio del Buildout
             if($quote_updated->precio_builout != 0) {
-                $ganancias += floatval($quote_updated->precio_builout) / 2;
+                $ganancias += floatval($quote_updated->precio_builout) * 30 / 100;
             }
 
             $profits  = DB::table('truck_items')->where('id_truck', $orders_id)->get();
@@ -3580,16 +3642,8 @@
         }
 
         public function getApplianceslist(\Illuminate\Http\Request $request) {
-            $categoria=$request->get('categoria');
-
-            /*$data = DB::table('appliances_inside_categories')
-                ->select(\Illuminate\Support\Facades\DB::raw('appliances_inside_categories.name as name'), 'appliances_inside_categories.id')
-                ->join('appliances_categories', 'appliances_categories.id', '=', 'appliances_inside_categories.appliances_categories_id')
-                ->where('appliances_inside_categories.appliances_categories_id', $categoria)
-                ->get();*/
-
             $data = DB::table('appliance_inside')
-                ->where('id_appliance', $categoria)
+                ->where('id_appliance', $request->get('categoria'))
                 ->where('id_type', 4)
                 ->get();
 
