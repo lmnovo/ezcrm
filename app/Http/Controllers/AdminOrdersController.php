@@ -551,9 +551,8 @@
                         
                         updateTotales()               
                     });
-                   
-                    $('#new').on('click',function(){ 
-                         var interesting = $('#interesting').val(); 
+                    
+                    function cleanApplianceModal() {
                          $('#appliance').html('');
                          $('#select2-appliance-container').html('');                         
                          $('#product').html('');                         
@@ -564,6 +563,11 @@
                          $('#price2').val('');
                          $('#quantity').val('');
                          $('#total').val('');
+                    }
+                   
+                    $('#new').on('click',function(){ 
+                         var interesting = $('#interesting').val(); 
+                         cleanApplianceModal();
                          $('#modal-loading').modal('show');
     
                          $.ajax({
@@ -603,13 +607,10 @@
                                     if(data == 1) {
                                         $('#newCategoryApplianceModal').modal('hide');
                                         $('#category_category_name').val('');
-                                        newApplianceModal();
-                                        
+                                        applianceModal();                                        
                                     }                                                                                                  
                                 }
-                             });    
-                             
-                                      
+                             });      
                     });
                     
                     
@@ -644,7 +645,7 @@
                                           }
                                        });
                                         
-                                        $('#newApplianceModal').modal('show');
+                                        $('#applianceModal').modal('show');
                                                                                 
                                     }                                                                                                  
                                 }
@@ -903,7 +904,7 @@
                     
                     $('#applianceModal').on('click','#edit_appliance_new',function(){
                         $('#applianceModal').modal('hide');
-                        $('#newSubCategoryApplianceModal').modal('show');
+                        $('#newCategoryApplianceModal').modal('show');
                         $.ajax({
                           url: '../appliancescategories/',
                           data: '',
@@ -919,6 +920,31 @@
                           }
                        });                
                     });
+                    
+                    $('#applianceModal').on('click','#edit_product_new',function(){
+                        $('#appliance_subcategory').html('');
+                        $('#select2-appliance_subcategory-container').html('**Select Data**');                         
+                        $('#subcategory_name').val('');
+                        
+                        $('#applianceModal').modal('hide');
+                        
+                        $.ajax({
+                          url: '../appliancescategories/',
+                          data: '',
+                          type:  'get',
+                          dataType: 'json',
+                          success : function(data) {
+                            $('#appliance_subcategory').append('<option value=\"\"></option>'); 
+                            for(var i=0;i<data.length;i++)
+                            {
+                               $('#appliance_subcategory').append('<option value=\"'+data[i].id+'\">'+data[i].category+'</option>');
+                            }    
+                            
+                            $('#newSubCategoryApplianceModal').modal('show');                         
+                            
+                          }
+                       });                
+                    });                    
                     
                     function newApplianceModal() {
                         $('#applianceModal').modal('hide');                                             
@@ -939,6 +965,27 @@
                        });
                         
                         $('#newApplianceModal').modal('show');
+                    }    
+                    
+                    function applianceModal() {
+                        cleanApplianceModal();
+                       
+                        $.ajax({
+                          url: '../appliancescategories/',
+                          data: '',
+                          type:  'get',
+                          dataType: 'json',
+                          success : function(data) {
+                            $('#appliance').append('<option value=\"\"></option>'); 
+                            for(var i=0;i<data.length;i++)
+                            {
+                               $('#appliance').append('<option value=\"'+data[i].id+'\">'+data[i].category+'</option>');
+                            }                                  
+                            
+                          }
+                       });
+                        
+                        $('#applianceModal').modal('show');
                     }           
                     
                     $('#newApplianceModal').on('change','#appliance_new',function(){
@@ -3062,6 +3109,14 @@
 
             $data['notes'] = DB::table('eazy_notes_quotes')->where('quotes_id', $id)->where('deleted_at', null)->get();
 
+            $data['subcategories'] = DB::table('appliance_inside')
+                ->select(\Illuminate\Support\Facades\DB::raw('appliance_inside.name as name'), 'appliance.category as category'
+                    , 'appliance.id as id_appliance', 'appliance_inside.id as id_appliance_inside')
+                ->join('appliance', 'appliance.id', '=', 'appliance_inside.id_appliance')
+                ->where('appliance_inside.id_type',4)
+                ->where('appliance_inside.deleted_at', null)
+                ->get();
+
             $this->cbView('quotes.create',$data);
         }
 
@@ -3434,11 +3489,43 @@
             return $data;
 	    }
 
+	    //Funcion que permite guardar las "Category" de "Appliance"
+        public function getEditcategory(\Illuminate\Http\Request $request) {
+            DB::table('appliance')->where('id', $request->get('id'))->update([$request->get('campo') => $request->get('valor')]);
+
+            return $request->get('id');
+        }
+
+        //Funcion que permite guardar las "Subcategorías" de "Appliance Inside"
+        public function getEditapplianceinside(\Illuminate\Http\Request $request) {
+            DB::table('appliance_inside')->where('id', $request->get('id'))->update([$request->get('campo') => $request->get('valor')]);
+
+            return $request->get('id');
+        }
+
         //Función que permite guardar el "Precio" de la "Appliance"
         public function getUpdateprecio(\Illuminate\Http\Request $request) {
             $price= $request->get('precio');
             $id= $request->get('id');
             $data = DB::table('appliance_inside_category')->where('id', $id)->update(['price' => $price]);
+
+            return $data;
+        }
+
+        //Función que permite modificar el "Appliance" de "Appliance Inside"
+        public function getSaveappliance(\Illuminate\Http\Request $request) {
+
+            $data = DB::table('appliance_inside')->where('id', $request->get('id_appliance_inside'))->update(['id_appliance' => $request->get('valor')]);
+            $data = DB::table('appliance')->where('id', $request->get('valor'))->first();
+
+            return $data->category;
+        }
+
+        //Obtiene el listado de los appliances existentes en bd
+        public function getAppliances() {
+            $data = DB::table('appliance')
+                ->select('id','category')
+                ->get();
 
             return $data;
         }

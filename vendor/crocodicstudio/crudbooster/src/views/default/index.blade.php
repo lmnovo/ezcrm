@@ -19,7 +19,6 @@
                 var col = $d.parent().children().index($d);
                 var row = $d.parent().parent().children().index($d.parent());
 
-
                 //Editando el campo "Status" en el listado de "Proyects"
                 var col_text = $('th:nth-child(5)').text();
                 var patternEnglish = /.*Step/;

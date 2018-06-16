@@ -23,19 +23,27 @@
     <script>
         $(document).ready(function()
         {
+            $('#table_edit_categories').dataTable( {
+                "aaSorting": [[ 0, "desc" ]],
+            } );
+
+            $('#table_edit_products').dataTable( {
+                "aaSorting": [[ 0, "desc" ]],
+                "bPaginate": 5,
+            } );
 
             $('#newApplianceModal').on('click','#edit_category_new',function(){
                 $('#newCategoryApplianceModal').modal('show');
                 $('#newApplianceModal').modal('hide');
             });
 
-            $('#newApplianceModal').on('click','#edit_product_new',function(){
-                $('#newSubCategoryApplianceModal').modal('show');
-                $('#newApplianceModal').modal('hide');
+            $('#applianceModal').on('click','#edit_appliance_edit',function(){
+                $('#modalEditApplianceList').modal('show');
+                $('#applianceModal').modal('hide');
             });
 
-            $('#applianceModal').on('click','#edit_product_new',function(){
-                $('#newSubCategoryApplianceModal').modal('show');
+            $('#applianceModal').on('click','#edit_product_edit',function(){
+                $('#modalEditProductList').modal('show');
                 $('#applianceModal').modal('hide');
             });
 
@@ -63,11 +71,169 @@
                 });
             }
 
+            //*******************************************************************************************
+            var selectedAnother = false;
+            //Editando dinámicamente en la tabla de subcategorías de appliances
+            var td_subcat_sub,campo_subcat_sub,valor_subcat_sub,id_subcat_sub;
+            $(document).on("click","td.editable_subcat_sub span",function(e)
+            {
+                if(selectedAnother == true) {
+                    td_subcat_sub.html("<span>"+valor_subcat_sub+"</span>");
+                    $("input:not(#id)").addClass("editable_subcat_sub");
+                }
 
+                selectedAnother = true;
+                $("input:not(#id)").removeClass("editable_subcat_sub");
+                td_subcat_sub=$(this).closest("td");
+                campo_subcat_sub=$(this).closest("td").data("campo");
+                valor_subcat_sub=$(this).text();
+                id_subcat_sub=$(this).closest("td").data("id");
+                td_subcat_sub.text("").html("<input type='text' name='"+campo_subcat_sub+"' value='"+valor_subcat_sub+"'>" +
+                    "<a class='enlace guardar_subcat_sub' href='#'><i class=\"fa fa-check-circle\"></i></a> " +
+                    "<a class='enlace cancelar_subcat_sub' href='#'><i class=\"fa fa-times-circle\"></i></a>")
+                ;
+            });
+            $(document).on("click",".cancelar_subcat_sub",function(e)
+            {
+                td_subcat_sub.html("<span>"+valor_subcat_sub+"</span>");
+                $("input:not(#id)").addClass("editable_subcat_sub");
+            });
+            $(document).on("click",".guardar_subcat_sub",function(e)
+            {
+                selectedAnother = false;
+                nuevovalor_subcat_sub=$(this).closest("td").find("input").val();
+                $.ajax({
+                    type: "GET",
+                    url: "../editapplianceinside",
+                    data: { campo: campo_subcat_sub, valor: nuevovalor_subcat_sub, id: id_subcat_sub }
+                })
+                    .done(function( msg ) {
+                        td_subcat_sub.html("<span>"+nuevovalor_subcat_sub+"</span>");
+                        $("td:not(#id)").addClass("editable_subcat_sub");
+                    });
+            });
+
+
+            //*******************************************************************************************
+            //Editando dinámicamente en la tabla de categorías de appliances
+            var selectedAnother = false;
+            var td_cat,campo_cat,valor_cat,id_cat;
+            $(document).on("click","td.editable_cat span",function(e)
+            {
+                if(selectedAnother == true) {
+                    td_cat.html("<span>"+valor_cat+"</span>");
+                    $("input:not(#id)").addClass("editable_cat");
+                }
+
+                selectedAnother = true;
+                $("input:not(#id)").removeClass("editable_cat");
+                td_cat=$(this).closest("td");
+                campo_cat=$(this).closest("td").data("campo");
+                valor_cat=$(this).text();
+                id_cat=$(this).closest("td").data("id");
+                td_cat.text("").html("<input type='text' name='"+campo_cat+"' value='"+valor_cat+"'>" +
+                    "<a class='enlace guardar_cat' href='#'><i class=\"fa fa-check-circle\"></i></a> " +
+                    "<a class='enlace cancelar_cat' href='#'><i class=\"fa fa-times-circle\"></i></a>")
+                ;
+            });
+            $(document).on("click",".cancelar_cat",function(e)
+            {
+                td_cat.html("<span>"+valor_cat+"</span>");
+                $("input:not(#id)").addClass("editable_cat");
+            });
+            $(document).on("click",".guardar_cat",function(e)
+            {
+                selectedAnother = false;
+                nuevovalor_cat=$(this).closest("td").find("input").val();
+                $.ajax({
+                    type: "GET",
+                    url: "../editcategory",
+                    data: { campo: campo_cat, valor: nuevovalor_cat, id: id_cat }
+                })
+                    .done(function( msg ) {
+                        td_cat.html("<span>"+nuevovalor_cat+"</span>");
+                        $("td:not(#id)").addClass("editable_cat");
+                    });
+            });
+
+            //*******************************************************************************************
+            //Editando dinámicamente en la tabla de subcategorías de appliance - Select category
+            var selectedAnother = false;
+            var datos_categories = '';
+            var td_select_cat,campo_select_cat,valor_select_cat,id_select_cat,id_appliance_inside;
+            $(document).on("click","td.editable_select_cat span",function(e)
+            {
+                if(selectedAnother == true) {
+                    td_select_cat.html(valor_select_cat);
+                }
+
+                selectedAnother = true;
+                //Reiniciamos el listado de users para el select
+                datos_categories = '';
+                campo_select_cat = 'id_appliance';
+                id_select_cat = $(this).html();
+                id_appliance_inside = $(this).closest("td").data("id_appliance_inside");
+                valor_select_cat = $(this).find("#id").val();
+                td_select_cat=$(this).closest("td");
+
+                //Obtener el listado de usuarios existentes en bd
+                $.ajax({
+                    type: "GET",
+                    url: "../appliances",
+                    data: { campo: campo_select_cat, valor: nuevovalor_category, id: id_select_cat, id_appliance_inside: id_appliance_inside }
+                })
+                    .done(function(data) {
+                        for(var i=0;i<data.length;i++)
+                        {
+                            if (valor_select_cat == data[i].category) {
+                                datos_categories += '<option selected="true" id='+data[i].id+' value='+data[i].id+' >'+data[i].category+'</option>';
+                            } else {
+                                datos_categories += '<option value='+data[i].id+' id='+data[i].id+' >'+data[i].category+'</option>';
+                            }
+                        }
+                        td_select_cat.text("").html("" +
+                            "<select class='form-control' id='cms_users' name='"+campo_select_cat+"' placeholder='Select' required>"
+                            + datos_categories +
+                            "</select>" +
+                            " <a class='enlace guardar_select_cat' href='#'><i class=\"fa fa-check-circle\"></i></a> " +
+                            "<a class='enlace cancelar_select_cat' href='#'><i class=\"fa fa-times-circle\"></i></a>");
+                    });
+
+
+            });
+            $(document).on("click",".cancelar_select_cat",function(e)
+            {
+                selectedAnother = false;
+                td_select_cat.html(valor_select_cat);
+            });
+
+            var nuevovalor_category;
+            $(document).on("click",".guardar_select_cat",function(e)
+            {
+                selectedAnother = false;
+                nuevovalor_category=$('#cms_users').val();
+
+                $.ajax({
+                    type: "GET",
+                    url: "../saveappliance",
+                    data: { campo: campo_select_cat, valor: nuevovalor_category, id_appliance_inside: id_appliance_inside }
+                })
+                    .done(function( data ) {
+                        td_select_cat.html(data);
+                    });
+            });
+
+            //Editando dinámicamente en la tabla de appliances
+            var selectedAnother = false;
             var td,campo,valor,id;
             $(document).on("click","td.editable span",function(e)
             {
-                e.preventDefault();
+                if(selectedAnother == true) {
+                    td.html("<span>"+valor+"</span>");
+                    $("input:not(#id)").addClass("editable");
+                }
+
+                selectedAnother = true;
                 $("input:not(#id)").removeClass("editable");
                 td=$(this).closest("td");
                 campo=$(this).closest("td").data("campo");
@@ -78,29 +244,26 @@
                     "<a class='enlace cancelar' href='#'><i class=\"fa fa-times-circle\"></i></a>")
                 ;
             });
-
             $(document).on("click",".cancelar",function(e)
             {
-                e.preventDefault();
                 td.html("<span>"+valor+"</span>");
                 $("input:not(#id)").addClass("editable");
             });
-
             $(document).on("click",".guardar",function(e)
             {
-                e.preventDefault();
+                selectedAnother = false;
                 nuevovalor=$(this).closest("td").find("input").val();
                 $.ajax({
                     type: "GET",
                     url: "../editquote",
                     data: { campo: campo, valor: nuevovalor, id: id }
                 })
-                .done(function( msg ) {
-                    $('#total_appliance').html(nuevovalor * $('#price_appliance').text());
-                    td.html("<span>"+nuevovalor+"</span>");
-                    $("td:not(#id)").addClass("editable");
-                    window.location.href = 'http://ezcrm.us/crm/orders/edit/'+msg;
-                });
+                    .done(function( msg ) {
+                        $('#total_appliance').html(nuevovalor * $('#price_appliance').text());
+                        td.html("<span>"+nuevovalor+"</span>");
+                        $("td:not(#id)").addClass("editable");
+                        window.location.href = 'http://ezcrm.us/crm/orders/edit/'+msg;
+                    });
             });
 
         });
@@ -231,8 +394,6 @@
 
     </div>
 
-
-
     <div id="loading"></div>
 
         <div class='panel panel-default'>
@@ -285,20 +446,16 @@
 
         </div>
     </div>
-
         <div class='panel panel-default'>
         <div class='panel-heading' style="background-color: #337ab7; color: white;">
             <strong><i class="fa fa-product-hunt"></i> {{trans('crudbooster.buildout')}}  </strong>
         </div>
-
             <div class="row">
                 <div class='col-sm-4'>
                     <button id="newBuildout" style="margin-left: 20px; margin-top: 20px;" class="btn btn-success pull-left" type="button" ><i class="fa fa-bars"></i> {{trans('crudbooster.add_buildout')}} </button>
                 </div>
             </div>
             <div class='panel-body'>
-
-
                 <div class="row">
                     <div class='col-sm-4'>
                         <label>{{trans('crudbooster.buildout')}}*</label>
@@ -324,11 +481,9 @@
                         <textarea id='buildout_description' name='buildout_description' contenteditable="true" class='form-control wysiwyg'>{{ $quotes->desc_buildout }}</textarea>
                     </div>
                 </div>
-
                 <div class="row">
 
                 </div>
-
         </div>
     </div>
 
@@ -553,7 +708,6 @@
             </div>
         </div>
 
-
         <div class='panel panel-default'>
             <div class='panel-heading' style="background-color: #337ab7; color: white;"><strong><i class="fa fa-file-text-o"></i> {{trans('crudbooster.Notes')}}</strong></div>
             <div class='panel-body'>
@@ -619,7 +773,7 @@
     </div>
 
 
-    <div class="modal fade" id="modal-loading">
+    <div class="modal fade" id="modal-loading" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-body">
                 <img style="width: 64px;" src="<?php echo e(asset('assets/images/loading.gif')); ?>" alt="Loading">
@@ -730,26 +884,32 @@
                             <div class="col-md-7">
                                 <div class="form-group">
                                     <label for="appliance" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.category')}}</label>
-                                    <div class="col-md-8">
+                                    <div class="col-md-7">
                                         <select class="form-control" id="appliance" name="appliance" placeholder="Select" style="width: 100%" required="required">
                                         </select>
                                     </div>
-                                    <div class="col-md-1">
+                                    <div class="col-md-2">
                                         <a href="#" title="" id="edit_appliance_new" class="btn btn-success btn-sm">
                                             <i class="glyphicon glyphicon-plus-sign"></i>
+                                        </a>
+                                        <a href="#" title="" id="edit_appliance_edit" class="btn btn-success btn-sm">
+                                            <i class="glyphicon glyphicon-edit"></i>
                                         </a>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="product" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.appliance')}}</label>
-                                    <div class="col-md-8">
+                                    <div class="col-md-7">
                                         <select class="form-control" id="product" name="product" placeholder="Select" style="width: 100%" required>
                                         </select>
                                     </div>
-                                    <div class="col-md-1">
+                                    <div class="col-md-2">
                                         <a title="" id="edit_product_new" class="btn btn-success btn-sm">
                                             <i class="glyphicon glyphicon-plus-sign"></i>
+                                        </a>
+                                        <a href="#" title="" id="edit_product_edit" class="btn btn-success btn-sm">
+                                            <i class="glyphicon glyphicon-edit"></i>
                                         </a>
                                     </div>
                                 </div>
@@ -887,7 +1047,9 @@
                                 <div class="form-group">
                                     <label class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.cost')}}*</label>
                                     <div class="col-md-9">
-                                        <input required class="form-control number" id="price2_new" name="price2_new"  placeholder="{{trans('crudbooster.cost_price')}}" type="text"/>
+                                            <input type="text" title="Sell Price" required="" class="form-control inputMoney" placeholder="{{trans('crudbooster.cost_price')}}" name="price2_new" id="price2_new" value="">
+                                            <div class="text-danger"></div>
+                                            <p class="help-block"></p>
                                     </div>
                                 </div>
 
@@ -936,10 +1098,9 @@
                             <form id="form_product" data-parsley-validate  action="" method="post" class="form-horizontal">
                                 <div class="form-group">
                                     <label for="category_category_name" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.category')}}</label>
-                                    <div class="col-md-9">
+                                    <div class="col-md-12">
                                         <div class="input-group">
-                                            <input class="form-control number" id="category_category_name" name="category_category_name"  placeholder="{{trans('crudbooster.category')}}" type="text"/>
-
+                                            <input class="form-control" id="category_category_name" name="category_category_name" style="width: 100%;"  placeholder="{{trans('crudbooster.category')}}" type="text"/>
                                         </div>
                                     </div>
                                 </div>
@@ -949,7 +1110,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-dark" id="closeCategoryCategory">{{trans('crudbooster.close')}}</button>
+                    {{--<button type="button" class="btn btn-dark" id="closeCategoryCategory">{{trans('crudbooster.close')}}</button>--}}
                     <button type="submit" class="btn btn-primary" id="addCategoryCategory">{{trans('crudbooster.save')}}</button>
                 </div>
 
@@ -992,7 +1153,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-dark" id="closeSubCategory">{{trans('crudbooster.close')}}</button>
+                    {{--<button type="button" class="btn btn-dark" id="closeSubCategory">{{trans('crudbooster.close')}}</button>--}}
                     <button type="submit" class="btn btn-primary" id="addSubCategory">{{trans('crudbooster.save')}}</button>
                 </div>
 
@@ -1043,6 +1204,89 @@
         </div><!-- /.modal-dialog -->
     </div>
 
+    <div class="modal fade" tabindex="-1" role="dialog" id="modalEditApplianceList">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #337ab7; color: white;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{{trans('crudbooster.editing_categories')}}</h4>
+                </div>
+
+                <div class="modal-body">
+                    <table id='table_edit_categories'class="table table-striped table-responsive table-bordered" cellspacing="0">
+                        <thead>
+                        <tr class="active">
+                            <th width='auto'>{{trans('crudbooster.name')}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <?php
+                            $query = DB::table('appliance')->where('state',1)->where('deleted_at', null)->get();
+                        ?>
+
+                        @foreach($query as $item)
+                            <tr style="padding: 2px;">
+                                <td class="editable_cat" data-campo="category" style="padding: 2px;" data-id="{{ $item->id }}">
+                                   <span>{{ $item->category }}</span>
+                                </td>
+                            </tr>
+                        @endforeach
+
+
+                        </tbody>
+                        <tfoot>
+
+                        </tfoot>
+                    </table>
+                </div>
+
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="modalEditProductList">
+        <div class="modal-dialog modal-lg" role="document" style="position: relative">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #337ab7; color: white;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{{trans('crudbooster.editing_subcategories')}}</h4>
+                </div>
+
+                <div class="modal-body">
+                    <table id='table_edit_products' class="table table-striped table-responsive table-bordered" cellspacing="0">
+                        <thead>
+                        <tr class="active">
+                            <th width='auto'>{{trans('crudbooster.category')}}</th>
+                            <th width='auto'>{{trans('crudbooster.subcategory')}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        @foreach($subcategories as $item)
+                            <tr>
+                                <td class="editable_select_cat" data-campo="category" style="padding: 2px;" data-id_appliance_inside="{{ $item->id_appliance_inside }}" data-id="{{ $item->id_appliance }}">
+                                    <span>{{ $item->category }}</span>
+                                </td>
+                                <td class="editable_subcat_sub" data-campo="name" style="padding: 2px;" data-id="{{ $item->id_appliance_inside }}">
+                                    <span>{{ $item->name }}</span>
+                                </td>
+                            </tr>
+                        @endforeach
+
+
+                        </tbody>
+                        <tfoot>
+
+                        </tfoot>
+                    </table>
+                </div>
+
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
 
 
 @endsection

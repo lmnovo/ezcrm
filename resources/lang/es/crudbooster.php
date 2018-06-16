@@ -616,7 +616,8 @@ return [
     'category_creation_new'  => 'Agregar Nueva Categoría',
     'subcategory_creation_new'  => 'Agregar Nueva Subcategoría',
     'subcategory'  => 'Subcategoría',
-
+    'editing_categories'  => 'Editando Categorías',
+    'editing_subcategories'  => 'Editando SubCategorías',
 
     'messageLog_1'  => 'La Cotización: "',
     'messageLog_2'  => '" fue enviada a los correos: ',

@@ -607,6 +607,8 @@ return [
     'To'  => 'to',
     'of'  => 'of',
     'results'  => 'results',
+    'editing_categories'  => 'Editing Categories',
+    'editing_subcategories'  => 'Editing SubCategories',
 
     'messageLog_1'  => 'The Quote: "',
     'messageLog_2'  => '" was sent to the mails: ',

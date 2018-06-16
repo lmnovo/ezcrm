@@ -342,7 +342,8 @@ class AdminCustomersController extends \crocodicstudio\crudbooster\controllers\C
                 ->where('estado', '!=', 3);
         }
 
-        \Illuminate\Support\Facades\DB::beginTransaction();
+        \Illuminate\Support\Facades\DB::beginTransaction()
+        ;
         $result = \Illuminate\Support\Facades\DB::select( DB::raw("
                         SELECT count(id) as cant, id_account
                         FROM user_trucks 

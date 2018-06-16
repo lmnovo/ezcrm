@@ -163,8 +163,8 @@ use Carbon\Carbon;
 
         //UPDATE user_trucks SET profits = 0 where id >= 0;
         $quotes = DB::table('user_trucks')->get();
-
-        for ($i=1200; $i>1000; $i--) {
+		
+        for ($i=1100; $i>500; $i--) {
             $quote_updated = DB::table('user_trucks')->where('id', $quotes[$i]->id)->first();
             $ganancias = 0;
 
