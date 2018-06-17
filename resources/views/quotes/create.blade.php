@@ -711,41 +711,45 @@
         <div class='panel panel-default'>
             <div class='panel-heading' style="background-color: #337ab7; color: white;"><strong><i class="fa fa-file-text-o"></i> {{trans('crudbooster.Notes')}}</strong></div>
             <div class='panel-body'>
-                <?php
-                if(count($notes) == 0) {
-                echo "<div style='text-align: center; color: red; padding-bottom: 20px;'><i class='fa fa-search'></i>";?> {{ trans('crudbooster.table_data_not_found') }}  <?php echo "</div>";
-                }
-                ?>
 
-                @foreach($notes as $note)
-                    <div class="row invoice-info" style="padding-left: 20px; padding-top: 15px;">
-                        <div class="col-sm-8 invoice-col">
-                            {{--<div style="background-color: #f5f5f5;"><strong>Note {{ $note->id }}</strong></div>--}}
-                            <div>{{ $note->name }}</div>
-                            <div class="row">
-                                <div  class="col-sm-3" style="padding-top: 5px;"><i class="fa fa-clock-o"></i> {{ $note->created_at }}</div>
-                                <div  class="col-sm-1" style="padding-top: 5px;">
-                                    <a class="btn btn-xs btn-warning btn-delete" title="{{trans('crudbooster.delete')}}" href="javascript:;" onclick="swal({
-                                            title: '{{trans('crudbooster.are_you_sure')}}',
-                                            text: '{{trans('crudbooster.message_delete')}}',
-                                            type: 'warning',
-                                            showCancelButton: true,
-                                            confirmButtonColor: '#ff0000',
-                                            confirmButtonText: '{{trans('crudbooster.yes')}}',
-                                            cancelButtonText: '{{trans('crudbooster.no')}}',
-                                            closeOnConfirm: false },
-                                            function(){  location.href='http://ezcrm.us/crm/notes_quotes/delete/{{ $note->id }}' });"><i class="fa fa-trash"></i>
-                                    </a>
+                <div id="div_add_note">
+                    <?php
+                        $notes = DB::table('eazy_notes_quotes')->where('quotes_id', $id)->where('deleted_at', null)->get();
+                        if(count($notes) == 0) {
+                            echo "<div style='text-align: center; color: red; padding-bottom: 20px;'><i class='fa fa-search'></i>";?> {{ trans('crudbooster.table_data_not_found') }}  <?php echo "</div>";
+                        }
+                    ?>
+
+                    @foreach($notes as $note)
+                        <div class="row invoice-info" style="padding-left: 20px; padding-top: 15px;">
+                            <div class="col-sm-8 invoice-col">
+                                {{--<div style="background-color: #f5f5f5;"><strong>Note {{ $note->id }}</strong></div>--}}
+                                <div>{{ $note->name }}</div>
+                                <div class="row">
+                                    <div  class="col-sm-3" style="padding-top: 5px;"><i class="fa fa-clock-o"></i> {{ $note->created_at }}</div>
+                                    <div  class="col-sm-1" style="padding-top: 5px;">
+                                        <a class="btn btn-xs btn-warning btn-delete" title="{{trans('crudbooster.delete')}}" href="javascript:;" onclick="swal({
+                                                title: '{{trans('crudbooster.are_you_sure')}}',
+                                                text: '{{trans('crudbooster.message_delete')}}',
+                                                type: 'warning',
+                                                showCancelButton: true,
+                                                confirmButtonColor: '#ff0000',
+                                                confirmButtonText: '{{trans('crudbooster.yes')}}',
+                                                cancelButtonText: '{{trans('crudbooster.no')}}',
+                                                closeOnConfirm: false },
+                                                function(){  location.href='http://ezcrm.us/crm/notes_quotes/delete/{{ $note->id }}' });"><i class="fa fa-trash"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
 
                 <div class="row" style="padding-left: 20px; padding-top: 20px; padding-bottom: 20px;">
                     <input type="hidden" id="note_quotes_id" value="{{ $id }}">
                     <div class="col-md-6">
-                        <textarea class="form-control" type="text" id="note_value" name="note_value" rows="3" value=""> </textarea>
+                        <textarea class="form-control" required type="text" id="note_value" name="note_value" rows="3" value=""> </textarea>
                     </div>
                     <div class="col-md-2">
                         <button type="button" id="add_note" class="btn btn-xl btn-danger" >{{trans('crudbooster.add_note')}}</button>

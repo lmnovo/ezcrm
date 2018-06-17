@@ -208,11 +208,25 @@
 
                                 <tr>
                                     <td>{{trans('crudbooster.creation_date')}}</td><td>{{ $lead->date_created }}</td>
-                                    <td><strong>{{trans('crudbooster.city')}}</strong></td><td>{{ $lead->city }}</td>
+                                    <td><strong>{{trans('crudbooster.city')}}</strong></td>
+                                    <td>
+                                        @if( $lead->city == null)
+                                            -
+                                        @else
+                                            {{ $lead->city }}
+                                        @endif
+                                    </td>
                                 </tr>
 
                                 <tr>
-                                    <td>{{trans('crudbooster.zipcode')}}</td><td>{{ $lead->zip_code }}</td>
+                                    <td>{{trans('crudbooster.zipcode')}}</td>
+                                    <td>
+                                        @if( $lead->zip_code == null)
+                                            -
+                                        @else
+                                            {{ $lead->zip_code }}
+                                        @endif
+                                    </td>
                                     <td><strong>{{trans('crudbooster.quotes')}}</strong></td><td>{{ $lead->quotes }}</td>
                                 </tr>
 
@@ -224,10 +238,10 @@
                                         </td>
                                     <td><strong>{{trans('crudbooster.notes')}}</strong></td>
                                     <td>
-                                        @if( $lead->notes == 1)
-                                                Yes
+                                        @if( $lead->notes == "Yes")
+                                                {{trans('crudbooster.yes_notes')}}
                                             @else
-                                                No
+                                                {{trans('crudbooster.no_notes')}}
                                         @endif
                                     </td>
                                 </tr>
@@ -326,9 +340,6 @@
                 </div>
 
                 <div class="table-responsive" style="padding-left: 20px; padding-right: 20px">
-
-
-
                         <?php
                             if(count($tasks) == 0) {
                                 echo "<div style='text-align: center; color: red; padding-bottom: 20px;'><i class='fa fa-search'></i>";?> {{ trans('crudbooster.table_data_not_found') }}  <?php echo "</div>";
@@ -347,8 +358,7 @@
                                     </thead>
                                     <tbody>
 
-                        <?php    }
-                        ?>
+                        <?php } ?>
 
                         @foreach($tasks as $task)
                             <tr>
@@ -384,41 +394,46 @@
                     {{--<a title="{{trans('crudbooster.add_note')}}" class='btn btn-danger pull-right' style="margin: 2px" href='http://ezcrm.us/crm/eazy_notes/add?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Fnotes%3Fforeign_key%3Dcustomers_id%26label%3DNotes%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dcustomers%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Fcustomers%253Fm%253D50&parent_id={{$id}}&parent_field=customers_id'><i class="fa fa-file-text-o"></i></a>--}}
                 </div>
 
-                <?php
-                if(count($notes) == 0) {
-                    echo "<div style='text-align: center; color: red; padding-bottom: 20px;'><i class='fa fa-search'></i>";?> {{ trans('crudbooster.table_data_not_found') }}  <?php echo "</div>";
-                }
-                ?>
+                <div id="div_add_note">
+                    <?php
+                    $notes = DB::table('eazy_notes')->where('customers_id', $id)->where('deleted_at', null)->get();
 
-                @foreach($notes as $note)
-                    <div class="row invoice-info" style="padding-left: 20px; padding-top: 15px;">
-                        <div class="col-sm-8 invoice-col">
-                            {{--<div style="background-color: #f5f5f5;"><strong>Note {{ $note->id }}</strong></div>--}}
-                            <div>{{ $note->name }}</div>
-                            <div class="row">
-                                <div  class="col-sm-3" style="padding-top: 5px;"><i class="fa fa-clock-o"></i> {{ $note->created_at }}</div>
-                                <div  class="col-sm-1" style="padding-top: 5px;">
-                                    <a class="btn btn-xs btn-warning btn-delete" title="{{trans('crudbooster.delete')}}" href="javascript:;" onclick="swal({
-                                            title: '{{trans('crudbooster.are_you_sure')}}',
-                                            text: '{{trans('crudbooster.message_delete')}}',
-                                            type: 'warning',
-                                            showCancelButton: true,
-                                            confirmButtonColor: '#ff0000',
-                                            confirmButtonText: '{{trans('crudbooster.yes')}}',
-                                            cancelButtonText: '{{trans('crudbooster.no')}}',
-                                            closeOnConfirm: false },
-                                            function(){  location.href='http://ezcrm.us/crm/notes/delete/{{ $note->id }}' });"><i class="fa fa-trash"></i>
-                                    </a>
+                    if(count($notes) == 0) {
+                    echo "<div style='text-align: center; color: red; padding-bottom: 20px;'><i class='fa fa-search'></i>";?> {{ trans('crudbooster.table_data_not_found') }}  <?php echo "</div>";
+                    }
+                    ?>
+
+                    @foreach($notes as $note)
+                        <div class="row invoice-info" style="padding-left: 20px; padding-top: 15px;">
+                            <div class="col-sm-8 invoice-col">
+                                {{--<div style="background-color: #f5f5f5;"><strong>Note {{ $note->id }}</strong></div>--}}
+                                <div>{{ $note->name }}</div>
+                                <div class="row">
+                                    <div  class="col-sm-3" style="padding-top: 5px;"><i class="fa fa-clock-o"></i> {{ $note->created_at }}</div>
+                                    <div  class="col-sm-1" style="padding-top: 5px;">
+                                        <a class="btn btn-xs btn-warning btn-delete" title="{{trans('crudbooster.delete')}}" href="javascript:;" onclick="swal({
+                                                title: '{{trans('crudbooster.are_you_sure')}}',
+                                                text: '{{trans('crudbooster.message_delete')}}',
+                                                type: 'warning',
+                                                showCancelButton: true,
+                                                confirmButtonColor: '#ff0000',
+                                                confirmButtonText: '{{trans('crudbooster.yes')}}',
+                                                cancelButtonText: '{{trans('crudbooster.no')}}',
+                                                closeOnConfirm: false },
+                                                function(){  location.href='http://ezcrm.us/crm/notes/delete/{{ $note->id }}' });"><i class="fa fa-trash"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
+
 
                 <div class="row" style="padding-left: 20px; padding-top: 20px; padding-bottom: 20px;">
                     <input type="hidden" id="note_lead_id" value="{{ $id }}">
                     <div class="col-md-6">
-                        <textarea class="form-control" type="text" id="note_value" name="note_value" rows="3" value=""> </textarea>
+                        <textarea class="form-control" required type="text" id="note_value" name="note_value" rows="3" value=""> </textarea>
                     </div>
                     <div class="col-md-2">
                         <button type="button" id="add_note" class="btn btn-xl btn-danger" >{{trans('crudbooster.add_note')}}</button>
@@ -477,7 +492,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-dark" data-dismiss="modal">{{trans('crudbooster.close')}}</button>
-                        <button type="button" class="btn btn-primary " id="addSaveTask">{{trans('crudbooster.add')}}</button>
+                        <button type="submit" class="btn btn-primary " id="addSaveTask">{{trans('crudbooster.add')}}</button>
                     </div>
 
                 </form>

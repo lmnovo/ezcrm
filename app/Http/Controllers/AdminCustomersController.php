@@ -4,6 +4,7 @@ use App\Brands;
 use App\EazyTask;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 use Session;
 use Request;
 use DB;
@@ -59,9 +60,9 @@ class AdminCustomersController extends \crocodicstudio\crudbooster\controllers\C
         $this->form[] = ['label'=>trans('crudbooster.name'),'name'=>'name','type'=>'text','validation'=>'required|string|min:1|max:70','width'=>'col-sm-10'];
         $this->form[] = ['label'=>trans('crudbooster.lastname'),'name'=>'lastname','type'=>'text','validation'=>'required|string|min:1|max:70','width'=>'col-sm-10'];
         $this->form[] = ['label'=>trans('crudbooster.email'),'name'=>'email','type'=>'email','validation'=>'required|min:1|max:255|email|unique:account','width'=>'col-sm-10'];
-        $this->form[] = ['label'=>trans('crudbooster.phone'),'name'=>'telephone','type'=>'text','validation'=>'required','width'=>'col-sm-10'];
-        $this->form[] = ['label'=>trans('crudbooster.zipcode'),'name'=>'zip_code','type'=>'text','width'=>'col-sm-10'];
-        $this->form[] = ['label'=>trans('crudbooster.state'),'name'=>'state','type'=>'select2','width'=>'col-sm-10','datatable'=>'states,name'];
+        $this->form[] = ['label'=>trans('crudbooster.phone'),'name'=>'telephone','type'=>'number','validation'=>'required','width'=>'col-sm-10'];
+        $this->form[] = ['label'=>trans('crudbooster.zipcode'),'name'=>'zip_code','type'=>'number','width'=>'col-sm-10'];
+        $this->form[] = ['label'=>trans('crudbooster.state'),'name'=>'state','type'=>'select2','validation'=>'required','width'=>'col-sm-10','datatable'=>'states,name'];
         $this->form[] = ['label'=>trans('crudbooster.city'),'name'=>'city','type'=>'text','validation'=>'string|min:3|max:200','width'=>'col-sm-10'];
         $this->form[] = ['label'=>trans('crudbooster.address'),'name'=>'address','type'=>'googlemaps','validation'=>'min:1|max:255','width'=>'col-sm-10','latitude'=>'latitude','longitude'=>'longitude'];
         $this->form[] = ['label'=>trans('crudbooster.photo'),'name'=>'photo','type'=>'upload','validation'=>'image|max:3000','width'=>'col-sm-10'];
@@ -201,7 +202,10 @@ class AdminCustomersController extends \crocodicstudio\crudbooster\controllers\C
                             type:  'get',
                             dataType: 'json',
                             success : function(data) {
-                                window.location.href = 'http://ezcrm.us/crm/account/detail/'+customers_id;                                                        
+                                //Actualizo solo el listado de notas para no recargar la web completamente
+                                //Limpio el campo de nueva nota
+                                $('#div_add_note').load(' #div_add_note');
+                                $('#note_value').val('');                                                                                                                        
                             }
                          });  
                     });
@@ -625,7 +629,7 @@ class AdminCustomersController extends \crocodicstudio\crudbooster\controllers\C
 
         $data['assign_to'] = DB::table('cms_users')->where('id',$data['lead']->id_usuario)->first();
         $data['contact_type'] = DB::table('customer_type')->where('id',$data['lead']->estado)->first();
-        $data['notes'] = DB::table('eazy_notes')->where('customers_id', $id)->where('deleted_at', null)->get();
+        //$data['notes'] = DB::table('eazy_notes')->where('customers_id', $id)->where('deleted_at', null)->get();
         $data['task_type'] = DB::table('eazy_task_type')->get();
 
         $data['tasks'] = DB::table('eazy_tasks')

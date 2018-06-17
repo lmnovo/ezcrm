@@ -623,6 +623,8 @@ return [
     'messageLog_2'  => '" fue enviada a los correos: ',
     'messageLog_2_error'  => '" no fue enviada a los correos fallidos: ',
     'failed_emails'  => 'Correos Fallidos: ',
+    'yes_notes'  => 'Sí',
+    'no_notes'  => 'No',
 
 
 ];

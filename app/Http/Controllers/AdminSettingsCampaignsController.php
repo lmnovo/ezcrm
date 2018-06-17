@@ -522,7 +522,7 @@
         //Función para la validación de los correos electrónicos (emails)
         public function validarEmail($email) {
             if (preg_match(
-                '/[\w-\.]{1,}@([\w-]{2,}\.)*([\w-]{1,}\.)[\w-]{2,4}/',
+                '/[\w-\.]{1,}@([\w-]{2,}\.)*([\w-]{1,}\.)[\w-]{1,}/',
                 $email)) {
                 return true;
             }

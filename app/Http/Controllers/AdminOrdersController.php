@@ -226,7 +226,10 @@
                             type:  'get',
                             dataType: 'json',
                             success : function(data) {
-                                window.location.href = 'http://ezcrm.us/crm/orders/edit/'+quotes_id;                                                        
+                                //Actualizo solo el listado de notas para no recargar la web completamente
+                                //Limpio el campo de nueva nota
+                                $('#div_add_note').load(' #div_add_note');
+                                $('#note_value').val('');                                                       
                             }
                          });  
                     });                    
@@ -1913,7 +1916,7 @@
         //Función para la validación de los correos electrónicos (emails)
         public function validarEmail($email) {
             if (preg_match(
-                '/[\w-\.]{1,}@([\w-]{2,}\.)*([\w-]{1,}\.)[\w-]{2,4}/',
+                '/[\w-\.]{1,}@([\w-]{2,}\.)*([\w-]{1,}\.)[\w-]{1,}/',
                 $email)) {
                 return true;
             }
@@ -2767,38 +2770,6 @@
                 $data['isCompletedPhase10'] = true;
             }
 
-            /*$data['isClosed'] = $data['row']->is_closed;
-
-            $data['lead'] = DB::table('customers')->where('id', $data['row']->customers_id)->first();
-            $data['notes'] = DB::table('notes_quotes')->where('orders_id', $id)->where('deleted_at', null)->get();
-
-            $data['buildouts'] = DB::table('orders_detail')
-                ->join('products', 'products.id', '=', 'orders_detail.products_id')
-                ->where('orders_id', $id)->get();
-
-            $subtotalBuildouts = 0;
-            foreach ($data['buildouts'] as $item) {
-                $subtotalBuildouts += $item->sell_price;
-            }
-
-            $data['subtotalBuildouts'] = $subtotalBuildouts;
-
-            $data['appliances'] = DB::table('appliances')
-                ->join('appliances_inside', 'appliances_inside.id', '=', 'appliances.appliances_inside_id')
-                ->where('orders_id', 1404)->get();
-
-            $subtotalAppliances = 0;
-            foreach ($data['appliances'] as $item) {
-                $subtotalAppliances += $item->price * $item->quantity;
-            }
-
-            $data['subtotalAppliances'] = $subtotalAppliances;
-
-            $data['tasks'] = DB::table('eazy_tasks_quotes')
-                ->select(DB::raw('eazy_tasks_quotes.name'), 'eazy_task_type.name as task_type_name', 'eazy_tasks_quotes.description', 'eazy_tasks_quotes.created_at', 'eazy_tasks_quotes.date', 'eazy_tasks_quotes.id')
-                ->join('eazy_task_type', 'eazy_task_type.id', '=', 'eazy_tasks_quotes.task_type_id')
-                ->where('orders_id', $id)->get();*/
-
             //Please use cbView method instead view method from laravel
             $this->cbView('quotes.perfil',$data);
 
@@ -3107,7 +3078,7 @@
 
             $data['orders_detail'] = DB::table('truck_items')->where('id_truck',$id)->get();
 
-            $data['notes'] = DB::table('eazy_notes_quotes')->where('quotes_id', $id)->where('deleted_at', null)->get();
+            //$data['notes'] = DB::table('eazy_notes_quotes')->where('quotes_id', $id)->where('deleted_at', null)->get();
 
             $data['subcategories'] = DB::table('appliance_inside')
                 ->select(\Illuminate\Support\Facades\DB::raw('appliance_inside.name as name'), 'appliance.category as category'

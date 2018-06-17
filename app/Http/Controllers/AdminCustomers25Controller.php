@@ -247,7 +247,10 @@
                             type:  'get',
                             dataType: 'json',
                             success : function(data) {
-                                window.location.href = 'http://ezcrm.us/crm/customers25/detail/'+customers_id;                                                        
+                                //Actualizo solo el listado de notas para no recargar la web completamente
+                                //Limpio el campo de nueva nota
+                                $('#div_add_note').load(' #div_add_note');
+                                $('#note_value').val('');                                                         
                             }
                          });  
                     });
@@ -792,7 +795,7 @@
             $data['assign_to'] = DB::table('cms_users')->where('id',$data['lead']->id_usuario)->first();
 
             $data['contact_type'] = DB::table('customer_type')->where('id',$data['lead']->estado)->first();
-            $data['notes'] = DB::table('eazy_notes')->where('customers_id', $id)->where('deleted_at', null)->get();
+            //$data['notes'] = DB::table('eazy_notes')->where('customers_id', $id)->where('deleted_at', null)->get();
 
             $data['tasks'] = DB::table('eazy_tasks_clients')
                 ->select(DB::raw('eazy_tasks_clients.name'), 'eazy_tasks_clients.description', 'eazy_tasks_clients.created_at', 'eazy_tasks_clients.date', 'eazy_tasks_clients.id')

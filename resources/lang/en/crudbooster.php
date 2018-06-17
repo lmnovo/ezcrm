@@ -614,6 +614,8 @@ return [
     'messageLog_2'  => '" was sent to the mails: ',
     'messageLog_2_error'  => '" was not sent to the failed mails: ',
     'failed_emails'  => 'Failed Mails: ',
+    'yes_notes'  => 'Yes',
+    'no_notes'  => 'No',
 
 
 ];
