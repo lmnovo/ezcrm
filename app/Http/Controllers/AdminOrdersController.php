@@ -239,7 +239,7 @@
                         $('#price2').removeAttr('disabled');
                         $('#save_precio').css('display','inline');
                         $(this).css('display','none');
-                    });
+                    });                                  
                     
                     $('#save_precio').on('click',function(){
                          $('#price2').removeAttr('disabled');

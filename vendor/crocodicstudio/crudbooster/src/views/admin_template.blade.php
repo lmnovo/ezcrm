@@ -19,6 +19,7 @@
 
     <link rel='stylesheet' href='http://ezcrm.us/vendor/crudbooster/assets/select2/dist/css/select2.min.css'/>
     <script src='http://ezcrm.us/vendor/crudbooster/assets/select2/dist/js/select2.full.min.js'></script>
+    <script src='http://ezcrm.us/js/jquery.validate.min.js'></script>
 
     <style type="text/css">
         .select2-container--default .select2-selection--single {border-radius: 0px !important}

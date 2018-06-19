@@ -47,6 +47,22 @@
                 $('#applianceModal').modal('hide');
             });
 
+            $('#closeModal').on('click',function(){
+                window.location.href = 'http://ezcrm.us/crm/orders/edit/{{ $id }}';
+            });$('#closeModal1').on('click',function(){
+                window.location.href = 'http://ezcrm.us/crm/orders/edit/{{ $id }}';
+            });$('#closeModal2').on('click',function(){
+                window.location.href = 'http://ezcrm.us/crm/orders/edit/{{ $id }}';
+            });$('#closeModal3').on('click',function(){
+                window.location.href = 'http://ezcrm.us/crm/orders/edit/{{ $id }}';
+            });$('#closeModal4').on('click',function(){
+                window.location.href = 'http://ezcrm.us/crm/orders/edit/{{ $id }}';
+            });$('#closeModal5').on('click',function(){
+                window.location.href = 'http://ezcrm.us/crm/orders/edit/{{ $id }}';
+            });$('#closeModal6').on('click',function(){
+                window.location.href = 'http://ezcrm.us/crm/orders/edit/{{ $id }}';
+            });
+
             $("body").on("click",".upload-image",function(e){
                 $(this).parents("form").ajaxForm(options);
             });
@@ -159,13 +175,21 @@
             //*******************************************************************************************
             //Editando dinámicamente en la tabla de subcategorías de appliance - Select category
             var selectedAnother = false;
+            var selectActual = '';
             var datos_categories = '';
             var td_select_cat,campo_select_cat,valor_select_cat,id_select_cat,id_appliance_inside;
             $(document).on("click","td.editable_select_cat span",function(e)
             {
+                /*console.log(selectedAnother);
                 if(selectedAnother == true) {
-                    td_select_cat.html(valor_select_cat);
-                }
+                    td_select_cat.text("").html("" +
+                        "<select class='form-control' id='cms_users' name='"+campo_select_cat+"' placeholder='Select' required>"
+                        + datos_categories +
+                        "</select>" +
+                        " <a class='enlace guardar_select_cat' href='#'><i class=\"fa fa-check-circle\"></i></a> " +
+                        "<a class='enlace cancelar_select_cat' href='#'><i class=\"fa fa-times-circle\"></i></a>");
+                    $("input:not(#id)").addClass("editable_select_cat");
+                }*/
 
                 selectedAnother = true;
                 //Reiniciamos el listado de users para el select
@@ -282,7 +306,7 @@
             $return_url = ($return_url)?:g('return_url');
             ?>
 
-            <form class='form-horizontal' id="form" enctype="multipart/form-data" action='<?php echo e($action); ?>'>
+            <form class='form-horizontal' id="form_quote_principal" enctype="multipart/form-data" action='<?php echo e($action); ?>'>
 
                 <input type="hidden" id="quote_id" name="quote_id" value="{{ $id }}">
                 <input type="hidden" id="applianceitem_1" name="applianceitem_1" value="">
@@ -321,7 +345,7 @@
                 <div class="row">
                     <div class='col-sm-4'>
                         <label>{{trans('crudbooster.Business_Name')}}*</label>
-                        <input type='text' name='business_name' required class='form-control' value="{{ $quotes->truck_name }}"/>
+                        <input type='text' name='business_name' required class='form-control required' value="{{ $quotes->truck_name }}"/>
                     </div>
 
                     <div class='col-sm-2'>
@@ -330,8 +354,8 @@
                             <span class="fa fa-info-circle" style="cursor:pointer;" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="{{trans('crudbooster.interested_in_tooltip')}}"></span>
                         </label>
 
-                        <select class="form-control" id="interesting" placeholder="Select" name="interesting" required>
-                            <option selected="true">**Select Data**</option>
+                        <select class="form-control required" id="interesting" placeholder="Select" name="interesting" required>
+                            <option>**Select Data**</option>
                                 @foreach($products_type as $type)
                                     @if($type->id == $interested->id)
                                             <option selected="true" value="{{ $type->id }}" id="{{ $type->id }}">{{ $type->type }}</option>;
@@ -408,7 +432,7 @@
                 <div class="row">
                     <div class='col-sm-4'>
                         <label>{{trans('crudbooster.name')}}*</label>
-                        <input type='text' name='name' required class='form-control' value="{{ $customer[0]->name }}"/>
+                        <input type='text' name='name' required class='form-control required' value="{{ $customer[0]->name }}"/>
                     </div>
 
                     <div class='col-sm-4'>
@@ -765,7 +789,7 @@
         </div>
 
         <div class='panel-footer'>
-            <button type="submit" title="{{trans('crudbooster.save')}}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+            <button type="submit" id="saveQuote" title="{{trans('crudbooster.save')}}" class="btn btn-primary"><i class="fa fa-save"></i></button>
             <button type="submit" id="check_send_email" title="{{trans('crudbooster.save_and_submit')}}" class="btn btn-primary"><i class="fa fa-envelope"></i></button>
             <a class="btn btn-yahoo" title="{{trans('crudbooster.create_invoice')}}" style="margin: 2px" href="{{CRUDBooster::mainpath("create-invoice/$id")}}"><i class="fa fa-hand-o-right"></i> </a>
             <a title="{{trans('crudbooster.send_email')}}" id="send-email-personal" class="btn btn-success" style="margin: 2px" href="#"><i class="fa fa-envelope-o"></i></a>
@@ -877,7 +901,7 @@
         <div class="modal-dialog modal-lg" role="document"  style=" width: 90%">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #337ab7; color: white;">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" id="closeModal1" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">{{trans('crudbooster.appliance_creation')}}</h4>
                 </div>
 
@@ -999,7 +1023,7 @@
         <div class="modal-dialog modal-lg" role="document"  style=" width: 90%">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #337ab7; color: white;">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" id="closeModal2" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">{{trans('crudbooster.appliance_creation_new')}}</h4>
                 </div>
 
@@ -1044,7 +1068,7 @@
                                 <div class="form-group">
                                     <label for="description" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.description')}}*</label>
                                     <div class="col-md-9 col-xs-12 col-sm-9">
-                                        <textarea required rows="6" class="form-control" id="description_new" placeholder="{{trans('crudbooster.description')}}"></textarea>
+                                        <textarea required rows="6" class="form-control" id="description_new" name="description_new" placeholder="{{trans('crudbooster.description')}}"></textarea>
                                     </div>
                                 </div>
 
@@ -1092,7 +1116,7 @@
         <div class="modal-dialog modal-lg" role="document"  style=" width: 90%">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #337ab7; color: white;">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" id="closeModal3" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">{{trans('crudbooster.category_creation_new')}}</h4>
                 </div>
 
@@ -1102,10 +1126,9 @@
                             <form id="form_product" data-parsley-validate  action="" method="post" class="form-horizontal">
                                 <div class="form-group">
                                     <label for="category_category_name" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.category')}}</label>
-                                    <div class="col-md-12">
+                                    <div class="col-md-9">
                                         <div class="input-group">
-                                            <input class="form-control" id="category_category_name" name="category_category_name" style="width: 100%;"  placeholder="{{trans('crudbooster.category')}}" type="text"/>
-                                        </div>
+                                            <input class="form-control" id="category_category_name" name="category_category_name" placeholder="{{trans('crudbooster.category')}}" type="text"/>                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -1127,7 +1150,7 @@
         <div class="modal-dialog modal-lg" role="document"  style=" width: 90%">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #337ab7; color: white;">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" id="closeModal4" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">{{trans('crudbooster.subcategory_creation_new')}}</h4>
                 </div>
 
@@ -1170,7 +1193,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #337ab7; color: white;">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" id="closeModal5" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">{{trans('crudbooster.buildout_creation')}}</h4>
                 </div>
 
@@ -1212,7 +1235,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #337ab7; color: white;">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" id="closeModal6" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">{{trans('crudbooster.editing_categories')}}</h4>
                 </div>
 
@@ -1254,7 +1277,7 @@
         <div class="modal-dialog modal-lg" role="document" style="position: relative">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #337ab7; color: white;">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">{{trans('crudbooster.editing_subcategories')}}</h4>
                 </div>
 
@@ -1282,13 +1305,12 @@
 
                         </tbody>
                         <tfoot>
-
                         </tfoot>
                     </table>
                 </div>
 
-
             </div><!-- /.modal-content -->
+
         </div><!-- /.modal-dialog -->
     </div>
 

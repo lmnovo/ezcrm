@@ -573,7 +573,7 @@ return [
     'task_users_name'  => 'Etapa Finalizada',
 
     'appliance_creation'  => 'Creación de Appliances',
-    'retail_price'  => 'Precio Costo',
+    'retail_price'  => 'Precio',
     'quote_data'  => 'Datos de la Cotización',
     'add'  => 'Agregar',
     'Appliances Inside'  => 'Appliances Inside',

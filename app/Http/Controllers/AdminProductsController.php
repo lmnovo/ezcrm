@@ -17,7 +17,7 @@
 			$this->button_table_action = true;
 			$this->button_bulk_action = false;
 			$this->button_action_style = "button_icon";
-			$this->button_add = true;
+			$this->button_add = false;
 			$this->button_edit = true;
 			$this->button_delete = true;
 			$this->button_detail = true;
@@ -121,11 +121,11 @@
 	        | 
 	        */
 	        $this->index_button = array();
-            $this->index_button[] = ['label'=>'','url'=>CRUDBooster::adminPath($slug="products_type"),"icon"=>"fa fa-product-hunt", "title"=>"Types"];
+            /*$this->index_button[] = ['label'=>'',"icon"=>"fa fa-plus-circle", "title"=>"Add", "color"=>"success"];
             $this->index_button[] = ['label'=>'','url'=>CRUDBooster::adminPath($slug="sizes"),"icon"=>"fa fa-tags", "title"=>"Sizes", "color"=>"warning"];
             $this->index_button[] = ['label'=>'','url'=>CRUDBooster::adminPath($slug="appliances_categories"),"icon"=>"fa fa-cubes", "title"=>"Appliances Categories"];
             $this->index_button[] = ['label'=>'','url'=>CRUDBooster::adminPath($slug="appliances_inside"),"icon"=>"fa fa-cubes", "title"=>"Appliances", "color"=>"danger"];
-            $this->index_button[] = ['label'=>'','url'=>CRUDBooster::adminPath($slug="appliances"),"icon"=>"fa fa-cubes", "title"=>"Appliances Details"];
+            $this->index_button[] = ['label'=>'','url'=>CRUDBooster::adminPath($slug="appliances"),"icon"=>"fa fa-cubes", "title"=>"Appliances Details"];*/
 
 
 
@@ -319,6 +319,7 @@
 	    */
 	    public function hook_before_delete($id) {
 	        //Your code here
+            DB::table('appliance_inside_category')->where('id', $id)->delete();
 
 	    }
 
@@ -333,6 +334,27 @@
 	        //Your code here
 
 	    }
+
+        public function getIndex() {
+            //First, Add an auth
+            if(!CRUDBooster::isView()) CRUDBooster::redirect(CRUDBooster::adminPath(),trans('crudbooster.denied_access'));
+
+            //Create your own query
+            $data = [];
+            $data['page_title'] = 'Products Data';
+            //$data['result'] = DB::table('products')->orderby('id','desc')->paginate(10000);
+
+            $data['result'] = DB::table('appliance')
+                ->select(DB::raw('appliance_inside_category.id'), 'appliance.category', 'appliance_inside.name AS appliance',
+                    'appliance_inside_category.name AS detail', 'appliance_inside_category.price', 'appliance_inside_category.description',
+                    'appliance_inside_category.retail_price', 'appliance_inside.id_type', 'appliance_inside_category.imagen')
+                ->join('appliance_inside', 'appliance_inside.id_appliance', '=', 'appliance.id')
+                ->join('appliance_inside_category', 'appliance_inside_category.id_appliance_inside', '=', 'appliance_inside.id')
+                ->paginate(10000);
+
+            //Create a view. Please use `cbView` method instead of view method from laravel.
+            $this->cbView('appliances.index',$data);
+        }
 
 
 

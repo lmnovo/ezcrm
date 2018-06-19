@@ -525,14 +525,14 @@
                                     <div class="form-group">
                                         <label class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.name')}}*</label>
                                         <div class="col-md-8">
-                                            <input type="text" title="Name" required class="form-control" name="name" id="name" value="">
+                                            <input type="text" required title="Name" required class="form-control" name="name" id="name" value="">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.date')}}*</label>
                                         <div class="col-md-8">
-                                            <input type="text" title="Date" required class="form-control" name="date" id="date" value="">
+                                            <input type="text" required title="Date" required class="form-control" name="date" id="date" value="">
                                         </div>
                                     </div>
                                 </div>
