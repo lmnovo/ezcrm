@@ -493,7 +493,7 @@ return [
     'appliance_tax'  => 'Appliance Tax',
     'accessories_selection'  => 'Accessories Selection',
     'add_appliance'  => 'Add Appliance',
-    'category'  => 'Category',
+    'edit_appliance'  => 'Editing Appliance',
     'appliance'  => 'Appliance',
     'total_summary'  => 'Total Summary',
     'mobile_unit'  => 'Mobile Unit',
@@ -616,6 +616,9 @@ return [
     'failed_emails'  => 'Failed Mails: ',
     'yes_notes'  => 'Yes',
     'no_notes'  => 'No',
+    'image'  => 'Image',
+    'search'  => 'Search',
+    'reset'  => 'Reset',
 
 
 ];

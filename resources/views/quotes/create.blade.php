@@ -502,7 +502,7 @@
 
                     <div class='col-sm-6'>
                         <label>{{trans('crudbooster.description')}}</label>
-                        <textarea id='buildout_description' name='buildout_description' contenteditable="true" class='form-control wysiwyg'>{{ $quotes->desc_buildout }}</textarea>
+                        <textarea id='buildout_description' name='buildout_description' class='form-control wysiwyg'>{{ $quotes->desc_buildout }}</textarea>
                     </div>
                 </div>
                 <div class="row">
@@ -917,10 +917,10 @@
                                         </select>
                                     </div>
                                     <div class="col-md-2">
-                                        <a href="#" title="" id="edit_appliance_new" class="btn btn-success btn-sm">
+                                        <a href="#" title="{{trans('crudbooster.add')}}" id="edit_appliance_new" class="btn btn-success btn-sm">
                                             <i class="glyphicon glyphicon-plus-sign"></i>
                                         </a>
-                                        <a href="#" title="" id="edit_appliance_edit" class="btn btn-success btn-sm">
+                                        <a href="#" title="{{trans('crudbooster.edit')}}" id="edit_appliance_edit" class="btn btn-success btn-sm">
                                             <i class="glyphicon glyphicon-edit"></i>
                                         </a>
                                     </div>
@@ -933,10 +933,10 @@
                                         </select>
                                     </div>
                                     <div class="col-md-2">
-                                        <a title="" id="edit_product_new" class="btn btn-success btn-sm">
+                                        <a title="{{trans('crudbooster.add')}}" id="edit_product_new" class="btn btn-success btn-sm">
                                             <i class="glyphicon glyphicon-plus-sign"></i>
                                         </a>
-                                        <a href="#" title="" id="edit_product_edit" class="btn btn-success btn-sm">
+                                        <a href="#" title="{{trans('crudbooster.edit')}}" id="edit_product_edit" class="btn btn-success btn-sm">
                                             <i class="glyphicon glyphicon-edit"></i>
                                         </a>
                                     </div>
@@ -944,16 +944,16 @@
 
                                 <div class="form-group">
                                     <label for="appliance_inside_category" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.detail')}}</label>
-                                    <div class="col-md-9">
+                                    <div class="col-md-7">
                                         <select required class="form-control" id="appliance_inside_category" name="appliance_inside_category" placeholder="Select" style="width: 100%" >
 
                                         </select>
                                     </div>
-                                    {{--<div class="col-md-1">
-                                        <a href="{{CRUDBooster::adminpath("appliances/add")}}" target="_blank" title="Add Details" id="" class="btn btn-success btn-sm">
-                                            <i class="fa fa-plus-circle"></i>
+                                    <div class="col-md-1">
+                                        <a href="#" title="{{trans('crudbooster.add')}}" id="addNew" class="btn btn-success btn-sm">
+                                            <i class="glyphicon glyphicon-plus-sign"></i>
                                         </a>
-                                    </div>--}}
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
@@ -1003,13 +1003,13 @@
                                 </div>
                             </div>
                             <div class="col-md-5">
-                                <img id="imagen" src="" class="img-responsive"/>
+                                <img style="width: 100%; height: 400px;" id="imagen" src="" class="img-responsive profile-user-img img-responsive img-bordered"/>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-dark" data-dismiss="modal">{{trans('crudbooster.close')}}</button>
-                        <button type="button" class="btn btn-success " id="addNew">{{trans('crudbooster.new')}}</button>
+                        {{--<button type="button" class="btn btn-success " id="addNew">{{trans('crudbooster.new')}}</button>--}}
                         <button type="button" class="btn btn-primary " id="addSave">{{trans('crudbooster.add')}}</button>
                     </div>
 
@@ -1097,7 +1097,9 @@
 
                             </div>
                             <div class="col-md-5">
-                                    {!! Form::file('image', array('class' => 'image', 'required')) !!}
+                                <img style="width: 100%; height: 400px;" class="profile-user-img img-responsive img-bordered" src="<?php echo e(asset('assets/images/appliances/image-not-found.png')); ?>" alt="Image">
+
+                                {!! Form::file('image', array('class' => 'image')) !!}
                             </div>
                         </div>
                     </div>
@@ -1244,22 +1246,48 @@
                         <thead>
                         <tr class="active">
                             <th width='auto'>{{trans('crudbooster.name')}}</th>
+                            <th width='auto'>{{trans('crudbooster.actions')}}</th>
                         </tr>
                         </thead>
                         <tbody>
+                            <?php
+                                $query = DB::table('appliance')->where('state',1)->where('deleted_at', null)->get();
+                            ?>
 
-                        <?php
-                            $query = DB::table('appliance')->where('state',1)->where('deleted_at', null)->get();
-                        ?>
+                            @foreach($query as $item)
+                                <tr style="padding: 2px;">
+                                    <td id="{{ $item->id }}" class="editable_cat" data-campo="category" style="padding: 2px;" data-id="{{ $item->id }}">
+                                       <span>{{ $item->category }}</span>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-xs btn-warning btn-delete" title="{{trans('crudbooster.delete')}}" href="javascript:;" onclick="swal({
+                                                title: '{{trans('crudbooster.are_you_sure')}}',
+                                                text: '{{trans('crudbooster.message_delete')}}',
+                                                type: 'warning',
+                                                showCancelButton: true,
+                                                confirmButtonColor: '#ff0000',
+                                                confirmButtonText: '{{trans('crudbooster.yes')}}',
+                                                cancelButtonText: '{{trans('crudbooster.no')}}',
+                                                closeOnConfirm: false },
+                                                function(){
+                                                    var item = '{{ $item->id }}';
+                                                        $.ajax({
+                                                            url:  '../../products/deleteitem',
+                                                            data: '&id='+item,
+                                                            type:  'get',
+                                                            dataType: 'json',
+                                                            success : function(data) {
+                                                            swal('Deleted!', 'Delete selected successfully !', 'success');
+                                                            $('#{{ $item->id }}').parent().hide();
+                                                        }
+                                                    });
 
-                        @foreach($query as $item)
-                            <tr style="padding: 2px;">
-                                <td class="editable_cat" data-campo="category" style="padding: 2px;" data-id="{{ $item->id }}">
-                                   <span>{{ $item->category }}</span>
-                                </td>
-                            </tr>
-                        @endforeach
+                                                });"><i class="fa fa-trash"></i>
+                                        </a>
 
+                                    </td>
+                                </tr>
+                            @endforeach
 
                         </tbody>
                         <tfoot>

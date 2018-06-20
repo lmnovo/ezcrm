@@ -625,6 +625,10 @@ return [
     'failed_emails'  => 'Correos Fallidos: ',
     'yes_notes'  => 'Sí',
     'no_notes'  => 'No',
+    'edit_appliance'  => 'Editando Appliance',
+    'image'  => 'Imagen',
+    'search'  => 'Buscar',
+    'reset'  => 'Reiniciar',
 
 
 ];

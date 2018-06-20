@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use CRUDBooster;
+
 
 class ImageUploadController extends Controller
 
@@ -30,31 +32,64 @@ class ImageUploadController extends Controller
 
     public function imageUploadPost()
     {
-        $maxId = DB::table('appliance_inside_category')->select(\Illuminate\Support\Facades\DB::raw('MAX(id) as id'))->first();
-        $maxId = $maxId->id + 1;
+        if(request('edit_hidden') != null) {
 
-        $imageName = time() . '.' . request()->image->getClientOriginalExtension();
-        request()->image->move(public_path('assets/images/appliances'), $imageName);
+            $imageName = DB::table('appliance_inside_category')->where('id',request('edit_hidden'))->first()->imagen;
 
-        $sumarizedData = [
-            'id' => $maxId,
-            'id_appliance_inside' => request('product_new'),
-            'name' => request('appliance_inside_category_new'),
-            'price' => request('price2_new'),
-            'retail_price' => request('price2_retail_new'),
-            'description' => request('description_new'),
-            'imagen' => $imageName,
-            'weight' => request('weight_new')
-        ];
+            if ($imageName == '') {
+                $imageName = 'image-not-found.png';
+            }
 
-        DB::table('appliance_inside_category')->insert($sumarizedData);
+            if (request()->image != null) {
+                $imageName = time() . '.' . request()->image->getClientOriginalExtension();
+                request()->image->move(public_path('assets/images/appliances'), $imageName);
+            }
 
-        request()->validate([
-            'image' => 'required|file|mimes:jpg,png,jpeg,gif,bmp,pdf,xls,xlsx,doc,docx,txt,zip,rar,7z',
-        ]);
+            $sumarizedData = [
+                'id' => request('edit_hidden'),
+                'id_appliance_inside' => request('product_edit'),
+                'name' => request('appliance_inside_category_edit'),
+                'price' => request('price2_edit'),
+                'retail_price' => request('price2_retail_edit'),
+                'description' => request('description_edit'),
+                'imagen' => $imageName,
+                'weight' => request('weight_edit')
+            ];
 
-        return back()
-            ->with('success', 'You have successfully upload file.')
-            ->with('image', $imageName);
+            DB::table('appliance_inside_category')->where('id',request('edit_hidden'))->update($sumarizedData);
+        } else {
+            $maxId = DB::table('appliance_inside_category')->select(\Illuminate\Support\Facades\DB::raw('MAX(id) as id'))->first();
+            $maxId = $maxId->id + 1;
+
+            $imageName = 'image-not-found.png';
+
+            if (request()->image != null) {
+                $imageName = time() . '.' . request()->image->getClientOriginalExtension();
+                request()->image->move(public_path('assets/images/appliances'), $imageName);
+            }
+
+            $sumarizedData = [
+                'id' => $maxId,
+                'id_appliance_inside' => request('product_new'),
+                'name' => request('appliance_inside_category_new'),
+                'price' => request('price2_new'),
+                'retail_price' => request('price2_retail_new'),
+                'description' => request('description_new'),
+                'imagen' => $imageName,
+                'weight' => request('weight_new')
+            ];
+
+            DB::table('appliance_inside_category')->insert($sumarizedData);
+
+            request()->validate([
+                'image' => 'required|file|mimes:jpg,png,jpeg,gif,bmp,pdf,xls,xlsx,doc,docx,txt,zip,rar,7z',
+            ]);
+
+            return back()
+                ->with('success', 'You have successfully upload file.')
+                ->with('image', $imageName);
+        }
+
+        CRUDBooster::redirect(CRUDBooster::adminPath("products"),trans(""));
     }
 }

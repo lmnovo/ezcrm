@@ -39,33 +39,25 @@
                         td.text("").html("" +
                             "<select class='form-control' id='cms_users' name='"+campo+"' placeholder='Select' required>"
                                 + datos +
-                            "</select>" +
-                            " <a class='enlace guardar' href='#'><i class=\"fa fa-check-circle\"></i></a> " +
-                            "<a class='enlace cancelar' href='#'><i class=\"fa fa-times-circle\"></i></a>");
+                            "</select>");
                     });
 
 
             });
 
-            $(document).on("click",".cancelar",function(e)
-            {
-                e.preventDefault();
-                td.html("<a href=http://ezcrm.us/crm/users/detail/"+id_user+">"+valor+"</a> <span title='{{trans('crudbooster.edit')}}' class=\"edit_button\"><i class=\"fa fa-edit\"></i></span>");
-                $("input:not(#id)").addClass("editable");
-            });
-
             var nuevovalor;
-            $(document).on("click",".guardar",function(e)
+            $(document).on("blur",".editable",function(e)
             {
                 e.preventDefault();
                 nuevovalor=$('#cms_users').val();
+                console.log(nuevovalor);
                 $.ajax({
                     type: "GET",
                     url: "../edituser",
                     data: { campo: campo, valor: nuevovalor, id_user: id_user, id_account: id_account }
                 })
                     .done(function( data ) {
-                        td.html("<a href=http://ezcrm.us/crm/users/detail/"+nuevovalor+">"+data+"</a> <span title='{{trans('crudbooster.edit')}}' class=\"edit_button\"><i class=\"fa fa-edit\"></i></span>");
+                        td.html("<a href=http://ezcrm.us/crm/users/detail/"+nuevovalor+">"+data+"</a> <span title='{{trans('crudbooster.edit')}}' class=\"edit_user\"><i class=\"fa fa-edit\"></i></span>");
                     });
             });
 

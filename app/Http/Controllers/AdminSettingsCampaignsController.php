@@ -458,14 +458,32 @@
 
             CRUDBooster::sendNotification($config);
 
-            CRUDBooster::redirect(CRUDBooster::adminPath('settings_campaigns'),trans("crudbooster.text_send_campaign"));
+            $lastId = DB::table('campaigns_leads')->select(\Illuminate\Support\Facades\DB::raw('MAX(id) as id'))->first();
+            $actual_lead = DB::table('campaigns_leads')->where('id',$lastId->id)->first();
+            $total_send = DB::table('settings_campaigns')->where('id', $id)->first();
+
+            if ($total_send->total_sent == 1) {
+                //Comprobar si es Lead o Client
+                $lead_selected = DB::table('account')->where('id', $actual_lead->leads_id)->first();
+
+                if ($lead_selected->is_client == 1) {
+                    $client_selected = DB::table('clients')->where('email', $lead_selected->email)->first();
+                    CRUDBooster::redirect(CRUDBooster::adminPath('customers25/detail/'.$client_selected->id),trans("crudbooster.text_send_campaign"));
+                } else {
+                    CRUDBooster::redirect(CRUDBooster::adminPath('account/detail/'.$actual_lead->leads_id),trans("crudbooster.text_send_campaign"));
+                }
+
+
+            } else {
+                CRUDBooster::redirect(CRUDBooster::adminPath('account'),trans("crudbooster.text_send_campaign"));
+            }
 	    }
 
 	    /* 
 	    | ---------------------------------------------------------------------- 
 	    | Hook for execute command after edit public static function called
 	    | ----------------------------------------------------------------------     
-	    | @id       = current id 
+	    | @id       = current id
 	    | 
 	    */
 	    public function hook_after_edit($id) {

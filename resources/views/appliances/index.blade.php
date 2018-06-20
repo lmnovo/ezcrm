@@ -1,12 +1,11 @@
 @extends('crudbooster::admin_template')
 @section('content')
 
-
     <script>
         $(document).ready(function() {
-            $('#products_table').dataTable( {
-                "aaSorting": [[ 0, "desc" ]]
-            } );
+            /*$('#products_table').dataTable( {
+                //"aaSorting": [[ 0, "desc" ]]
+            } );*/
 
             $('#newApplianceModal').on('change','#appliance_new',function(){
                 $('#product_new').html('');
@@ -15,6 +14,7 @@
                 $('#description_new').val('');
                 $('#price2_new').val('');
                 $('#price2_retail_new').val('');
+                $('#weight_new').val('0');
                 var categoria = $('#appliance_new').val();
                 $('#select2-product_new-container').html('**Select Data**');
 
@@ -36,20 +36,174 @@
                 });
             });
 
-            validarFormulario();
+            validarFormularioNew();
+            validarFormularioEdit();
 
-            function validarFormulario(){
-                $("#newAppliance_form").validate();
+            function validarFormularioNew(){
+                $("#newAppliance_form").validate({
+                    rules: {
+                        appliance_new: { required: true },
+                        product_new: { required:true },
+                        appliance_inside_category_new: { required:true },
+                        description_new: { required:true },
+                        price2_new: { required:true, mix: 0},
+                        price2_retail_new: { required:true, mix: 0},
+                        weight_new: { required:true, mix: 0}
+                    },
+                    messages: {
+                        appliance_new: "This field is required",
+                        product_new : "This field is required",
+                        appliance_inside_category_new : "This field is required",
+                        description_new : "This field is required",
+                        price2_new : "This field is required and should contain a numerical value",
+                        price2_retail_new : "This field is required and should contain a numerical value",
+                        weight_new : "This field should contain a numerical value"
+                    }
+                });
             }
 
+            function validarFormularioEdit(){
+                $("#editAppliance_form").validate({
+                    rules: {
+                        appliance_edit: { required: true },
+                        product_edit: { required:true },
+                        appliance_inside_category_edit: { required:true },
+                        description_edit: { required:true },
+                        price2_edit: { required:true, mix: 0},
+                        price2_retail_edit: { required:true, mix: 0},
+                        weight_edit: { required:true, mix: 0}
+                    },
+                    messages: {
+                        appliance_edit: "This field is required",
+                        product_edit : "This field is required",
+                        appliance_inside_category_edit : "This field is required",
+                        description_edit : "This field is required",
+                        price2_edit : "This field is required and should contain a numerical value",
+                        price2_retail_edit : "This field is required and should contain a numerical value",
+                        weight_edit : "This field should contain a numerical value"
+                    }
+                });
+            }
 
+            //Editar una appliance del listado de products
+            var appliance_id;
+            $('a#appliance_list_edit').on('click',function(e){
+                e.preventDefault();
+                //Clean form
+                $('#appliance_edit').html('');
+                $('#select2-appliance_edit-container').html('');
+                $('#product_edit').html('');
+                $('#select2-product_edit-container').html('');
+                $('#description_edit').val('');
+                $('#price2_edit').val('');
+                $('#price2_retail_edit').val('');
+                $('#weight_edit').val('');
 
-            /*$("#modalAppliance_edit").on('click',function(){
-                $('#editApplianceModal').modal('show');
+                appliance_id = $(this).data('id');
+                $('#edit_hidden').val(appliance_id);
 
+                $.ajax({
+                    url:  'products/applianceinsidecategories',
+                    data: "id="+appliance_id,
+                    type:  'get',
+                    dataType: 'json',
+                    success : function(data) {
+                        var appliances_data = data;
+                        var appliance_inside_data = '';
 
-                $('#price2_retail_edit').val('34234');
-            });*/
+                        //Cargar en el editor de appliance las subcategorías (select)
+                        $.ajax({
+                            url:  'products/appliancesinsidefilter',
+                            data: "id_appliance_inside="+appliances_data[0].id_appliance_inside,
+                            type:  'get',
+                            dataType: 'json',
+                            success : function(result) {
+                                for(var i=0;i<result.length;i++)
+                                {
+                                    if (appliances_data[0].id_appliance_inside == result[i].id) {
+                                        $('#product_edit').append('<option selected="true" value="'+result[i].id+'">'+result[i].name+'</option>');
+                                        appliance_inside_data = result[i].id_appliance;
+                                    }
+                                    else {
+                                        $('#product_edit').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+                                    }
+                                }
+
+                                //Cargar en el editor de appliance las categorías (select)
+                                $.ajax({
+                                    url:  'orders/appliances',
+                                    data: '',
+                                    type:  'get',
+                                    dataType: 'json',
+                                    success : function(query) {
+                                        for(var i=0;i<query.length;i++)
+                                        {
+                                            if (appliance_inside_data == query[i].id) {
+                                                $('#appliance_edit').append('<option selected="true" value="'+query[i].id+'">'+query[i].category+'</option>');
+                                            }
+                                            else {
+                                                $('#appliance_edit').append('<option value="'+query[i].id+'">'+query[i].category+'</option>');
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        });
+
+                        $('#appliance_inside_category_edit').val(data[0].name);
+                        $('#description_edit').val(data[0].description);
+                        $('#price2_edit').val(data[0].price);
+                        $('#price2_retail_edit').val(data[0].retail_price);
+                        $('#weight_edit').val(data[0].weight);
+                        $('#appliance_imagen').attr('src','http://ezcrm.us/assets/images/appliances/'+data[0].imagen);
+                        $('#editApplianceModal').modal('show');
+                    }
+                });
+            });
+
+            //Al cambiar el valor del appliance (category) en el modal de Editar Appliance
+            $('#editApplianceModal').on('change','#appliance_edit',function(){
+                $('#product_edit').html('');
+                $('#modal-loading').modal('show');
+                $('#appliance_inside_category_edit').val('');
+                $('#description_edit').val('');
+                $('#price2_edit').val('');
+                $('#price2_retail_edit').val('');
+                $('#weight_edit').val('0');
+                var categoria = $('#appliance_edit').val();
+                $('#select2-product_edit-container').html('**Select Data**');
+                $('#appliance_imagen').attr('src','');
+
+                $.ajax({
+                    url:  'orders/applianceslist',
+                    data: "&categoria="+categoria,
+                    type:  'get',
+                    dataType: 'json',
+                    success : function(data) {
+                        $('#product_edit').append('<option value=""></option>');
+                        for(var i=0;i<data.length;i++)
+                        {
+                            $('#product_edit').append('<option value="'+data[i].id+'">'+data[i].name+'</option>');
+                        }
+
+                        $('#modal-loading').modal('hide');
+
+                    }
+                });
+            });
+
+            //Al cambiar el valor del appliance (subcategory) en el modal de Editar Appliance
+            $('#editApplianceModal').on('change','#product_edit',function(){
+                $('#modal-loading').modal('show');
+                $('#appliance_inside_category_edit').val('');
+                $('#description_edit').val('');
+                $('#price2_edit').val('');
+                $('#price2_retail_edit').val('');
+                $('#weight_edit').val('0');
+                $('#appliance_imagen').attr('src','');
+
+                $('#modal-loading').modal('hide');
+            });
 
         } );
 
@@ -97,9 +251,6 @@
                 $('#weight_new').val('');
             }
         });
-
-
-
     </script>
 
     <div class="modal fade" tabindex="-1" role="dialog" id="newApplianceModal" style="position: relative">
@@ -118,7 +269,7 @@
                             <div class="form-group">
                                 <label for="appliance" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.category')}}*</label>
                                 <div class="col-md-8">
-                                    <select required class="form-control" id="appliance_new" name="appliance" placeholder="Select" style="width: 100%" >
+                                    <select class="form-control required" id="appliance_new" name="appliance_new" placeholder="Select" style="width: 100%" >
                                     </select>
                                 </div>
                                 <div class="col-md-1">
@@ -158,7 +309,7 @@
                             <div class="form-group">
                                 <label class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.cost')}}*</label>
                                 <div class="col-md-9">
-                                    <input type="text" title="{{trans('crudbooster.cost_price')}}" required class="form-control number" placeholder="0.00" name="price2_new" id="price2_new" value="">
+                                    <input type="text" title="{{trans('crudbooster.cost_price')}}" required class="form-control number min:0" placeholder="0.00" name="price2_new" id="price2_new" value="">
                                     <div class="text-danger"></div>
                                     <p class="help-block"></p>
                                 </div>
@@ -167,14 +318,14 @@
                             <div class="form-group">
                                 <label class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.retail_price')}}*</label>
                                 <div class="col-md-9">
-                                    <input required class="form-control number" id="price2_retail_new" name="price2_retail_new"  placeholder="0.00" type="text"/>
+                                    <input required class="form-control number min:0" id="price2_retail_new" name="price2_retail_new"  placeholder="0.00" type="text"/>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.weight')}}</label>
                                 <div class="col-md-9">
-                                    <input class="form-control number" id="weight_new" name="weight_new"  placeholder="0.00" value="0" type="text"/>
+                                    <input class="form-control number min:0" id="weight_new" name="weight_new" value="0.00" type="text"/>
                                 </div>
                             </div>
 
@@ -182,7 +333,9 @@
 
                         <div class="form-group">
                             <div class="col-md-5">
-                                {!! Form::file('image', array('class' => 'image', 'required')) !!}
+                                <img style="width: 100%; height: 400px;" class="profile-user-img img-responsive img-bordered" src="<?php echo e(asset('assets/images/appliances/image-not-found.png')); ?>" alt="Image">
+
+                                {!! Form::file('image', array('class' => 'image')) !!}
                             </div>
                         </div>
 
@@ -199,15 +352,17 @@
         </div><!-- /.modal-dialog -->
     </div>
 
-    <div class="modal fade" tabindex="-1" role="dialog" id="editApplianceModal" style="position: relative">
+    <div class="modal fade" tabindex="-1" role="dialog" id="editApplianceModal" >
         <div class="modal-dialog modal-lg" role="document"  style=" width: 90%">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #337ab7; color: white;">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">{{trans('crudbooster.appliance_creation_new')}}</h4>
+                    <h4 class="modal-title">{{trans('crudbooster.edit_appliance')}}</h4>
                 </div>
 
-                {!! Form::open(array('id' => 'newAppliance_form', 'route' => 'ajaxImageUpload','enctype' => 'multipart/form-data', 'class' => 'form-horizontal')) !!}
+                {!! Form::open(array('id' => 'editAppliance_form', 'route' => 'ajaxImageUpload','enctype' => 'multipart/form-data', 'class' => 'form-horizontal')) !!}
+
+                <input type="hidden" name="edit_hidden" id="edit_hidden" value="">
 
                 <div class="modal-body">
                     <div class="container-fluid">
@@ -215,47 +370,37 @@
                             <div class="form-group">
                                 <label for="appliance" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.category')}}*</label>
                                 <div class="col-md-8">
-                                    <select required class="form-control" id="appliance_new" name="appliance" placeholder="Select" style="width: 100%" >
+                                    <select required class="form-control required" id="appliance_edit" name="appliance_edit" placeholder="Select" style="width: 100%" >
                                     </select>
-                                </div>
-                                <div class="col-md-1">
-                                    <a title="" id="edit_category_new" class="btn btn-success btn-sm">
-                                        <i class="glyphicon glyphicon-plus-sign"></i>
-                                    </a>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="product" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.appliance')}}*</label>
                                 <div class="col-md-8">
-                                    <select required class="form-control required" id="product_new" name="product_new" placeholder="Select" style="width: 100%" >
+                                    <select required class="form-control required" id="product_edit" name="product_edit" placeholder="Select" style="width: 100%" >
                                     </select>
-                                </div>
-                                <div class="col-md-1">
-                                    <a title="" id="edit_product_new" class="btn btn-success btn-sm">
-                                        <i class="glyphicon glyphicon-plus-sign"></i>
-                                    </a>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="appliance_inside_category" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.detail')}}*</label>
                                 <div class="col-md-9">
-                                    <input required class="form-control required" id="appliance_inside_category_new" name="appliance_inside_category_new"  placeholder="{{trans('crudbooster.detail')}}" type="text"/>
+                                    <input required class="form-control required" id="appliance_inside_category_edit" name="appliance_inside_category_edit"  placeholder="{{trans('crudbooster.detail')}}" type="text"/>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="description" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.description')}}*</label>
                                 <div class="col-md-9 col-xs-12 col-sm-9">
-                                    <textarea required rows="6" class="form-control required" id="description_new" name="description_new" placeholder="{{trans('crudbooster.description')}}"></textarea>
+                                    <textarea required rows="6" class="form-control required" id="description_edit" name="description_edit" placeholder="{{trans('crudbooster.description')}}"></textarea>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.cost')}}*</label>
                                 <div class="col-md-9">
-                                    <input type="text" title="{{trans('crudbooster.cost_price')}}" required class="form-control number" placeholder="0.00" name="price2_new" id="price2_new" value="">
+                                    <input type="text" title="{{trans('crudbooster.cost_price')}}" required class="form-control required number min:0" placeholder="0.00" name="price2_edit" id="price2_edit" value="">
                                     <div class="text-danger"></div>
                                     <p class="help-block"></p>
                                 </div>
@@ -264,14 +409,14 @@
                             <div class="form-group">
                                 <label class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.retail_price')}}*</label>
                                 <div class="col-md-9">
-                                    <input required class="form-control number" id="price2_retail_edit" name="price2_retail_edit"  placeholder="0.00" type="text"/>
+                                    <input required class="form-control required number min:0" id="price2_retail_edit" name="price2_retail_edit"  placeholder="0.00" type="text"/>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.weight')}}</label>
                                 <div class="col-md-9">
-                                    <input class="form-control number" id="weight_new" name="weight_new"  placeholder="0.00" value="0" type="text"/>
+                                    <input class="form-control number min:0" id="weight_edit" name="weight_edit"  value="0.00" type="text"/>
                                 </div>
                             </div>
 
@@ -279,7 +424,9 @@
 
                         <div class="form-group">
                             <div class="col-md-5">
-                                {!! Form::file('image', array('class' => 'image', 'required')) !!}
+                                <img id="appliance_imagen" style="width: 100%; height: 400px;" class="profile-user-img img-responsive img-bordered" src="<?php echo e(asset('assets/images/appliances/image-not-found.png')); ?>" alt="Image">
+
+                                {!! Form::file('image', array('class' => 'image')) !!}
                             </div>
                         </div>
 
@@ -287,7 +434,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-dark" data-dismiss="modal">{{trans('crudbooster.close')}}</button>
-                    <button type="submit" class="btn btn-primary" id="">{{trans('crudbooster.save')}}</button>
+                    <button type="submit" id="editFormSubmit" class="btn btn-primary" id="">{{trans('crudbooster.save')}}</button>
                 </div>
 
                 {!! Form::close() !!}
@@ -296,57 +443,86 @@
         </div><!-- /.modal-dialog -->
     </div>
 
+    {{--<-Listado de Appliances (Productos)--}}
     <div class="box" style="padding: 20px; font-size: 12px" >
-        <table id="products_table" class='table table-striped table-bordered'>
+        {!! Form::open(['method'=>'GET','url'=>CRUDBooster::adminPath($slug="products"),'class'=>'','role'=>'search'])  !!}
+        <div>
+           <div class="input-group custom-search-form col-md-4 col-sm-8 col-xs-12 pull-right" style="padding-right: 0px; padding-bottom: 15px;">
+                <div class="input-group-btn"  style="padding-right: 6px;" >
+                    <a style="background-color: #f4f4f4;" href="{{ CRUDBooster::adminPath($slug="products") }}" id="btn_reset_filter" data-url-parameter="" title="{{trans('crudbooster.reset')}}" class="form-control input-sm pull-right">
+                        <i class="fa fa-filter"></i> {{trans('crudbooster.reset')}}
+                    </a>
+                </div>
+                <input type="text" class="form-control input-sm pull-right" name="search" placeholder="{{trans('crudbooster.search')}}">
+                <div class="input-group-btn">
+                    <button class="form-control input-sm pull-right" type="submit" style="background-color: #f4f4f4;">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        {!! Form::close() !!}
+
+        <table id="products_table" class='table table-hover table-striped table-bordered table_class_products'>
             <thead>
             <tr style="color: #337ab7; text-decoration: none;">
                 <th>Id</th>
+                <th>{{trans('crudbooster.image')}}</th>
                 <th>{{trans('crudbooster.category')}}</th>
                 <th>{{trans('crudbooster.appliance')}}</th>
                 <th>{{trans('crudbooster.detail')}}</th>
                 <th>{{trans('crudbooster.description')}}</th>
                 <th>{{trans('crudbooster.retail_price')}}</th>
                 <th>{{trans('crudbooster.cost_price')}}</th>
-                <th>{{trans('crudbooster.action')}}</th>
+                <th style="text-align: center">{{trans('crudbooster.action')}}</th>
             </tr>
             </thead>
             <tbody>
             @foreach($result as $row)
                 <tr>
                     <td style="width: 2%">{{$row->id}}</td>
-                    <td style="width: 10%">{{$row->category}}</td>
-                    <td style="width: 15%">{{$row->appliance}}</td>
-                    <td style="width: 20%">{{$row->detail}}</td>
-                    <td style="width: 28%">{{$row->description}}</td>
-                    <td style="width: 12%">{{$row->retail_price}}</td>
-                    <td style="width: 10%">{{$row->price}}</td>
-                    <td>
-                        <!-- To make sure we have read access, wee need to validate the privilege -->
-                        {{--@if(CRUDBooster::isUpdate() && $button_edit)
-                            <button id="modalAppliance_edit" data-id="{{ $row->id }}" class="btn btn-xs btn-success btn-edit" title="Edit Data" href=""><i class="fa fa-pencil"></i></button>
-                        @endif--}}
+                    <td style="width: 6%">
+                        <a data-lightbox="roadtrip" rel="group_{products}" title="{{$row->description}}" href="http://ezcrm.us/assets/images/appliances/{{$row->imagen}}">
+                            <img width="40px" height="40px" src="http://ezcrm.us/assets/images/appliances/{{$row->imagen}}">
+                        </a>
+                    </td>
+                    <td style="width: 12%">{{$row->category}}</td>
+                    <td style="width: 13%">{{$row->appliance}}</td>
+                    <td style="width: 18%">{{$row->detail}}</td>
+                    <td style="width: 23%">{{$row->description}}</td>
+                    <td style="width: 8%">{{$row->retail_price}}</td>
+                    <td style="width: 8%">{{$row->price}}</td>
+                    <td style="width: 7%; text-align: center;">
+                        <a id="appliance_list_edit" data-id="{{ $row->id }}" class='btn btn-xs btn-success btn-edit' title='Edit Data'>
+                            <i class='fa fa-pencil'></i>
+                        </a>
 
-                        @if(CRUDBooster::isDelete() && $button_edit)
-                            <a class="btn btn-xs btn-warning btn-delete" title="{{trans('crudbooster.delete')}}" href="javascript:;" onclick="swal({
-                                    title: '{{trans('crudbooster.are_you_sure')}}',
-                                    text: '{{trans('crudbooster.message_delete')}}',
-                                    type: 'warning',
-                                    showCancelButton: true,
-                                    confirmButtonColor: '#ff0000',
-                                    confirmButtonText: '{{trans('crudbooster.yes')}}',
-                                    cancelButtonText: '{{trans('crudbooster.no')}}',
-                                    closeOnConfirm: false },
-                                    function(){
-                                        location.href='http://ezcrm.us/crm/products/delete/{{ $row->id }}'
-                                    });"><i class="fa fa-trash"></i>
-                            </a>
-                        @endif
+                        <a class="btn btn-xs btn-warning btn-delete" title="{{trans('crudbooster.delete')}}" href="javascript:;" onclick="swal({
+                                title: '{{trans('crudbooster.are_you_sure')}}',
+                                text: '{{trans('crudbooster.message_delete')}}',
+                                type: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#ff0000',
+                                confirmButtonText: '{{trans('crudbooster.yes')}}',
+                                cancelButtonText: '{{trans('crudbooster.no')}}',
+                                closeOnConfirm: false },
+                                function(){
+                                location.href='http://ezcrm.us/crm/products/delete/{{ $row->id }}'
+                                });"><i class="fa fa-trash"></i>
+                        </a>
                     </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
+
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                {{ $result->links() }}
+            </ul>
+        </nav>
     </div>
+    {{--->Listado de Appliances (Productos)--}}
 
     <div class="modal fade" id="modal-loading" tabindex="-1" role="dialog">
         <div class="modal-dialog">

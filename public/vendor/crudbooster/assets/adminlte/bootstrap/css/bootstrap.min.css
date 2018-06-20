@@ -2474,6 +2474,15 @@ table.table_class_customers25 th:nth-child(10){display: none;}
     margin-top: 20px;
   }
 
+  table.table_class_products td:nth-child(1),
+  table.table_class_products th:nth-child(1),
+  table.table_class_products td:nth-child(5),
+  table.table_class_products th:nth-child(5),
+  table.table_class_products td:nth-child(6),
+  table.table_class_products th:nth-child(6),
+  table.table_class_products td:nth-child(8),
+  table.table_class_products th:nth-child(8){display: none;}
+
   table.table_class_account td:nth-child(3),
   table.table_class_account th:nth-child(3),
   table.table_class_account td:nth-child(4),

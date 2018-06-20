@@ -408,7 +408,11 @@ class AdminCustomersController extends \crocodicstudio\crudbooster\controllers\C
         $state = DB::table('states')->where('id', $query->state)->first();
         DB::table('account')->where('id', $query->id)->update(['state'=>$state->abbreviation]);
 
-        CRUDBooster::redirect(CRUDBooster::adminpath("account/detail/$maxId"),trans("crudbooster.text_lead_added"));
+        if(Request::get('submit') == trans('crudbooster.button_save_more')) {
+            CRUDBooster::redirect(CRUDBooster::mainpath('add'),trans("crudbooster.text_lead_added"),'success');
+        }else{
+            CRUDBooster::redirect(CRUDBooster::adminpath("account/detail/$maxId"),trans("crudbooster.text_lead_added"));
+        }
     }
 
     /*

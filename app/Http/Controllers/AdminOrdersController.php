@@ -676,6 +676,7 @@
                        $('#price2').val('');
                        $('#quantity').val('');
                        $('#total').val('');
+                       $('#imagen').attr('src','http://ezcrm.us/assets/images/appliances/image-not-found.png');
                        var categoria = $('#appliance').val();
                        $('#modal-loading').modal('show');                       
                        $('#select2-product-container').html('**Select Data**');                         
@@ -707,6 +708,7 @@
                            $('#price2').val('');
                            $('#quantity').val('');
                            $('#total').val('');
+                           $('#imagen').attr('src','http://ezcrm.us/assets/images/appliances/image-not-found.png');
                            var id = $(this).val(); 
                            $('#modal-loading').modal('show');
                            $('#select2-appliance_inside_category-container').html('**Select Data**');
@@ -3370,7 +3372,7 @@
                 'desc_buildout' => $buildout_description,
                 'precio_builout' => $precio_builout,
                 'tax_item' => $taxitem,
-                //'from_where' => $sources->id,
+                'created_at' => Carbon::now(config('app.timezone')),
                 'from_where' => $sources,
                 'id_account' => $customer->id,
                 'is_active' => 0,
@@ -3811,7 +3813,8 @@
                                             </td>
                                             <td>
                                                 <div style="font-size:14px;" valign="middle" align="right"><b>Quote name: '.$row->truck_name.'</b></div>
-                                                <div style="font-size:14px; padding-top: 10px" valign="middle" align="right"><b>Date: '.$fecha1.'</b></div>
+                                                <div style="font-size:14px; padding-top: 10px" valign="middle" align="right"><b>Date Quote: '.$fecha.'</b></div>
+                                                <div style="font-size:14px; padding-top: 10px" valign="middle" align="right"><b>Date Limit: '.$fecha1.'</b></div>
                                             </td>
                                         </tr>
                                       

@@ -4,6 +4,7 @@
 	use Request;
 	use DB;
 	use CRUDBooster;
+	use Illuminate\Pagination\Paginator;
 
 	class AdminProductsController extends \crocodicstudio\crudbooster\controllers\CBController {
 
@@ -335,6 +336,12 @@
 
 	    }
 
+        public function getDeleteitem(\Illuminate\Http\Request $request) {
+	        DB::table('appliance')->where('id', $request->get('id'))->delete();
+
+	        return 1;
+        }
+
         public function getIndex() {
             //First, Add an auth
             if(!CRUDBooster::isView()) CRUDBooster::redirect(CRUDBooster::adminPath(),trans('crudbooster.denied_access'));
@@ -344,16 +351,56 @@
             $data['page_title'] = 'Products Data';
             //$data['result'] = DB::table('products')->orderby('id','desc')->paginate(10000);
 
-            $data['result'] = DB::table('appliance')
+            //Search Box
+            $search = \Request::get('search');
+
+            $result = DB::table('appliance')
                 ->select(DB::raw('appliance_inside_category.id'), 'appliance.category', 'appliance_inside.name AS appliance',
                     'appliance_inside_category.name AS detail', 'appliance_inside_category.price', 'appliance_inside_category.description',
                     'appliance_inside_category.retail_price', 'appliance_inside.id_type', 'appliance_inside_category.imagen')
                 ->join('appliance_inside', 'appliance_inside.id_appliance', '=', 'appliance.id')
                 ->join('appliance_inside_category', 'appliance_inside_category.id_appliance_inside', '=', 'appliance_inside.id')
-                ->paginate(10000);
+                ->where('appliance_inside_category.id','LIKE','%'.$search.'%')
+                ->orwhere('appliance.category','LIKE','%'.$search.'%')
+                ->orwhere('appliance_inside.name','LIKE','%'.$search.'%')
+                ->orwhere('appliance_inside_category.name','LIKE','%'.$search.'%')
+                ->orwhere('appliance_inside_category.description','LIKE','%'.$search.'%')
+                ->orwhere('appliance_inside_category.retail_price','LIKE','%'.$search.'%')
+                ->orwhere('appliance_inside_category.price','LIKE','%'.$search.'%')
+                ->orderby('id','desc')
+                ->paginate(10);
+
+            return view('appliances.index',compact('result'));
+
+
+            /*$data['appliances_list'] = DB::table('appliance')->where('state', 1)->get();
+
+
+            return view('appliances.index',compact($result));*/
 
             //Create a view. Please use `cbView` method instead of view method from laravel.
-            $this->cbView('appliances.index',$data);
+            //$this->cbView('appliances.index',compact($data));
+        }
+
+        //Obtener todos los appliance_inside_category
+        public function getApplianceinsidecategories(\Illuminate\Http\Request $request) {
+            $data = DB::table('appliance_inside_category')
+                ->where('id', $request->get('id'))
+                ->get();
+            return $data;
+        }
+
+        public function getAppliancesinsidefilter(\Illuminate\Http\Request $request) {
+            $appliance_inside = DB::table('appliance_inside')
+                ->where('id', $request->get('id_appliance_inside'))
+                ->first();
+
+            $data = DB::table('appliance_inside')
+                ->where('id_appliance', $appliance_inside->id_appliance)
+                ->where('id_type', 4)
+                ->get();
+
+            return $data;
         }
 
 
