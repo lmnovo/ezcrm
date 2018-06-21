@@ -262,7 +262,7 @@
                                     var total=parseFloat(price)*parseFloat(cant);
                                     $('#total').val(total);
                                     
-                                    updateTotales()
+                                    updateTotales();
                                 }
                             }
                          });
@@ -320,7 +320,7 @@
                                     //Actualizo el Total Quote
                                     actualizar_total();
                                     
-                                    updateTotales()
+                                    updateTotales();
                                 }
                             }
                          });
@@ -348,16 +348,15 @@
                             $('#resumen_appliance').val(total);
                             
                             //Si el estado seleccionado no es Texas el Impuesto es 0
-                            if($('#state option:selected').text()==='TX')
+                            /*if($('#state option:selected').text()==='TX')
                             {
                                 $('#taxappliance').val(parseFloat(total * 0.0825));
                             }else{
                                 $('#taxappliance').val('0.00');
-                            }
+                            }*/
                                      
-                            actualizar_total();
-                            
-                            updateTotales()
+                            actualizar_total();                            
+                            updateTotales();
                         },
                         \"columnDefs\": [
                             { \"width\": \"15%\", \"targets\": 0 },
@@ -377,12 +376,12 @@
                     
 	        		 $('#interesting').on('change',function(){
                           Actualizar_Estado();
-                          updateTotales()
+                          updateTotales();
                      });
                      
                      $('#buildout_price').on('change',function(){
                           actualizar_total();   
-                          updateTotales()                       
+                          updateTotales();                       
                      });
                      
                      if($('#financing').val() === 'Yes'){
@@ -400,7 +399,7 @@
                           }
                      });
                      
-                     function updateTotales() {updateTotales
+                     function updateTotales() {
                         console.log($('#taxbuildout').val()+'--'+$('#taxappliance').val()+'--'+$('#taxitem').val());
                      }
                      
@@ -451,7 +450,7 @@
                                 
                                 $('#modal-loading').modal('hide');
                                 
-                                updateTotales()
+                                updateTotales();
                            }
                         });
                        
@@ -485,7 +484,7 @@
                                    }
                                 });
                                 
-                                updateTotales()
+                                updateTotales();
                         }
                         
                         $.ajax({
@@ -501,7 +500,7 @@
                                     $('#buildout_name').append('<option value=\"'+data[i].id+'\">'+data[i].nombre+'</option>');                                    
                                 }
                                 
-                                updateTotales()
+                                updateTotales();
                             }
                          });                    
                         
@@ -534,7 +533,7 @@
                                 
                                 actualizar_total();    
                                 
-                                updateTotales()                  
+                                updateTotales();                  
                             }
                          });
                     });
@@ -546,13 +545,13 @@
                     $('#discount').on('change',function(){
                         actualizar_total();     
                         
-                        updateTotales()             
+                        updateTotales();             
                     });
                     
                     $('#state').on('change',function(){
                         actualizar_total();   
                         
-                        updateTotales()               
+                        updateTotales();               
                     });
                     
                     function cleanApplianceModal() {
@@ -589,7 +588,7 @@
                                     
                                     $('#modal-loading').modal('hide');
                                     
-                                    updateTotales()
+                                    updateTotales();
                                     
                                   }
                                });
@@ -695,7 +694,7 @@
                                   }
                                   $('#modal-loading').modal('hide');
                                   
-                                  updateTotales()
+                                  updateTotales();
                                   
                                 }
                              });
@@ -726,7 +725,7 @@
                                     }
                                     $('#modal-loading').modal('hide');
                                     
-                                    updateTotales()
+                                    updateTotales();
                                 }
                              });
                     });
@@ -753,7 +752,7 @@
                                    $('#imagen').attr('src','http://ezcrm.us/assets/images/appliances/'+data[0].imagen);
                                    $('#modal-loading').modal('hide');
                                    
-                                   updateTotales()
+                                   updateTotales();
                             }
                          });
                     });
@@ -811,7 +810,7 @@
                                 $('#buildout_description').summernote('code',description);
                                 $('#Build_OutGModal').modal('hide');           
                                 
-                                updateTotales()                                                                                  
+                                updateTotales();                                                                                  
                             }
                          });       
                         
@@ -828,7 +827,7 @@
                                     $('#buildout_name').append('<option value=\"'+data[i].id+'\">'+data[i].nombre+'</option>');                                    
                                 }
                                 
-                                updateTotales()
+                                updateTotales();
                             }
                          });                  
                     });
@@ -871,7 +870,7 @@
                        actualizar_total();
                        $('#applianceModal').modal('hide');    
 
-                        updateTotales()                       
+                        updateTotales();                    
 
                     });
                     
@@ -1066,7 +1065,7 @@
                                 actualizar_total();
                                 
                                 
-                                updateTotales()
+                                updateTotales();
                             }
                        });                     
                        
@@ -1088,8 +1087,11 @@
                               var descuento =  $('#discount').val();                                                
                               var resumen_tax= $('#tax').val();
                               
-                              taxes = parseFloat(resumen_taxbuildout) +
+                              /*taxes = parseFloat(resumen_taxbuildout) +
                                       parseFloat(resumen_taxappliance) +
+                                      parseFloat(taxitem);*/   
+                                      
+                              taxes = parseFloat(resumen_taxappliance) +
                                       parseFloat(taxitem);                                  
                                
                               $('#tax').val(taxes);
@@ -1153,17 +1155,18 @@
                                   var taxValue;
                             
                                   if($('#check_item').is( \":checked\" )) {                                    
-                                    // Chef units vende el camion
+                                    // Chef Units vende el camión
                                     buildoutTax = (buildoutPrice * 0.0625).toFixed(2);
-                                    taxValue = parseFloat(total * 0.0625).toFixed(2);
+                                    taxValue = parseFloat(total * 0.0825).toFixed(2);
                                   } else { 
-                                     // Usuario tiene su propio camion
+                                     // Usuario tiene su propio camión
                                      buildoutTax = (amount * 0.0825).toFixed(2);
                                      taxValue = parseFloat(total * 0.0825).toFixed(2);
                                      $('#taxitem').val('0.00');
                                   }
                             
-                                  $('#taxbuildout').val(buildoutTax);                            
+                                  //$('#taxbuildout').val(buildoutTax);                            
+                                  $('#taxbuildout').val('0.00');                            
                                   $('#taxappliance').val(taxValue);
                                    
                               } else {
@@ -1186,20 +1189,20 @@
                             }
                             
                             actualizar_total();
-                            updateTotales()
+                            updateTotales();
                         });
                         
                       ////para el checkbox de requeiro truck 
                       $('#check_item').on('click',function() {
                           var input = $( this );
                           if(input.is( \":checked\" )) {
-                            $('#resumen_truck').val($('#starting').val());
+                              $('#resumen_truck').val($('#starting').val());
                           } else {
                               $('#resumen_truck').val('0.00');
                               $('#taxitem').val('0.00');
                           }
                           actualizar_total();
-                          updateTotales()
+                          updateTotales();
                       });                                       
                      
 	        	})
@@ -3251,7 +3254,6 @@
         }
 
         public function getEditsave(\Illuminate\Http\Request $request) {
-	        //dd($request->all());
             $date_limit = $request->get('date_limit');
             $date_limit_check = explode("-", $date_limit);
 
@@ -3303,6 +3305,13 @@
                 }
             }
 
+            if ($request->get('check_item') == 'on') {
+                $starting_with = $request->get('starting');
+            }
+            else {
+                $starting_with = 0;
+            }
+
             $lead_name = $request->get('name');
             $lead_lastname = $request->get('lastname');
             $lead_email = $request->get('email');
@@ -3311,16 +3320,15 @@
             $product_type_id = $request->get('interesting');
             $state_id = $request->get('types');
             $sizes_id = $request->get('sizes');
-            $starting_with = $request->get('starting');
             $business_name = $request->get('business_name');
             $product_id = $request->get('buildout_name');
             $resumen_truck = $request->get('resumen_truck');
             $resumen_buildout = $request->get('resumen_buildout');
             $resumen_appliance = $request->get('resumen_appliance');
-            $tax = $request->get('tax');
+            $tax = $request->get('taxappliance');
             $taxitem = 0;
             $taxbuildout = $request->get('taxbuildout');
-            $taxappliance = $request->get('taxappliance');
+            $taxappliance = $request->get('tax');
             $description_quote = $request->get('descriptionquote');
             $discount = $request->get('discount');
             $total_without_tax = $request->get('subtotal_without_tax');
@@ -3339,7 +3347,7 @@
             if($state == 'TX') {
                 $taxitem = $request->get('taxitem');
                 $precio = $total_quote;
-                $starting_with= $request->get('starting');
+                //$starting_with= $request->get('starting');
             }
 
             $sumarizedDataLead = [
@@ -3966,7 +3974,7 @@
                                 <td bgcolor="#026873"><b>Subtotal quote :</b></td>
                                 <td bgcolor="#026873"><b>'.number_format($subTotal, 2, '.', ' ').'</b></td>
                                </tr>';
-                $totalTax= $row->truck_tax;
+                $totalTax= $row->truck_tax + $row->tax_item;
                 $html = $html . '<tr style="color:#FFF;font-size:10px;">
                                 <td></td>
                                 <td></td>
@@ -3995,7 +4003,7 @@
                                 <td bgcolor="#026873"><b>'.$row->registration.'</b></td>
                                </tr>';
                 //calcular el total
-                $total= $row->registration + $row->price_item + $row->precio + $total_general_apliance + $row->truck_tax  - $row->discount;
+                $total= $row->registration + $row->price_item + $row->precio + $total_general_apliance + $totalTax  - $row->discount;
                 $html = $html . '<tr style="color:#FFF;font-size:10px;">
                                 <td></td>
                                 <td></td>

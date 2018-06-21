@@ -498,7 +498,7 @@ return [
     'total_summary'  => 'Total Summary',
     'mobile_unit'  => 'Mobile Unit',
     'mobile_unit_tax'  => 'Mobile Unit Tax',
-    'subtotal_quote_value'  => 'Subtotal Quote Value',
+    'subtotal_quote_value'  => 'Subtotal Quote Value (Without Taxes)',
     'total_tax'  => 'Total Tax',
     'total_quote_value'  => 'Total Quote Value',
     'what_is_your_budget'  => 'What Is Your Budget',

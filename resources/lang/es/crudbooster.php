@@ -497,7 +497,7 @@ return [
     'total_summary'  => 'Resumen Total',
     'mobile_unit'  => 'Unidad Móvil',
     'mobile_unit_tax'  => 'Impuesto de Unidad Móvil',
-    'subtotal_quote_value'  => 'Subtotal de Cotización',
+    'subtotal_quote_value'  => 'Subtotal de Cotización (Sin Impuestos)',
     'total_tax'  => 'Impuesto Total',
     'total_quote_value'  => 'Total de Cotización',
     'what_is_your_budget'  => '¿Cuál es su presupuesto',

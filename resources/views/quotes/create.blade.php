@@ -590,7 +590,7 @@
                     <div class="col-sm-5">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" id="check_item" <?php if(isset($quotes->price_item)) echo ($quotes->price_item > 0) ? "checked=''" : ""?>    ><label style="color:#45b5b9;font-style: italic;">{{trans('crudbooster.message_select_truck')}}</label>
+                                <input type="checkbox" name="check_item" id="check_item" <?php if(isset($quotes->price_item)) echo ($quotes->price_item > 0) ? "checked=''" : ""?>    ><label style="color:#45b5b9;font-style: italic;">{{trans('crudbooster.message_select_truck')}}</label>
                             </label>
                         </div>
                     </div>
