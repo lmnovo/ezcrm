@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         'App\Console\Commands\cronEmail',
         'App\Console\Commands\reminderLeads',
+        'App\Console\Commands\mailsApp',
 
     ];
 

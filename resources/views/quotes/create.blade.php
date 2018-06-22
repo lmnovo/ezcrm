@@ -27,12 +27,11 @@
                 "aaSorting": [[ 0, "desc" ]],
             } );
 
-            $('#saveQuote').on('click',function(){
+            /*$('#saveQuote').on('click',function(){
                 $('#hidden_description').val(($('#description_text').html()));
-                $("#form_quote_principal").submit();
-                $("#form_quote_principal").validate();
-
-            });
+                //$("#form_quote_principal").validate();
+                //$("#form_quote_principal").submit();
+            });*/
 
 
             $('#table_edit_products').dataTable( {
@@ -512,8 +511,8 @@
                         <label>{{trans('crudbooster.description')}}</label>
                         <input type="hidden" id="hidden_description" name="hidden_description" value="adasdasd" />
                         <textarea id='buildout_description' name='buildout_description' class='form-control wysiwyg'>
-                            <p id="description_text"></p>
-                            {{--{{ $quotes->desc_buildout }}--}}
+                            {{--<p id="description_text"></p>--}}
+                            {{ $quotes->desc_buildout }}
                         </textarea>
                     </div>
 
@@ -804,7 +803,7 @@
         </div>
 
         <div class='panel-footer'>
-            <button type="button" id="saveQuote" title="{{trans('crudbooster.save')}}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+            <button type="submit" id="saveQuote" title="{{trans('crudbooster.save')}}" class="btn btn-primary"><i class="fa fa-save"></i></button>
             <button type="submit" id="check_send_email" title="{{trans('crudbooster.save_and_submit')}}" class="btn btn-primary"><i class="fa fa-envelope"></i></button>
             <a class="btn btn-yahoo" title="{{trans('crudbooster.create_invoice')}}" style="margin: 2px" href="{{CRUDBooster::mainpath("create-invoice/$id")}}"><i class="fa fa-hand-o-right"></i> </a>
             <a title="{{trans('crudbooster.send_email')}}" id="send-email-personal" class="btn btn-success" style="margin: 2px" href="#"><i class="fa fa-envelope-o"></i></a>
@@ -978,14 +977,15 @@
                                     </div>
                                 </div>
 
+
                                 <div class="form-group">
                                     <label for="price2" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.cost')}}</label>
                                     <div class="col-md-9 col-xs-12 col-sm-9">
                                         <div class="input-group">
-                                            <input class="form-control number" id="price2" name="price2"  placeholder="{{trans('crudbooster.cost_price')}}" type="text" required disabled/>
+                                            <input class="form-control number" id="price2_retail" name="price2_retail"  placeholder="{{trans('crudbooster.cost_price')}}" type="text" required disabled/>
                                             <span class="input-group-btn">
-                                                <button class="btn btn-default" type="button" id="edit_precio"><span class="glyphicon glyphicon-edit"></span></button>
-                                                <button class="btn btn-default" type="button" id="save_precio" style="display: none;"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+                                                <button class="btn btn-default" type="button" id="edit_precio_retail"><span class="glyphicon glyphicon-edit"></span></button>
+                                                <button class="btn btn-default" type="button" id="save_precio_retail" style="display: none;"><span class="glyphicon glyphicon-floppy-disk"></span></button>
                                             </span>
                                         </div>
                                     </div>
@@ -995,10 +995,10 @@
                                     <label for="price2" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.retail_price')}}</label>
                                     <div class="col-md-9 col-xs-12 col-sm-9">
                                         <div class="input-group">
-                                            <input class="form-control number" id="price2_retail" name="price2_retail"  placeholder="{{trans('crudbooster.retail_price')}}" type="text" required disabled/>
+                                            <input class="form-control number" id="price2" name="price2"  placeholder="{{trans('crudbooster.retail_price')}}" type="text" required disabled/>
                                             <span class="input-group-btn">
-                                                <button class="btn btn-default" type="button" id="edit_precio_retail"><span class="glyphicon glyphicon-edit"></span></button>
-                                                <button class="btn btn-default" type="button" id="save_precio_retail" style="display: none;"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+                                                <button class="btn btn-default" type="button" id="edit_precio"><span class="glyphicon glyphicon-edit"></span></button>
+                                                <button class="btn btn-default" type="button" id="save_precio" style="display: none;"><span class="glyphicon glyphicon-floppy-disk"></span></button>
                                             </span>
                                         </div>
                                     </div>

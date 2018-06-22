@@ -206,6 +206,7 @@
 	        	   	        	    
 	        	    /*cargando = $('<img src=\"/assets/images/loading.gif\" />');
                     $('div#loading').html(cargando);
+                    $('div#loading').html(cargando);
                     $('div#loading').hide();*/
                     $('#modal-loading').modal('hide');
                     
@@ -875,6 +876,7 @@
                        
                        $('#description').val('');
                        $('#price2').val('');
+                       $('#price2_retail').val('');
                        $('#quantity').val('');
                        $('#total').val(''); 
                        $('#appliance').val('');
@@ -3359,7 +3361,8 @@
             $downpayment = $request->get('downpayment');
             $financing = $request->get('financing');
             $state = $request->get('state');
-            $buildout_description = $request->get('hidden_description');
+            //$buildout_description = $request->get('hidden_description');
+            $buildout_description = $request->get('buildout_description');
             $precio_builout = $request->get('buildout_price');
 
             //$sources  =  DB::table('sources')->where('id', 2)->first();

@@ -309,7 +309,7 @@
                             <div class="form-group">
                                 <label class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.cost')}}*</label>
                                 <div class="col-md-9">
-                                    <input type="text" title="{{trans('crudbooster.cost_price')}}" required class="form-control number min:0" placeholder="0.00" name="price2_new" id="price2_new" value="">
+                                    <input type="text" title="{{trans('crudbooster.cost_price')}}" required class="form-control number min:0" placeholder="0.00" name="price2_retail_new" id="price2_retail_new" value="">
                                     <div class="text-danger"></div>
                                     <p class="help-block"></p>
                                 </div>
@@ -318,7 +318,7 @@
                             <div class="form-group">
                                 <label class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.retail_price')}}*</label>
                                 <div class="col-md-9">
-                                    <input required class="form-control number min:0" id="price2_retail_new" name="price2_retail_new"  placeholder="0.00" type="text"/>
+                                    <input required class="form-control number min:0" id="price2_new" name="price2_new"  placeholder="0.00" type="text"/>
                                 </div>
                             </div>
 
@@ -472,12 +472,13 @@
                 <th>{{trans('crudbooster.appliance')}}</th>
                 <th>{{trans('crudbooster.detail')}}</th>
                 <th>{{trans('crudbooster.description')}}</th>
-                <th>{{trans('crudbooster.retail_price')}}</th>
                 <th>{{trans('crudbooster.cost_price')}}</th>
+                <th>{{trans('crudbooster.retail_price')}}</th>
                 <th style="text-align: center">{{trans('crudbooster.action')}}</th>
             </tr>
             </thead>
             <tbody>
+
             @foreach($result as $row)
                 <tr>
                     <td style="width: 2%">{{$row->id}}</td>
@@ -513,6 +514,13 @@
                     </td>
                 </tr>
             @endforeach
+
+            <?php
+            if (count($result == 0)) {
+             echo "<tr><td colspan='9'> <div style='text-align: center; color: red; padding-bottom: 20px;'><i class='fa fa-search'></i>";?> {{ trans('crudbooster.table_data_not_found') }}  <?php echo "</div></td></tr>";
+            }
+            ?>
+
             </tbody>
         </table>
 
