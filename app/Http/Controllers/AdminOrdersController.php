@@ -209,6 +209,16 @@
                     $('div#loading').hide();*/
                     $('#modal-loading').modal('hide');
                     
+                    var quotes_id = $('#note_quotes_id').val();
+                    $.ajax({
+                        url: '../buildoutdesc',
+                        data: \"id=\"+quotes_id,
+                        type:  'get',
+                        dataType: 'json',
+                        success : function(data) {
+                            $('#description_text').html(data[0].desc_buildout);                                                      
+                        }
+                     });                    
                     
                     
                     $('#check_send_email').on('click',function(){
@@ -3103,6 +3113,12 @@
             return $data;
         }
 
+        //Obtener la descripción del buildout
+        public function getBuildoutdesc(\Illuminate\Http\Request $request) {
+	        $data = DB::table('user_trucks')->where('id', $request->get('id'))->get();
+            return $data;
+        }
+
         //Obtener el valor del Impuesto de Accesorioss
         public function getTaxaccesories() {
             $data = DB::table('settings')->where('id', 1)->first();
@@ -3338,7 +3354,7 @@
             $downpayment = $request->get('downpayment');
             $financing = $request->get('financing');
             $state = $request->get('state');
-            $buildout_description = $request->get('buildout_description');
+            $buildout_description = $request->get('hidden_description');
             $precio_builout = $request->get('buildout_price');
 
             //$sources  =  DB::table('sources')->where('id', 2)->first();
