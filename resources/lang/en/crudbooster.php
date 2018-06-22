@@ -278,7 +278,10 @@ return [
     'text_invoice_added'         => 'Invoice Created Successfully!',
     'text_open_edit_quote'       => 'You can create new quote!',
     'text_open_edit_campaign'    => 'You can create new campaign!',
-    'text_notification_success_1'  => 'The campaign: ',
+    'new_tasks_lead_en'  => 'New task created to the lead: ',
+    'new_tasks_lead_es'  => 'Nueva tarea creada al prospecto: ',
+    'new_tasks_client_en'  => 'New task created to the client: ',
+    'new_tasks_client_es'  => 'Nueva tarea creada al client: ',
     'text_notification_success_2'  => ' has been sent satisfactorily.',
     'movil_message'  => 'Please, place your phone in horizontal position to visualize charts correctly',
 

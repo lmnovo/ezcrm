@@ -444,7 +444,7 @@
                 ]);
             }
 
-            //Notificación de envío de campaña de tipo campaña
+            /*//Notificación de envío de campaña de tipo campaña
             $config['content'] = trans("crudbooster.text_notification_success_1")."'".$template_name."' ".trans("crudbooster.text_notification_success_2");
             $config['to'] = CRUDBooster::adminPath('campaigns/detail/'.$id);
 
@@ -456,7 +456,7 @@
                 $config['id_cms_users'] = [1]; //This is an array of id users
             }
 
-            CRUDBooster::sendNotification($config);
+            CRUDBooster::sendNotification($config);*/
 
             $lastId = DB::table('campaigns_leads')->select(\Illuminate\Support\Facades\DB::raw('MAX(id) as id'))->first();
             $actual_lead = DB::table('campaigns_leads')->where('id',$lastId->id)->first();

@@ -526,7 +526,23 @@
                 'clients_id' => $request->get('lead_id'),
             ];
 
-            DB::table('eazy_tasks_clients')->insertGetId($sumarizedData);
+            $lastId = DB::table('eazy_tasks_clients')->insertGetId($sumarizedData);
+
+            $client = DB::table('clients')->where('id', $request->get('lead_id'))->first();
+
+            //Notificación de envío de tareas
+            $config['content'] = trans("crudbooster.new_tasks_client_en").$client->name.' '.$client->lastname;
+            $config['content_spanish'] = trans("crudbooster.new_tasks_client_es").$client->name.' '.$client->lastname;
+            $config['to'] = CRUDBooster::adminPath('eazy_tasks/detail/'.$lastId);
+
+            if (CRUDBooster::myId() != 1) {
+                $config['id_cms_users'] = [1,CRUDBooster::myId()]; //This is an array of id users
+            }
+            else {
+                $config['id_cms_users'] = [1]; //This is an array of id users
+            }
+
+            CRUDBooster::sendNotification($config);
 
             return 1;
         }

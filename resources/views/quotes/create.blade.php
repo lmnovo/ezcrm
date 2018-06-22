@@ -30,6 +30,8 @@
             $('#saveQuote').on('click',function(){
                 $('#hidden_description').val(($('#description_text').html()));
                 $("#form_quote_principal").submit();
+                $("#form_quote_principal").validate();
+
             });
 
 
@@ -360,7 +362,7 @@
                             <span class="fa fa-info-circle" style="cursor:pointer;" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="{{trans('crudbooster.interested_in_tooltip')}}"></span>
                         </label>
 
-                        <select class="form-control required" id="interesting" placeholder="Select" name="interesting" required>
+                        <select required class="form-control required" id="interesting" placeholder="Select" name="interesting" >
                             <option>**Select Data**</option>
                                 @foreach($products_type as $type)
                                     @if($type->id == $interested->id)
@@ -489,7 +491,7 @@
                 <div class="row">
                     <div class='col-sm-4'>
                         <label>{{trans('crudbooster.buildout')}}*</label>
-                        <select class="form-control" id="buildout_name" placeholder="Select" required name="buildout_name">
+                        <select class="form-control required" id="buildout_name" placeholder="Select" required name="buildout_name">
                             {{--<option value="{{ $buildout[0]->id }}" id="{{ $buildout[0]->id }}">{{ $buildout[0]->buildout_name }}</option>--}}
                             @foreach($buildout_list as $item)
                                 @if($item->id == $buildout[0]->id)
@@ -713,7 +715,7 @@
 
                     <div class='col-sm-4'>
                         <label>{{trans('crudbooster.how_soon_you_need_it')}}?*</label>
-                        <input type='text' name='date_limit' required id='date_limit' required class='form-control' value="<?php if(isset($date_limit)) echo $date_limit ?>"/>
+                        <input type='text' name='date_limit' required id='date_limit' class='form-control required' value="<?php if(isset($date_limit)) echo $date_limit ?>"/>
                     </div>
                 </div>
 

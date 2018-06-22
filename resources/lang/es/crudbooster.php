@@ -286,7 +286,10 @@ return [
     'text_invoice_added'         => 'Factura Creada Satisfactoriamente!',
     'text_open_edit_quote'       => 'Usted puede crear una nueva cotización!',
     'text_open_edit_campaign'    => 'Usted puede crear una nueva campaña!',
-    'text_notification_success_1'  => 'La campaña: ',
+    'new_tasks_lead_en'  => 'New task created to the lead: ',
+    'new_tasks_lead_es'  => 'Nueva tarea creada al prospecto: ',
+    'new_tasks_client_en'  => 'New task created to the client: ',
+    'new_tasks_client_es'  => 'Nueva tarea creada al client: ',
     'text_notification_success_2'  => ' ha sido enviada satisfactoriamente.',
 
     'movil_message'  => 'Por favor, coloque su teléfono en posición horizontal visualizar gráficas correctamente',

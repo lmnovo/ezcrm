@@ -24,7 +24,11 @@
             //Actualizar como leída la notificaciones seleccionada
             $.get("http://ezcrm.us/crm/notifications/readone", { id: id_read}, function(data){
             });
+
+            loader_notification();
         });
+
+
 
         $(document).on("click","#get_read_all",function(e) {
             e.preventDefault();
@@ -32,7 +36,7 @@
             $('#modal-notifications').modal('hide');
 
             $.get("http://ezcrm.us/crm/notifications/readall", { id: id_read }, function(data){
-                location.href="http://ezcrm.us/crm";
+                loader_notification();
             });
         });
 

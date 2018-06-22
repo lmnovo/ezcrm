@@ -43,6 +43,17 @@
 			}
 		}
 
+		function readOne(id,url) {
+            var quotes_id = $('#note_quotes_id').val();
+            //Actualizar como leída la notificaciones seleccionada
+            $.get("http://ezcrm.us/crm/notifications/readone", { id: id}, function(data){
+            });
+
+            loader_notification();
+
+            //window.location.href = url;
+		}
+
 		$(function() {		
 
 			jQuery.fn.outerHTML = function(s) {
@@ -123,8 +134,8 @@
 		  $('.notifications-menu .header').text(NOTIFICATION_YOU_HAVE +' '+resp.total+' '+ NOTIFICATION_NOTIFICATIONS);
           var htm = '';
           $.each(resp.items,function(i,obj) {
-              htm += '<li><a href="'+ADMIN_PATH+'/notifications/read/'+obj.id+'?m=0"><i class="'+obj.icon+'"></i> '+obj.content+'</a></li>';
-          })  
+              htm += '<li style="font-size: 13px"><a id="notification_list_click"  onclick="readOne('+obj.id+','+'\''+obj.url+'\''+')"><i class="fa fa-calendar-minus-o"></i> '+obj.content+'</a></li>';
+          })
           $('.notifications-menu #list_notifications .menu').html(htm);
          
           total_notification = resp.total;

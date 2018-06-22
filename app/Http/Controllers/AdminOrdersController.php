@@ -409,6 +409,11 @@
                           }
                      });
                      
+                     $('#starting').on('change',function(){
+                          $('#resumen_truck').val($('#starting').val());
+                          actualizar_total(); 
+                     });
+                     
                      function updateTotales() {
                         console.log($('#taxbuildout').val()+'--'+$('#taxappliance').val()+'--'+$('#taxitem').val());
                      }
