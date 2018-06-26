@@ -73,6 +73,11 @@ class NotificationsController extends CBController {
         return 1;
     }
 
+    public function getAllunread(\Illuminate\Http\Request $request) {
+        $data = DB::table('cms_notifications')->where('is_read',0)->get();
+        return $data;
+    }
+
     public function getReadall() {
         $notifications = DB::table('cms_notifications')->get();
 

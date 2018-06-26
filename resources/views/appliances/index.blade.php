@@ -397,19 +397,20 @@
                                 </div>
                             </div>
 
+
                             <div class="form-group">
                                 <label class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.cost')}}*</label>
                                 <div class="col-md-9">
-                                    <input type="text" title="{{trans('crudbooster.cost_price')}}" required class="form-control required number min:0" placeholder="0.00" name="price2_edit" id="price2_edit" value="">
-                                    <div class="text-danger"></div>
-                                    <p class="help-block"></p>
+                                    <input required class="form-control required number min:0" id="price2_retail_edit" name="price2_retail_edit"  placeholder="0.00" type="text"/>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.retail_price')}}*</label>
                                 <div class="col-md-9">
-                                    <input required class="form-control required number min:0" id="price2_retail_edit" name="price2_retail_edit"  placeholder="0.00" type="text"/>
+                                    <input type="text" required class="form-control required number min:0" placeholder="0.00" name="price2_edit" id="price2_edit" value="">
+                                    <div class="text-danger"></div>
+                                    <p class="help-block"></p>
                                 </div>
                             </div>
 

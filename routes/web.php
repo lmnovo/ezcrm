@@ -83,6 +83,148 @@ use Carbon\Carbon;
 
     });
 
+
+    Route::get('/taxes', function () {
+
+        $user_trucks = DB::table('user_trucks')
+            ->where('state','TX')
+            ->get();
+
+        $range =count($user_trucks)-1;
+
+        for ($i=$range-300; $i>$range-400; $i--) {
+            $query = DB::table('user_trucks')
+                ->join('truck_items', 'truck_items.id_truck', '=', 'user_trucks.id')
+                ->where('user_trucks.id',$user_trucks[$i]->id)
+                ->get();
+
+            $query_truck = DB::table('user_trucks')
+                ->where('user_trucks.id',$user_trucks[$i]->id)
+                ->first();
+
+            if(count($query) != 0) {
+
+                $tax_appliances = 0;
+                $total_appliances = 0;
+                $total = 0;
+                foreach ($query as $q) {
+                    $total_appliances += $q->price*$q->cant;
+                }
+
+                //Si chefunits vende camión
+                $tax_appliances = $total_appliances*0.0625;
+
+                $price_item = 0;
+                if ($query_truck->price_item == 0) {
+                    $price_item = $query_truck->truck_price_range;
+                } else {
+                    $price_item = $query_truck->price_item;
+                }
+
+                //Si chefunits vende camión
+                $tax_item = $price_item * 0.0625;
+
+                $price_buildout = 0;
+                $tax_buildout = 0;
+                if ($query_truck->build_out_price == 0) {
+                    $price_buildout = $query_truck->precio_builout;
+                } else {
+                    $price_buildout = $query_truck->build_out_price;
+                }
+
+                //Si chefunits vende camión
+                $tax_buildout = $price_buildout*0.0625;
+                $discount = $query_truck->discount;
+                $total = ($tax_item + $tax_appliances + $tax_buildout) + $price_item + $query_truck->registration + $price_buildout + $total_appliances - $discount;
+
+                DB::table('user_trucks')->where('id',$user_trucks[$i]->id)->update(['truck_tax'=>$tax_appliances, 'truck_aprox_price'=>$total]);
+            }
+            else {
+                $tax_appliances = 0;
+                $total_appliances = 0;
+                $total = 0;
+                $tax_appliances = 0;
+
+                $price_item = 0;
+                if ($query_truck->price_item == 0) {
+                    $price_item = $query_truck->truck_price_range;
+                } else {
+                    $price_item = $query_truck->price_item;
+                }
+
+                //Si chefunits vende camión
+                $tax_item = $price_item * 0.0625;
+
+                $price_buildout = 0;
+                $tax_buildout = 0;
+                if ($query_truck->build_out_price == 0) {
+                    $price_buildout = $query_truck->precio_builout;
+                } else {
+                    $price_buildout = $query_truck->build_out_price;
+                }
+
+                //Si chefunits vende camión
+                $tax_buildout = $price_buildout*0.0625;
+                $discount = $query_truck->discount;
+                $total = ($tax_item + $tax_appliances + $tax_buildout) + $price_item + $query_truck->registration + $price_buildout + $total_appliances - $discount;
+
+                DB::table('user_trucks')->where('id',$user_trucks[$i]->id)->update(['truck_tax'=>$tax_appliances, 'truck_aprox_price'=>$total]);
+
+            }
+        }
+
+    });
+
+    Route::get('/taxes_total', function () {
+
+        $user_trucks = DB::table('user_trucks')
+            ->where('state', '!=','TX')
+            ->get();
+        
+        $range =count($user_trucks)-1;
+
+        for ($i=$range; $i>$range-100; $i--) {
+            $query = DB::table('user_trucks')
+                ->join('truck_items', 'truck_items.id_truck', '=', 'user_trucks.id')
+                ->where('user_trucks.id',$user_trucks[$i]->id)
+                ->get();
+
+            $query_truck = DB::table('user_trucks')
+                ->where('user_trucks.id',$user_trucks[$i]->id)
+                ->first();
+
+            if(count($query) != 0) {
+                $tax_appliances = 0;
+                $total_appliances = 0;
+                $total = 0;
+                foreach ($query as $q) {
+                    $total_appliances += $q->price*$q->cant;
+                }
+
+                $tax_appliances = 0;
+                $price_item = 0;
+                if ($query_truck->price_item == 0) {
+                    $price_item = $query_truck->truck_price_range;
+                } else {
+                    $price_item = $query_truck->price_item;
+                }
+
+                $price_buildout = 0;
+                if ($query_truck->build_out_price == 0) {
+                    $price_buildout = $query_truck->precio_builout;
+                } else {
+                    $price_buildout = $query_truck->build_out_price;
+                }
+
+                $discount = $query_truck->discount;
+                $total = $price_item + $query_truck->registration + $price_buildout + $total_appliances - $discount;
+
+                DB::table('user_trucks')->where('id',$user_trucks[$i]->id)->update(['truck_aprox_price'=>$total]);
+            }
+        }
+
+    });
+
     Route::get('image-upload',['as'=>'image.upload','uses'=>'ImageUploadController@imageUpload']);
     Route::post('image-upload',['as'=>'image.upload.post','uses'=>'ImageUploadController@imageUploadPost']);
 
@@ -256,7 +398,6 @@ use Carbon\Carbon;
         }
 
     });
-
 
     Route::get('/quotes', function () {
         \Illuminate\Support\Facades\DB::beginTransaction();

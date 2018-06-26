@@ -44,6 +44,11 @@
                 $('#newApplianceModal').modal('hide');
             });
 
+            $('#saveQuote').on('click',function(){
+
+                $('#hidden_description').val($('.note-editable').html());
+            });
+
             $('#applianceModal').on('click','#edit_appliance_edit',function(){
                 $('#modalEditApplianceList').modal('show');
                 $('#applianceModal').modal('hide');
@@ -511,10 +516,10 @@
                         <label>{{trans('crudbooster.description')}}</label>
                         <input type="hidden" id="hidden_description" name="hidden_description" value="adasdasd" />
                         <textarea id='buildout_description' name='buildout_description' class='form-control wysiwyg'>
-                            {{--<p id="description_text"></p>--}}
                             {{ $quotes->desc_buildout }}
                         </textarea>
                     </div>
+
 
 
 

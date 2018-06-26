@@ -189,7 +189,15 @@
                                 </tr>
 
                                 <tr>
-                                    <td>{{trans('crudbooster.email')}}</td><td><a href='{{CRUDBooster::mainpath("send-email/$id")}}'>{{ $lead->email }}</a></td>
+                                    <td>{{trans('crudbooster.email')}}</td>
+                                    <td>
+                                        <a href='{{CRUDBooster::mainpath("send-email/$id")}}'>
+                                            <?php
+                                                $email = strtolower($lead->email);
+                                                echo($email);
+                                            ?>
+                                        </a>
+                                    </td>
                                     <td><strong>{{trans('crudbooster.type')}}</strong></td><td>{{ $contact_type->name }}</td>
                                 </tr>
 

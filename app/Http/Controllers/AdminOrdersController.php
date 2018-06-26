@@ -16,7 +16,7 @@
 			$this->orderby = "id,desc";
 			$this->global_privilege = false;
 			$this->button_table_action = true;
-			$this->button_bulk_action = false;
+			$this->button_bulk_action = true;
 			$this->button_action_style = "button_icon";
 			$this->button_add = false;
 			$this->button_edit = true;
@@ -139,6 +139,9 @@
 	        |
 	        */
 	        $this->button_selected = array();
+            $this->button_selected[] = ['label'=>'Send Email','icon'=>'fa fa-envelope-o','name'=>'send_email'];
+            $this->button_selected[] = ['label'=>'Send SMS','icon'=>'fa fa-phone','name'=>'send_sms'];
+            $this->button_selected[] = ['label'=>'Send Schedule Email','icon'=>'fa fa-calendar-plus-o','name'=>'send_email_schedule'];
 
 
 	        /*
@@ -416,7 +419,7 @@
                      });
                      
                      function updateTotales() {
-                        console.log($('#taxbuildout').val()+'--'+$('#taxappliance').val()+'--'+$('#taxitem').val());
+                        //console.log($('#taxbuildout').val()+'--'+$('#taxappliance').val()+'--'+$('#taxitem').val());
                      }
                      
                      function Actualizar_Estado() {
@@ -1097,6 +1100,7 @@
                               var resumen_registration= $('#registration').val();
                               var resumen_truck= $('#resumen_truck').val();
                               var taxitem= $('#taxitem').val();
+                              var taxbuildout= $('#taxbuildout').val();
                               var resumen_buildout= ($('#buildout_price').val() != '') ? $('#buildout_price').val() : \"0.00\";
                               var resumen_taxbuildout= $('#taxbuildout').val();
                               var resumen_appliance= $('#resumen_appliance').val();
@@ -1109,7 +1113,8 @@
                                       parseFloat(taxitem);*/   
                                       
                               taxes = parseFloat(resumen_taxappliance) +
-                                      parseFloat(taxitem);                                  
+                                      parseFloat(taxitem) +
+                                      parseFloat(taxbuildout);                                  
                                
                               $('#tax').val(taxes);
                                                       
@@ -1165,26 +1170,31 @@
                                   $('#taxitem').val((p * (6.25/100)).toFixed(2));     
                                    
                                   // Verify if user is purchasing a truck and set buildout tax amount.
-                                  var buildoutTax;
+                                  var buildoutTax = 0;
+                                  var taxAppliances = 0;
                             
                                   //tax de appliance
-                                  var total=$('#total_app').html();                          
-                                  var taxValue;
-                            
+                                  var total=$('#total_app').html();  
+                                  
                                   if($('#check_item').is( \":checked\" )) {                                    
-                                    // Chef Units vende el camión
+                                    // Si Chef Units vende el camión, se calcula el 6.25 del precio del buildout 
                                     buildoutTax = (buildoutPrice * 0.0625).toFixed(2);
-                                    taxValue = parseFloat(total * 0.0825).toFixed(2);
-                                  } else { 
-                                     // Usuario tiene su propio camión
-                                     buildoutTax = (amount * 0.0825).toFixed(2);
-                                     taxValue = parseFloat(total * 0.0825).toFixed(2);
+                                    
+                                    //Calculamos el tax del total de appliances con el 6,25
+                                    taxAppliances = (total * 0.0625).toFixed(2)
+                                  } 
+                                  else { 
+                                     // Si Cliente tiene su propio camión
+                                     //Obtengo el 30% del precio del buildout y luego aplico tax de 8.25
+                                     buildoutTax = (buildoutPrice * 0.30 * 0.0825).toFixed(2);
                                      $('#taxitem').val('0.00');
+                                     
+                                     //Calculamos el tax del total de appliances con el 8,25
+                                     taxAppliances = (total * 0.0825).toFixed(2)
                                   }
-                            
-                                  //$('#taxbuildout').val(buildoutTax);                            
-                                  $('#taxbuildout').val('0.00');                            
-                                  $('#taxappliance').val(taxValue);
+                                                        
+                                  $('#taxbuildout').val(buildoutTax);                            
+                                  $('#taxappliance').val(taxAppliances);
                                    
                               } else {
                                   $('#taxitem').val('0.00');
@@ -1295,10 +1305,19 @@
 	    | @button_name = the name of button
 	    |
 	    */
-	    public function actionButtonSelected($id_selected,$button_name) {
-	        //Your code here
+        public function actionButtonSelected($id_selected,$button_name) {
 
-	    }
+            if ($button_name == 'send_email')
+            {
+                $this->getSendEmail($id_selected);
+            }
+            elseif($button_name == 'send_sms') {
+                $this->getSendSms($id_selected);
+            }
+            elseif($button_name == 'send_email_schedule') {
+                $this->getSendEmailSchedule($id_selected);
+            }
+        }
 
 
 	    /*
@@ -1702,7 +1721,7 @@
                                       </tr>
                                       <tr style="color:#FFF;font-size:12px;">
                                           <td width="10%" bgcolor="#026873"><b>CATEGORY</b></td>
-                                          <td width="20%" bgcolor="#026873"><b>PRODUCT NAME</b></td>
+                                          <td width="20%" bgcolor="#026873"><b>NAME</b></td>
                                           <td width="10%" bgcolor="#026873"><b>PRICE</b></td>
                                           <td width="60%" bgcolor="#026873"><b>DESCRIPTION</b></td>
                                       </tr>
@@ -1797,7 +1816,7 @@
                                 <td bgcolor="#026873"><b>Subtotal quote :</b></td>
                                 <td bgcolor="#026873"><b>'.number_format($subTotal, 2, '.', ' ').'</b></td>
                                </tr>';
-                $totalTax= $row->truck_tax;
+                $totalTax= $row->truck_tax + $row->tax_item;
                 $html = $html . '<tr style="color:#FFF;font-size:10px;">
                                 <td></td>
                                 <td></td>
@@ -1826,7 +1845,7 @@
                                 <td bgcolor="#026873"><b>'.$row->registration.'</b></td>
                                </tr>';
                 //calcular el total
-                $total= $row->registration + $row->price_item + $row->precio + $total_general_apliance + $row->truck_tax  - $row->discount;
+                $total= $row->registration + $row->price_item + $row->precio + $total_general_apliance + $row->truck_tax + $row->tax_item - $row->discount;
                 $html = $html . '<tr style="color:#FFF;font-size:10px;">
                                 <td></td>
                                 <td></td>
@@ -2094,7 +2113,7 @@
                                       </tr>
                                       <tr style="color:#FFF;font-size:12px;">
                                           <td width="10%" bgcolor="#026873"><b>CATEGORY</b></td>
-                                          <td width="20%" bgcolor="#026873"><b>PRODUCT NAME</b></td>
+                                          <td width="20%" bgcolor="#026873"><b>NAME</b></td>
                                           <td width="10%" bgcolor="#026873"><b>PRICE</b></td>
                                           <td width="60%" bgcolor="#026873"><b>DESCRIPTION</b></td>
                                       </tr>
@@ -2189,7 +2208,7 @@
                                 <td bgcolor="#026873"><b>Subtotal quote :</b></td>
                                 <td bgcolor="#026873"><b>'.number_format($subTotal, 2, '.', ' ').'</b></td>
                                </tr>';
-                $totalTax= $row->truck_tax;
+                $totalTax= $row->truck_tax + $row->tax_item;
                 $html = $html . '<tr style="color:#FFF;font-size:10px;">
                                 <td></td>
                                 <td></td>
@@ -2218,7 +2237,7 @@
                                 <td bgcolor="#026873"><b>'.$row->registration.'</b></td>
                                </tr>';
                 //calcular el total
-                $total= $row->registration + $row->price_item + $row->precio + $total_general_apliance + $row->truck_tax  - $row->discount;
+                $total= $row->registration + $row->price_item + $row->precio + $total_general_apliance + $row->truck_tax + $row->tax_item - $row->discount;
                 $html = $html . '<tr style="color:#FFF;font-size:10px;">
                                 <td></td>
                                 <td></td>
@@ -3361,8 +3380,8 @@
             $downpayment = $request->get('downpayment');
             $financing = $request->get('financing');
             $state = $request->get('state');
-            //$buildout_description = $request->get('hidden_description');
-            $buildout_description = $request->get('buildout_description');
+            $buildout_description = $request->get('hidden_description');
+            //$buildout_description = $request->get('buildout_description');
             $precio_builout = $request->get('buildout_price');
 
             //$sources  =  DB::table('sources')->where('id', 2)->first();
@@ -3394,7 +3413,7 @@
                 'build_out' => $product_id,
                 'time' => $date_limit,
                 'registration' => $registration,
-                'truck_tax' => $tax,
+                'truck_tax' => $tax + $taxbuildout,
                 'interesting' => $product_type_id,
                 'id_size' => $sizes_id,
                 'state' => $state,
@@ -4048,7 +4067,142 @@
             $data['html'] = $html;
 
             $this->cbView('clients.invoice-print',$data);
+        }
 
+        //Enviar Email dado el id de Lead
+        public function getSendEmail($id) {
+            $emails = [];
+
+            if(gettype($id) == 'array') {
+                foreach ($id as $item) {
+                    $leads = DB::table('account')
+                        ->join('user_trucks', 'user_trucks.id_account', '=', 'account.id')
+                        ->where('user_trucks.id', $item)->first();
+
+                    if (!empty($leads->email)) {
+                        $emails[] = strtolower($leads->email);
+                    }
+                }
+            }
+
+            $emailArray = '';
+            $cant = count($emails);
+            for ($i = 0; $i < count($emails); $i++) {
+                if ($i == 0) {
+                    $emailArray	= $emails[$i];
+                } else {
+                    $emailArray	= $emailArray.'; '.$emails[$i];
+                }
+            }
+
+            $sumarizedData = [
+                'created_at' => Carbon::now(config('app.timezone')),
+                'to' => $emailArray,
+                'subject' => '',
+                'content' => '',
+                'type' => 'Email',
+                'cms_email_templates_id' => null,
+                'cms_users_id' => CRUDBooster::myId()
+            ];
+
+            $maxId = DB::table('settings_campaigns')->select(\Illuminate\Support\Facades\DB::raw('MAX(id) as id'))->first();
+            $maxId = $maxId->id + 1;
+            $lastId = DB::table('settings_campaigns')->insertGetId($sumarizedData);
+
+            DB::table('account')->where('id',$lastId)->update(['id'=> $maxId ]);
+
+            //Open Edit Campaign
+            CRUDBooster::redirect(CRUDBooster::adminPath('settings_campaigns/edit/'.$lastId),trans("crudbooster.text_open_edit_campaign"));
+
+        }
+
+        //Enviar SMS dado el id de Lead
+        public function getSendSms($id) {
+            $to = null;
+
+            if(gettype($id) == 'array') {
+                foreach ($id as $item) {
+                    $leads = DB::table('account')
+                        ->join('user_trucks', 'user_trucks.id_account', '=', 'account.id')
+                        ->where('user_trucks.id', $item)->first();
+
+                    if (!empty($leads->telephone)) {
+                        $to[] = $leads->telephone;
+                    }
+                }
+            }
+
+            $phonesArray = '';
+            $cant = count($to);
+            for ($i = 0; $i < count($to); $i++) {
+                if ($i == 0) {
+                    $phonesArray	= $to[$i];
+                } else {
+                    $phonesArray	= $phonesArray.'; '.$to[$i];
+                }
+            }
+
+            $sumarizedData = [
+                'created_at' => Carbon::now(config('app.timezone')),
+                'to' => $phonesArray,
+                'subject' => '',
+                'content' => '',
+                'type' => 'SMS',
+                'cms_email_templates_id' => null,
+                'cms_users_id' => CRUDBooster::myId()
+            ];
+
+            $lastId = DB::table('settings_campaigns')->insertGetId($sumarizedData);
+
+            //Open Edit Quote
+            CRUDBooster::redirect(CRUDBooster::adminPath('settings_campaigns/edit/'.$lastId),trans("crudbooster.text_open_edit_campaign"));
+        }
+
+
+        //Enviar Schedule Email dado el id de Lead
+        public function getSendEmailSchedule($id) {
+            $emails = [];
+
+            if(gettype($id) == 'array') {
+                foreach ($id as $item) {
+                    $leads = DB::table('account')
+                        ->join('user_trucks', 'user_trucks.id_account', '=', 'account.id')
+                        ->where('user_trucks.id', $item)->first();
+
+                    if (!empty($leads->email)) {
+                        $emails[] = strtolower($leads->email);
+                    }
+                }
+            }
+
+            $emailArray = '';
+            $cant = count($emails);
+            for ($i = 0; $i < count($emails); $i++) {
+                if ($i == 0) {
+                    $emailArray	= $emails[$i];
+                } else {
+                    $emailArray	= $emailArray.'; '.$emails[$i];
+                }
+            }
+
+            $sumarizedData = [
+                'created_at' => Carbon::now(config('app.timezone')),
+                'to' => $emailArray,
+                'subject' => '',
+                'content' => '',
+                'type' => 'Email',
+                'cms_email_templates_id' => null,
+                'cms_users_id' => CRUDBooster::myId()
+            ];
+
+            $maxId = DB::table('campaign_automations')->select(\Illuminate\Support\Facades\DB::raw('MAX(id) as id'))->first();
+            $maxId = $maxId->id + 1;
+            $lastId = DB::table('campaign_automations')->insertGetId($sumarizedData);
+
+            DB::table('account')->where('id',$lastId)->update(['id'=> $maxId ]);
+
+            //Open Edit Campaign
+            CRUDBooster::redirect(CRUDBooster::adminPath('campaign_automations/edit/'.$lastId),trans("crudbooster.text_open_edit_campaign"));
         }
 
 

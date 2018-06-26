@@ -719,7 +719,7 @@ class AdminCustomersController extends \crocodicstudio\crudbooster\controllers\C
 
             foreach ($customers as $item) {
                 if (!empty($item->email)) {
-                    $emails[] = $item->email;
+                    $emails[] = strtolower($item->email);
                 }
             }
 
@@ -727,7 +727,7 @@ class AdminCustomersController extends \crocodicstudio\crudbooster\controllers\C
             $customers = DB::table('account')->where('id', $id)->first();
 
             if (!empty($customers->email)) {
-                $emails[] = $customers->email;
+                $emails[] = strtolower($customers->email);
             }
         }
 
@@ -772,7 +772,7 @@ class AdminCustomersController extends \crocodicstudio\crudbooster\controllers\C
 
             foreach ($customers as $item) {
                 if (!empty($item->email)) {
-                    $emails[] = $item->email;
+                    $emails[] = strtolower($item->email);
                 }
             }
 
@@ -780,7 +780,7 @@ class AdminCustomersController extends \crocodicstudio\crudbooster\controllers\C
             $customers = DB::table('account')->where('id', $id)->first();
 
             if (!empty($customers->email)) {
-                $emails[] = $customers->email;
+                $emails[] = strtolower($customers->email);
             }
         }
 

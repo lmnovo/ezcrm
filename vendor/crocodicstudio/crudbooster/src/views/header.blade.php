@@ -28,15 +28,13 @@
             loader_notification();
         });
 
-
-
         $(document).on("click","#get_read_all",function(e) {
             e.preventDefault();
             //Actualizar como leída todas las notificaciones seleccionada
-            $('#modal-notifications').modal('hide');
-
             $.get("http://ezcrm.us/crm/notifications/readall", { id: id_read }, function(data){
                 loader_notification();
+                $('#modal-notifications').modal('hide');
+                $('.notifications_rows').hide();
             });
         });
 
@@ -51,7 +49,7 @@
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">{{trans('crudbooster.Management Notifications')}}</h4>
             </div>
-            <div class="modal-body" >
+            <div class="modal-body">
                 <table style="font-size: 12px" id='table_dashboard_notifications' class='table table-hover table-striped table-bordered table_class_notifications'>
                     <thead>
                     <tr class="active">
@@ -62,47 +60,47 @@
                     </thead>
                     <tbody>
 
-                    <?php
-                        $query = DB::table('cms_notifications')->where('is_read',0)->get();
-                    ?>
+                    <div id="notifications_div">
+                        <?php
+                            $query = DB::table('cms_notifications')->where('is_read',0)->get();
+                        ?>
 
-                    @foreach($query as $item)
-                        <tr style="padding: 2px;">
-                            <td style="padding: 2px;">
-                                <a href="http://ezcrm.us/crm/notifications/read/{{ $item->id }}">
-                                    {{ $item->content }}
-                                </a>
-                            </td>
-                            <td style="text-align: center;">
-                                @if($item->is_read == 0)
+                        @foreach($query as $item)
+                            <tr class="notifications_rows" style="padding: 2px;">
+                                <td style="padding: 2px;">
+                                    <a>
+                                        {{ $item->content }}
+                                    </a>
+                                </td>
+                                <td style="text-align: center;">
+                                    @if($item->is_read == 0)
                                         <span id="{{ $item->id }}" class="label label-danger">NEW</span>
                                     @else
                                         <span id="{{ $item->id }}" class="label label-success">READ</span>
-                                @endif
-                            </td>
-                            <td style="text-align: center;">
-                                <div class='button_action' style='text-align:center;'>
-                                    <a id="get_read" data-id="{{ $item->id }}" class='btn btn-xs btn-primary btn-detail' title='Read'>
-                                        <i class='fa fa-thumbs-o-up'></i>
-                                    </a>
+                                    @endif
+                                </td>
+                                <td style="text-align: center;">
+                                    <div class='button_action' style='text-align:center;'>
+                                        <a id="get_read" data-id="{{ $item->id }}" class='btn btn-xs btn-primary btn-detail' title='Read'>
+                                            <i class='fa fa-thumbs-o-up'></i>
+                                        </a>
 
-                                    <a class='btn btn-xs btn-warning btn-delete' title='Delete' href='javascript:;' onclick='swal({
-                                    title: "Are you sure ?",
-                                    text: "You will not be able to recover this record data!",
-                                    type: "warning",
-                                    showCancelButton: true,
-                                    confirmButtonColor: "#ff0000",
-                                    confirmButtonText: "Yes!",
-                                    cancelButtonText: "No",
-                                    closeOnConfirm: false },
-                                    function(){  location.href="http://ezcrm.us/crm/notifications/delete/{{ $item->id }}" });'><i class='fa fa-trash'></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-
-
+                                        {{--<a class='btn btn-xs btn-warning btn-delete' title='Delete' href='javascript:;' onclick='swal({
+                                                title: "Are you sure ?",
+                                                text: "You will not be able to recover this record data!",
+                                                type: "warning",
+                                                showCancelButton: true,
+                                                confirmButtonColor: "#ff0000",
+                                                confirmButtonText: "Yes!",
+                                                cancelButtonText: "No",
+                                                closeOnConfirm: false },
+                                                function(){  location.href="http://ezcrm.us/crm/notifications/delete/{{ $item->id }}" });'><i class='fa fa-trash'></i>
+                                        </a>--}}
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </div>
 
                     </tbody>
                     <tfoot>
@@ -110,9 +108,13 @@
                         <th>&nbsp;</th>
                         <th width='auto'></th>
                         <th width='auto' style="text-align: center;">
-                            <a style="width: 50%" id="get_read_all" class='btn btn-xs btn-primary btn-detail' title='Read All'>
-                                <i class='fa fa-thumbs-o-up'></i>
-                            </a>
+                            <?php
+                                if (count($query) != 0) {
+                                    echo "<a style='width: 50%' id='get_read_all' class='notifications_rows btn btn-xs btn-primary btn-detail' title='Read All'>
+                                        <i class='fa fa-thumbs-o-up'></i>
+                                        </a>";
+                                }
+                            ?>
                         </th>
                     </tr>
                     </tfoot>
