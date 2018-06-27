@@ -403,8 +403,68 @@
             return $data;
         }
 
+        public function getUpdateprice(\Illuminate\Http\Request $request) {
+            $id_type = $request->get('type');
+            $id_size = $request->get('size');
+            $id_state = $request->get('state');
+            $price = $request->get('price');
+
+            DB::table('prices')->where('id_type', $id_type)->where('id_size', $id_size)->where('id_state', $id_state)->update(['price' => $price]);
+
+            return 1;
+        }
+
+        public function getBuildout(\Illuminate\Http\Request $request) {
+            $interesting = $request->get('interesting');
+            $size = $request->get('size');
+
+            if($interesting !== '2'){
+                \Illuminate\Support\Facades\DB::beginTransaction();
+                $query = \Illuminate\Support\Facades\DB::select( DB::raw("
+                    SELECT buildout.id, buildout.nombre, buildout.descripcion, buildout.precio, buildout.tipo, type.type
+                    FROM buildout
+                    INNER JOIN type ON buildout.tipo = type.id
+                    WHERE type.id=$interesting;
+                ")
+                );
+                \Illuminate\Support\Facades\DB::commit();
+            }
+            else if($interesting == '2')//trailer
+            {
+                \Illuminate\Support\Facades\DB::beginTransaction();
+                $query = \Illuminate\Support\Facades\DB::select( DB::raw("
+                        SELECT buildout.id, buildout.nombre, buildout.descripcion, buildout.precio, size.size
+                        FROM buildout
+                        INNER JOIN type ON buildout.tipo = type.id 
+                        INNER JOIN size_type ON size_type.id_type = type.id
+                        INNER JOIN size ON size_type.id_size = size.id
+                        WHERE buildout.tipo='".$interesting."'
+                        AND size.id='".$size."' AND buildout.nombre LIKE CONCAT('%',size.size,'%')
+                ")
+                );
+                \Illuminate\Support\Facades\DB::commit();
+            }
+
+            return $query;
+        }
+
+        public function getAddProduct() {
+            $data['types'] = DB::table('type')->get();
 
 
+            $this->cbView('products.create',$data);
+        }
+
+        //Agregar Nuevo Producto a la base de datos
+        public function getAddproductname(\Illuminate\Http\Request $request) {
+            $sumarizedData = [
+                'type' => $request->get('product'),
+            ];
+
+            DB::table('type')->insertGetId($sumarizedData);
+
+            return 1;
+        }
 	    //By the way, you can still create your own method in here... :) 
 
 

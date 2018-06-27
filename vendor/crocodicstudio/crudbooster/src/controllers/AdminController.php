@@ -37,6 +37,7 @@ class AdminController extends CBController {
             ->get();
 
         $quotes = \Illuminate\Support\Facades\DB::table('user_trucks')
+            ->where('user_trucks.is_active', 0)
             ->get();
 
         /*$quoteSellers = \Illuminate\Support\Facades\DB::table('orders')

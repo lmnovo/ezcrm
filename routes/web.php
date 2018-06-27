@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use crocodicstudio\crudbooster\helpers\CRUDBooster;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,16 +84,14 @@ use Carbon\Carbon;
 
     });
 
-
     Route::get('/taxes', function () {
-
         $user_trucks = DB::table('user_trucks')
             ->where('state','TX')
             ->get();
 
         $range =count($user_trucks)-1;
 
-        for ($i=$range-300; $i>$range-400; $i--) {
+        for ($i=$range-100; $i>$range-250; $i--) {
             $query = DB::table('user_trucks')
                 ->join('truck_items', 'truck_items.id_truck', '=', 'user_trucks.id')
                 ->where('user_trucks.id',$user_trucks[$i]->id)
@@ -102,8 +101,8 @@ use Carbon\Carbon;
                 ->where('user_trucks.id',$user_trucks[$i]->id)
                 ->first();
 
+            //Si tiene Appliances y es de Texas
             if(count($query) != 0) {
-
                 $tax_appliances = 0;
                 $total_appliances = 0;
                 $total = 0;
@@ -111,9 +110,16 @@ use Carbon\Carbon;
                     $total_appliances += $q->price*$q->cant;
                 }
 
-                //Si chefunits vende camión
-                $tax_appliances = $total_appliances*0.0625;
+                $price_buildout = 0;
+                $tax_buildout = 0;
+                $tax_item = 0;
+                if ($query_truck->build_out_price == 0) {
+                    $price_buildout = $query_truck->precio_builout;
+                } else {
+                    $price_buildout = $query_truck->build_out_price;
+                }
 
+                //Si chefunits vende camión *****************************************
                 $price_item = 0;
                 if ($query_truck->price_item == 0) {
                     $price_item = $query_truck->truck_price_range;
@@ -121,30 +127,37 @@ use Carbon\Carbon;
                     $price_item = $query_truck->price_item;
                 }
 
-                //Si chefunits vende camión
-                $tax_item = $price_item * 0.0625;
-
-                $price_buildout = 0;
-                $tax_buildout = 0;
-                if ($query_truck->build_out_price == 0) {
-                    $price_buildout = $query_truck->precio_builout;
+                if ($price_item == 0) {
+                    //Si el camión es del cliente (Camión Propio)
+                    $tax_appliances = $total_appliances*0.0825;
+                    $tax_buildout = $price_buildout*0.33*0.0825;
                 } else {
-                    $price_buildout = $query_truck->build_out_price;
+                    //Si chefunits vende camión
+                    $tax_appliances = $total_appliances*0.0625;
+                    $tax_item = $price_item * 0.0625;
+                    $tax_buildout = $price_buildout*0.0625;
                 }
 
-                //Si chefunits vende camión
-                $tax_buildout = $price_buildout*0.0625;
                 $discount = $query_truck->discount;
                 $total = ($tax_item + $tax_appliances + $tax_buildout) + $price_item + $query_truck->registration + $price_buildout + $total_appliances - $discount;
-
-                DB::table('user_trucks')->where('id',$user_trucks[$i]->id)->update(['truck_tax'=>$tax_appliances, 'truck_aprox_price'=>$total]);
+                DB::table('user_trucks')->where('id',$user_trucks[$i]->id)->update(['truck_tax'=>$tax_appliances+$tax_buildout, 'truck_aprox_price'=>$total]);
             }
+            //Si no tiene Appliances y es de Texas
             else {
                 $tax_appliances = 0;
                 $total_appliances = 0;
                 $total = 0;
-                $tax_appliances = 0;
 
+                $price_buildout = 0;
+                $tax_buildout = 0;
+                $tax_item = 0;
+                if ($query_truck->build_out_price == 0) {
+                    $price_buildout = $query_truck->precio_builout;
+                } else {
+                    $price_buildout = $query_truck->build_out_price;
+                }
+
+                //Si chefunits vende camión *****************************************
                 $price_item = 0;
                 if ($query_truck->price_item == 0) {
                     $price_item = $query_truck->truck_price_range;
@@ -152,24 +165,20 @@ use Carbon\Carbon;
                     $price_item = $query_truck->price_item;
                 }
 
-                //Si chefunits vende camión
-                $tax_item = $price_item * 0.0625;
-
-                $price_buildout = 0;
-                $tax_buildout = 0;
-                if ($query_truck->build_out_price == 0) {
-                    $price_buildout = $query_truck->precio_builout;
+                if ($price_item == 0) {
+                    //Si el camión es del cliente (Camión Propio)
+                    $tax_appliances = 0;
+                    $tax_buildout = $price_buildout*0.33*0.0825;
                 } else {
-                    $price_buildout = $query_truck->build_out_price;
+                    //Si chefunits vende camión
+                    $tax_appliances = 0;
+                    $tax_item = $price_item * 0.0625;
+                    $tax_buildout = $price_buildout*0.0625;
                 }
 
-                //Si chefunits vende camión
-                $tax_buildout = $price_buildout*0.0625;
                 $discount = $query_truck->discount;
                 $total = ($tax_item + $tax_appliances + $tax_buildout) + $price_item + $query_truck->registration + $price_buildout + $total_appliances - $discount;
-
-                DB::table('user_trucks')->where('id',$user_trucks[$i]->id)->update(['truck_tax'=>$tax_appliances, 'truck_aprox_price'=>$total]);
-
+                DB::table('user_trucks')->where('id',$user_trucks[$i]->id)->update(['truck_tax'=>$tax_appliances+$tax_buildout,'tax_item'=>$tax_item, 'truck_aprox_price'=>$total]);
             }
         }
 
@@ -218,8 +227,7 @@ use Carbon\Carbon;
 
                 $discount = $query_truck->discount;
                 $total = $price_item + $query_truck->registration + $price_buildout + $total_appliances - $discount;
-
-                DB::table('user_trucks')->where('id',$user_trucks[$i]->id)->update(['truck_aprox_price'=>$total]);
+                DB::table('user_trucks')->where('id',$user_trucks[$i]->id)->update(['truck_tax'=>0, 'tax_item'=>0, 'truck_aprox_price'=>$total]);
             }
         }
 
@@ -243,6 +251,28 @@ use Carbon\Carbon;
     Route::get('crm/tour/menu_management', function () { return view('tour_menu_management'); });
     Route::get('crm/tour/configuration_privileges', function () { return view('tour_privileges_configuration'); });
     Route::get('crm/tour/proyects_management', function () { return view('tour_proyects_management'); });
+
+    /*Permite deshabilitar el envío de emails a los Leads*/
+    Route::get('unsubscribed/account/{email}', function () {
+        $email = request('email');
+
+        //Poner el lead como "No Suscrito" y poner el tipo como "Lost"
+        DB::table('account')->where('email','LIKE','%'.$email.'%')->update(['unsuscribed' => 1, 'estado' => 3]);
+
+        //Mandar email al lead "No suscrito" como confirmación
+        //Send Email with notification End Step
+        $html = trans('crudbooster.email_unsuscribed');
+        $subject = trans('crudbooster.email_unsuscribed');
+
+        \Mail::send("crudbooster::emails.blank", ['content' => $html], function ($message) use ($email, $subject) {
+            $message->priority(1);
+            $message->to($email);
+            $message->subject($subject);
+        });
+
+        return view('tour_default');
+    });
+
 
     Route::get('lang/{lang}', function ($lang) {
         session(['lang' => $lang]);
@@ -468,6 +498,7 @@ use Carbon\Carbon;
             ->get();
 
         $quotes = \Illuminate\Support\Facades\DB::table('user_trucks')
+            ->where('user_trucks.is_active', 0)
             ->get();
 
         /*$quoteSellers = \Illuminate\Support\Facades\DB::table('orders')

@@ -1,6 +1,8 @@
 <?php
 return [
-    'email_footer'               => 'Do not reply any email to this email address. This email sent automatically by our system. ',
+    'email_footer'               => 'This email sent automatically by our system. You can write to us: info@chefunits.com',
+    'email_unsuscribed'          => 'You have requested not to receive more e-mails of our system. Greetings, Chefunits',
+    'unsuscribed'                => 'Unsuscribed',
     'login_message'              => 'Please login to start your session',
     'text_forgot_password'       => 'Forgot the password ?',
     'page_title_login'           => 'Login Panel',
@@ -382,6 +384,7 @@ return [
     'Lead_Profile' => 'Profile',
     'Client_Profile' => 'Profile',
     'List_Quotes' => 'List of Quotes',
+    'List_Buildout' => 'List of Buildouts',
     'List_Tasks' => 'List of Tasks',
     'Notes' => 'Notes',
     'send_email' => 'Send Email',
@@ -622,6 +625,8 @@ return [
     'image'  => 'Image',
     'search'  => 'Search',
     'reset'  => 'Reset',
+    'is_closed'  => 'Closed',
+    'product_creation_new'  => 'Add New Product',
 
 
 ];

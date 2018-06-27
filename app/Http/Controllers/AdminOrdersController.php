@@ -42,6 +42,7 @@
             $this->col[] = ["label"=>"Total","name"=>"truck_aprox_price"];
             $this->col[] = ["label"=>trans('crudbooster.profit'),"name"=>"profits","width"=>"8%"];
             $this->col[] = ["label"=>trans('crudbooster.financing'),"name"=>"financing"];
+            $this->col[] = ["label"=>trans('crudbooster.is_closed'),"name"=>"is_closed"];
 
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
@@ -126,7 +127,7 @@
 	        */
 	        $this->addaction = array();
             //$this->addaction[] = ['label'=>'Convert to Lead','url'=>CRUDBooster::mainpath('convert-client/[id]'),'icon'=>'fa fa-users','color'=>'danger',"showIf"=>"[contact_type] == 1",'confirmation'=>true];
-            $this->addaction[] = ['label'=>' ','url'=>CRUDBooster::mainpath('convert-client/[id]'),'icon'=>'fa fa-share-square-o','color'=>'primary',"showIf"=>"[from_where] != null", 'confirmation'=>true];
+            $this->addaction[] = ['label'=>' ','url'=>CRUDBooster::mainpath('convert-client/[id]'),'icon'=>'fa fa-share-square-o','color'=>'primary',"showIf"=>"[is_closed] != 1", 'confirmation'=>true];
 
 	        /*
 	        | ----------------------------------------------------------------------
@@ -214,7 +215,7 @@
                     $('#modal-loading').modal('hide');
                     
                     var quotes_id = $('#note_quotes_id').val();
-                    $.ajax({
+                    /*$.ajax({
                         url: '../buildoutdesc',
                         data: \"id=\"+quotes_id,
                         type:  'get',
@@ -222,7 +223,7 @@
                         success : function(data) {
                             $('#description_text').html(data[0].desc_buildout);                                                      
                         }
-                     });                    
+                     });  */                  
                     
                     
                     $('#check_send_email').on('click',function(){
@@ -800,17 +801,28 @@
                          $('#descriptionba').html('');
                          $('#descriptionba').val('');
                          $('#descriptionba').removeAttr('title');                         
+                         //$('.note-editing-area').html('');                         
+                         //$('.note-editable').html('');                         
                          $('#price2ba').val('');
                          $('#Build_OutGModal').modal('show');                         
                     });
                     
                     //Abrir el Modal para Agregar Nuevo Buildout
                     $('#Build_OutGModal').on('click','#savebuilout',function(){
-                        //Cargando variables del modal                    
-                        var name = $('#nombreba').val();
+                        //Cargando variables del modal             
+                        var tipo = $('#interesting').val();
+
+                        //Si es un TRUCK
+                        if(tipo == 1) {
+                            var name = 'Build Out - '+$('#nombreba').val();
+                        }
+                        else if(tipo == 2) { // Si es un TRAILER
+                            var name = $('#sizes option:selected').html()+' '+$('#nombreba').val();
+                        }                        
+                               
+                        var name = $('#sizes option:selected').html()+' '+$('#nombreba').val();
                         var description = $('#descriptionba').summernote('code');
                         var price = $('#price2ba').val();
-                        var tipo = $('#interesting').val();                       
                         $('#buildout_name').html('');
                         
                         var type = $('#interesting').val();
@@ -1186,7 +1198,7 @@
                                   else { 
                                      // Si Cliente tiene su propio camión
                                      //Obtengo el 30% del precio del buildout y luego aplico tax de 8.25
-                                     buildoutTax = (buildoutPrice * 0.30 * 0.0825).toFixed(2);
+                                     buildoutTax = (buildoutPrice * 0.33 * 0.0825).toFixed(2);
                                      $('#taxitem').val('0.00');
                                      
                                      //Calculamos el tax del total de appliances con el 8,25
@@ -1373,16 +1385,22 @@
             }
 
             if ($id != 1) {
-                $query->join('account', 'account.id', '=', 'user_trucks.id_account')
+                /*$query->join('account', 'account.id', '=', 'user_trucks.id_account')
                     ->where('account.id_usuario', $user_id)
                     ->where('account.is_client', 0)
+                    ->where('user_trucks.is_active', 0)
+                ;*/
+                $query->join('account', 'account.id', '=', 'user_trucks.id_account')
+                    ->where('account.id_usuario', $user_id)
                     ->where('user_trucks.is_active', 0)
                 ;
 
             } else {
-                $query->join('account', 'account.id', '=', 'user_trucks.id_account')
+                /*$query->join('account', 'account.id', '=', 'user_trucks.id_account')
                     ->where('account.is_client', 0)
                     ->where('user_trucks.is_active', 0)
+                ;*/
+                $query->where('user_trucks.is_active', 0)
                 ;
             }
 

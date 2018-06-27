@@ -373,21 +373,26 @@
             ///////////////////Envío Campaign Email//////////////////////////
             if ($campaignsType->type == 'Email') {
 
-                \Mail::send("crudbooster::emails.blank",['content'=>$html],function($message) use ($to,$subject,$template) {
-                    $message->priority(1);
-                    $message->cc($to);
+                foreach ($to as $to_item) {
+                    $content = $html."</br> <a href='http://ezcrm.us/unsubscribed/account/$to_item'>Si usted no quiere recibir más correos electrónicos nuestros. Clic Aquí</a>";
 
-                    if($template->from_email) {
-                        $from_name = ($template->from_name)?:CRUDBooster::getSetting('appname');
-                        $message->from($template->from_email,$from_name);
-                    }
+                    \Mail::send("crudbooster::emails.blank",['content'=>$content],function($message) use ($to_item,$subject,$template, $html) {
+                        $message->priority(1);
+                        $message->cc($to_item);
 
-                    if($template->cc_email) {
-                        $message->cc($template->cc_email);
-                    }
+                        if($template->from_email) {
+                            $from_name = ($template->from_name)?:CRUDBooster::getSetting('appname');
+                            $message->from($template->from_email,$from_name);
+                        }
 
-                    $message->subject($subject);
-                });
+                        if($template->cc_email) {
+                            $message->cc($template->cc_email);
+                        }
+
+                        $message->subject($subject);
+                    });
+                }
+
             }
             ///////////////////Envío Campaign SMS//////////////////////////
             else {

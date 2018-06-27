@@ -197,7 +197,7 @@ class mailsApp extends Command
                                       </tr>
                                       <tr style="color:#FFF;font-size:12px;">
                                           <td width="10%" bgcolor="#026873"><b>CATEGORY</b></td>
-                                          <td width="20%" bgcolor="#026873"><b>PRODUCT NAME</b></td>
+                                          <td width="20%" bgcolor="#026873"><b>NAME</b></td>
                                           <td width="10%" bgcolor="#026873"><b>PRICE</b></td>
                                           <td width="60%" bgcolor="#026873"><b>DESCRIPTION</b></td>
                                       </tr>
@@ -321,7 +321,7 @@ class mailsApp extends Command
                                 <td bgcolor="#026873"><b>'.$row->registration.'</b></td>
                                </tr>';
                     //calcular el total
-                    $total= $row->registration + $row->price_item + $row->precio + $total_general_apliance + $totalTax  - $row->discount;
+                    $total= $row->registration + $row->price_item + $row->precio + $total_general_apliance + $row->truck_tax + $row->tax_item - $row->discount;
                     $html = $html . '<tr style="color:#FFF;font-size:10px;">
                                 <td></td>
                                 <td></td>

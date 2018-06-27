@@ -1,7 +1,9 @@
 <?php 
 return [
-	'emaill_footer'               =>'No respondas a este mensaje, es un mensaje generado automáticamente.',
-	'login_message'              =>'Por favor, inicia sesión para comenzar',
+	'emaill_footer'              =>'Es un mensaje generado automáticamente. Usted puede escribirnos a: info@chefunits.com',
+    'email_unsuscribed'          => 'Usted ha solicitado no recibir correos electrónicos de nuestro sistema. Saludos cordiales, Chefunits',
+    'unsuscribed'                => 'No suscrito',
+    'login_message'              =>'Por favor, inicia sesión para comenzar',
 	'text_forgot_password'       =>'¿Olvidaste tu contraseña?',
     'text_remember_password'     => 'Recordar contraseña',
 	'page_title_login'           =>'Inicio de sesión',
@@ -383,6 +385,7 @@ return [
     'Lead_Profile' => 'Perfil',
     'Client_Profile' => 'Perfill',
     'List_Quotes' => 'Listado de Cotizaciones',
+    'List_Buildout' => 'Listado de Buildouts',
     'List_Tasks' => 'Listado de Tareas',
     'Notes' => 'Notas',
     'send_email' => 'Enviar Correo',
@@ -632,6 +635,7 @@ return [
     'image'  => 'Imagen',
     'search'  => 'Buscar',
     'reset'  => 'Reiniciar',
-
+    'is_closed'  => 'Cerrada',
+    'product_creation_new'  => 'Agregar Nuevo Producto',
 
 ];
