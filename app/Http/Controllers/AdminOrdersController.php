@@ -1560,6 +1560,17 @@
             return 1;
         }
 
+        //Agregar Size a la base de datos
+        public function getAddsize(\Illuminate\Http\Request $request) {
+            $sumarizedData = [
+                'size' => $request->get('size'),
+            ];
+
+            DB::table('size')->insertGetId($sumarizedData);
+
+            return 1;
+        }
+
         //Agregar Estado a la base de datos
         public function getAddestado(\Illuminate\Http\Request $request) {
             $sumarizedData = [
@@ -3540,6 +3551,9 @@
                 ->join('estado', 'estado.id', '=', 'type_state.id_estado')
                 ->join('type', 'type.id', '=', 'type_state.id_type')
                 ->where('type.id', $type)
+                ->where('type.deleted_at', null)
+                ->where('estado.deleted_at', null)
+                ->where('type_state.deleted_at', null)
                 ->get();
 
             return $data;
@@ -3695,6 +3709,8 @@
                 ->select(\Illuminate\Support\Facades\DB::raw('size.size as size'), 'size.id')
                 ->join('size', 'size.id', '=', 'size_type.id_size')
                 ->where('size_type.id_type', $type)
+                ->where('size.deleted_at', null)
+                ->where('size_type.deleted_at', null)
                 ->get();
 
             return $data;

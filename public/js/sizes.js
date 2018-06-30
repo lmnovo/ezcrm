@@ -1,38 +1,38 @@
 $(document).ready(function()
 {
-    var oTableEstados= $('#estados').DataTable();
+    var oTableSizes= $('#sizes_list').DataTable();
 
     //codigo para la edicion de la tabla
-    ETable_estados={
+    ETable_sizes={
         "existingValue":"",
         "init":function(){
-            $('#estados').on('click','.original',function(){
-                ETable_estados.openEditable(this);
+            $('#sizes_list').on('click','.original',function(){
+                ETable_sizes.openEditable(this);
             });
-            $('#estados').on('blur','.editable',function(){
+            $('#sizes_list').on('blur','.editable',function(){
                 var original = $(this).parent().parent().find('.original');
-                ETable_estados.saveNewData(this,original);
+                ETable_sizes.saveNewData(this,original);
             });
         },
         "openEditable":function(elem){
             $(elem).addClass('hide');
             $(elem).siblings().removeClass('hide');
             $(elem).siblings().find('.editable').focus();
-            oTableEstados.existingValue=$(elem).html();
+            oTableSizes.existingValue=$(elem).html();
         },
         "saveNewData":function(elem,original){
             var newVal=$(elem).val();
             var id=$(elem).data("id");
 
             //obtengo el index de la columna sobre la que estoy accionando
-            var columnIdx = oTableEstados.cell( $(elem).parents('td')).index().column;
+            var columnIdx = oTableSizes.cell( $(elem).parents('td')).index().column;
 
             original.text(newVal);
             $('#modal-loading').modal('show');
 
             $.ajax({
-                url:  'editestado',
-                data: "estado="+newVal+"&id="+id,
+                url:  'editsize',
+                data: "size="+newVal+"&id="+id,
                 type:  'get',
                 dataType: 'json',
                 success : function(data) {
@@ -44,16 +44,16 @@ $(document).ready(function()
             $('.original').removeClass('hide');
         }
     };
-    ETable_estados.init();
+    ETable_sizes.init();
 
-    $(document).on("click","#btneliminarestado",function(e) {
+    $(document).on("click","#btneliminarsize",function(e) {
         e.preventDefault();
 
         var item = $(this).data('id');
         var tr = $(this).closest('td').parent();
 
         $.ajax({
-            url:  '../products/deleteestado',
+            url:  '../products/deletesize',
             data: '&id='+item,
             type:  'get',
             dataType: 'json',
@@ -65,31 +65,31 @@ $(document).ready(function()
         });
     });
 
-    $('#newEstadoModal').on('click','#newEstado',function(){
-        var estado = $('#estado_name').val();
-        $('#estado_name').val('');
+    $('#newSizeModal').on('click','#newSize',function(){
+        var size = $('#size_name').val();
+        $('#size_name').val('');
 
-        if(estado != '') {
+        if(size != '') {
             $.ajax({
-                url: '../orders/addestado',
-                data: "estado="+estado,
+                url: '../orders/addsize',
+                data: "size="+size,
                 type:  'get',
                 dataType: 'json',
                 success : function(data) {
-                    oTableEstados.clear().draw();
+                    oTableSizes.clear().draw();
                     $.ajax
                     ({
-                        url: 'estados',
+                        url: 'sizes',
                         data: "",
                         type: 'get',
                         success: function(data)
                         {
                             for(var i=0;i<data.length;i++)
                             {
-                                oTableEstados.row.add([
-                                    '<span class="editors hide"><input class="col-md-12 col-sm-12 form-control editable" data-id="'+data[i].id+'" value="'+data[i].estado+'"/></span>'+
-                                    '<span id="type" class="original" data-id="'+data[i].id+'">'+data[i].estado,
-                                    '</span><button type="button" class="btn btn-warning btn-sm" id="btneliminarestado" data-id="'+data[i].id+'">'+
+                                oTableSizes.row.add([
+                                    '<span class="editors hide"><input class="col-md-12 col-sm-12 form-control editable" data-id="'+data[i].id+'" value="'+data[i].size+'"/></span>'+
+                                    '<span id="type" class="original" data-id="'+data[i].id+'">'+data[i].size,
+                                    '</span><button type="button" class="btn btn-warning btn-xs" id="btneliminarsize" data-id="'+data[i].id+'">'+
                                     '<i class="fa fa-trash"></i>'+
                                     '</button>'
                                 ]).draw( false );
@@ -103,23 +103,23 @@ $(document).ready(function()
 
     });
 
-    $('#edit_type').on('click',function(){
-        $('#newEstadoModal').modal('show');
+    $('#edit_size').on('click',function(){
+        $('#newSizeModal').modal('show');
 
-        oTableEstados.clear().draw();
+        oTableSizes.clear().draw();
         $.ajax
         ({
-            url: 'estados',
+            url: 'sizes',
             data: "",
             type: 'get',
             success: function(data)
             {
                 for(var i=0;i<data.length;i++)
                 {
-                    oTableEstados.row.add([
-                        '<span class="editors hide"><input class="col-md-12 col-sm-12 form-control editable" data-id="'+data[i].id+'" value="'+data[i].estado+'"/></span>'+
-                        '<span id="type" class="original" data-id="'+data[i].id+'">'+data[i].estado,
-                        '</span><button type="button" class="btn btn-warning btn-sm" id="btneliminarestado" data-id="'+data[i].id+'">'+
+                    oTableSizes.row.add([
+                        '<span class="editors hide"><input class="col-md-12 col-sm-12 form-control editable" data-id="'+data[i].id+'" value="'+data[i].size+'"/></span>'+
+                        '<span id="type" class="original" data-id="'+data[i].id+'">'+data[i].size,
+                        '</span><button type="button" class="btn btn-warning btn-xs" id="btneliminarsize" data-id="'+data[i].id+'">'+
                         '<i class="fa fa-trash"></i>'+
                         '</button>'
                     ]).draw( false );

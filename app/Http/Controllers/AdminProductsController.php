@@ -362,6 +362,12 @@
             return 1;
         }
 
+        public function getDeletesize(\Illuminate\Http\Request $request) {
+            DB::table('size')->where('id', $request->get('id'))->update(['deleted_at'=>  Carbon::now(config('app.timezone'))]);
+
+            return 1;
+        }
+
         public function getIndex() {
             //First, Add an auth
             if(!CRUDBooster::isView()) CRUDBooster::redirect(CRUDBooster::adminPath(),trans('crudbooster.denied_access'));
@@ -487,6 +493,12 @@
             return $data;
         }
 
+        //Muestra el listado de sizes
+        public function getSizes() {
+            $data = DB::table('size')->where('deleted_at','=',null)->get();
+            return $data;
+        }
+
         //Agregar Nuevo Producto a la base de datos
         public function getAddproductname(\Illuminate\Http\Request $request) {
             $sumarizedData = [
@@ -523,6 +535,13 @@
         public function getEditestado(\Illuminate\Http\Request $request) {
             $type = $request->get('estado');
             DB::table('estado')->where('id', $request->get('id'))->update(['estado'=> $request->get('estado') ]);
+            return 1;
+        }
+
+        //Editar Size en la base de datos
+        public function getEditsize(\Illuminate\Http\Request $request) {
+            $type = $request->get('size');
+            DB::table('size')->where('id', $request->get('id'))->update(['size'=> $request->get('size') ]);
             return 1;
         }
 	    //By the way, you can still create your own method in here... :) 

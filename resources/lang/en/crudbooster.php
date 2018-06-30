@@ -628,6 +628,7 @@ return [
     'is_closed'  => 'Closed',
     'product_creation_new'  => 'Add New Product',
     'estado_creation_new'  => 'Add New State',
+    'size_creation_new'  => 'Add New Size',
     'estado'  => 'State',
 
 

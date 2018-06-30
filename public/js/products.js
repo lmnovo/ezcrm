@@ -85,7 +85,7 @@ $(document).ready(function()
                     oTableProducts.row.add([
                         '<span class="editors hide"><input class="col-md-12 col-sm-12 form-control editable" data-id="'+data[i].id+'" value="'+data[i].type+'"/></span>'+
                         '<span id="type" class="original" data-id="'+data[i].id+'">'+data[i].type,
-                        '</span><button type="button" class="btn btn-warning btn-sm" id="btneliminar" data-id="'+data[i].id+'">'+
+                        '</span><button type="button" class="btn btn-warning btn-xs" id="btneliminar" data-id="'+data[i].id+'">'+
                         '<i class="fa fa-trash"></i>'+
                         '</button>'
                     ]).draw( false );
@@ -118,7 +118,7 @@ $(document).ready(function()
                                 oTableProducts.row.add([
                                     '<span class="editors hide"><input class="col-md-12 col-sm-12 form-control editable" data-id="'+data[i].id+'" value="'+data[i].type+'"/></span>'+
                                     '<span id="type" class="original" data-id="'+data[i].id+'">'+data[i].type,
-                                    '</span><button type="button" class="btn btn-warning btn-sm" id="btneliminar" data-id="'+data[i].id+'">'+
+                                    '</span><button type="button" class="btn btn-warning btn-xs" id="btneliminar" data-id="'+data[i].id+'">'+
                                     '<i class="fa fa-trash"></i>'+
                                     '</button>'
                                 ]).draw( false );

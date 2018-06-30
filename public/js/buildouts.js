@@ -150,7 +150,7 @@ $(document).ready(function()
                                 '</span>' +
                                 '<div class="btn-group" role="group" aria-label="..." id="'+datas[0].id+'">'+
                                 '<div class="btn-group" role="group" aria-label="..." id="'+datas[0].id+'">'+
-                                '<button type="button" class="btn btn-sm btn-warning btn-delete" data-id="'+datas[i].id+'" id="btneliminarbuildout">'+
+                                '<button type="button" class="btn btn-xs btn-warning btn-delete" data-id="'+datas[i].id+'" id="btneliminarbuildout">'+
                                 '<span class="fa fa-trash"></span>'+
                                 '</button>'+
                                 '</div>'
@@ -267,7 +267,7 @@ $(document).ready(function()
                                     '</span>' +
                                     '<div class="btn-group" role="group" aria-label="..." id="'+datas[0].id+'">'+
                                     '<div class="btn-group" role="group" aria-label="..." id="'+datas[0].id+'">'+
-                                    '<button type="button" class="btn btn-sm btn-warning btn-delete" data-id="'+datas[i].id+'" id="btneliminarbuildout">'+
+                                    '<button type="button" class="btn btn-xs btn-warning btn-delete" data-id="'+datas[i].id+'" id="btneliminarbuildout">'+
                                     '<span class="fa fa-trash"></span>'+
                                     '</button>'+
                                     '</div>'
