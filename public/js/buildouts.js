@@ -1,9 +1,5 @@
 $(document).ready(function()
 {
-    $('#interesting').select2();
-    $('#type').select2();
-    $('#size').select2();
-
     var oTable= $('#buildouts').DataTable();
 
     //codigo para la edicion de la tabla

@@ -356,6 +356,12 @@
             return 1;
         }
 
+        public function getDeleteestado(\Illuminate\Http\Request $request) {
+            DB::table('estado')->where('id', $request->get('id'))->update(['deleted_at'=>  Carbon::now(config('app.timezone'))]);
+
+            return 1;
+        }
+
         public function getIndex() {
             //First, Add an auth
             if(!CRUDBooster::isView()) CRUDBooster::redirect(CRUDBooster::adminPath(),trans('crudbooster.denied_access'));
@@ -475,6 +481,12 @@
             return $data;
         }
 
+        //Muestra el listado de estados
+        public function getEstados() {
+            $data = DB::table('estado')->where('deleted_at','=',null)->get();
+            return $data;
+        }
+
         //Agregar Nuevo Producto a la base de datos
         public function getAddproductname(\Illuminate\Http\Request $request) {
             $sumarizedData = [
@@ -504,6 +516,13 @@
         public function getEditproduct(\Illuminate\Http\Request $request) {
             $type = $request->get('type');
             DB::table('type')->where('id', $request->get('id'))->update(['type'=> $request->get('type') ]);
+            return 1;
+        }
+
+        //Editar Estado en la base de datos
+        public function getEditestado(\Illuminate\Http\Request $request) {
+            $type = $request->get('estado');
+            DB::table('estado')->where('id', $request->get('id'))->update(['estado'=> $request->get('estado') ]);
             return 1;
         }
 	    //By the way, you can still create your own method in here... :) 

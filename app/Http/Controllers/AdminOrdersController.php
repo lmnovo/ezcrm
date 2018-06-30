@@ -1560,6 +1560,17 @@
             return 1;
         }
 
+        //Agregar Estado a la base de datos
+        public function getAddestado(\Illuminate\Http\Request $request) {
+            $sumarizedData = [
+                'estado' => $request->get('estado'),
+            ];
+
+            DB::table('estado')->insertGetId($sumarizedData);
+
+            return 1;
+        }
+
         //Agregar Categoría de Appliance a la base de datos
         public function getAddcategory(\Illuminate\Http\Request $request) {
             $sumarizedData = [

@@ -637,5 +637,7 @@ return [
     'reset'  => 'Reiniciar',
     'is_closed'  => 'Cerrada',
     'product_creation_new'  => 'Agregar Nuevo Producto',
+    'estado_creation_new'  => 'Agregar Nuevo Estado',
+    'estado'  => 'Estado',
 
 ];

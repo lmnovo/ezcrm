@@ -627,6 +627,8 @@ return [
     'reset'  => 'Reset',
     'is_closed'  => 'Closed',
     'product_creation_new'  => 'Add New Product',
+    'estado_creation_new'  => 'Add New State',
+    'estado'  => 'State',
 
 
 ];
