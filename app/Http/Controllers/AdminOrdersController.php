@@ -3559,6 +3559,15 @@
             return $data;
         }
 
+        public function getEstadolist() {
+            $data = DB::table('estado')
+                ->select(\Illuminate\Support\Facades\DB::raw('estado.estado as state'), 'estado.id')
+                ->where('estado.deleted_at', null)
+                ->get();
+
+            return $data;
+        }
+
         public function getEditquote(\Illuminate\Http\Request $request) {
             DB::table('truck_items')->where('id', $request->get('id'))->update([$request->get('campo') => $request->get('valor')]);
             $data = DB::table('truck_items')->where('id', $request->get('id'))->first();
@@ -3716,6 +3725,14 @@
             return $data;
         }
 
+        public function getSizeslist() {
+            $data = DB::table('size')
+                ->where('size.deleted_at', null)
+                ->get();
+
+            return $data;
+        }
+
         public function getBuildout(\Illuminate\Http\Request $request) {
             $type=$request->get('type');
             $size=$request->get('size');
@@ -3822,6 +3839,7 @@
 	        $state=$request->get('state');
 	        $size=$request->get('size');
 
+	        $datas = array();
             $data = DB::table('prices')
                 ->select('price')
                 ->where('id_type', $type)
@@ -3829,7 +3847,13 @@
                 ->where('id_size', $size)
                 ->get();
 
-            return $data;
+            if (count($data) == 0) {
+                $datas[0]['price'] = 0;
+            } else {
+                $datas = $data;
+            }
+
+            return $datas;
         }
 
         public function getPrintQuote($id) {
@@ -4213,7 +4237,6 @@
             //Open Edit Quote
             CRUDBooster::redirect(CRUDBooster::adminPath('settings_campaigns/edit/'.$lastId),trans("crudbooster.text_open_edit_campaign"));
         }
-
 
         //Enviar Schedule Email dado el id de Lead
         public function getSendEmailSchedule($id) {

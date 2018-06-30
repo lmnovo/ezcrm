@@ -165,6 +165,7 @@ $(document).ready(function()
             success: function(data)
             {
                 $('#modal-loading').modal('hide');
+                $('#newBuildout').removeAttrs('disabled');
             }
         });
     });

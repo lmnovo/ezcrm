@@ -435,7 +435,49 @@
             $id_state = $request->get('state');
             $price = $request->get('price');
 
-            DB::table('prices')->where('id_type', $id_type)->where('id_size', $id_size)->where('id_state', $id_state)->update(['price' => $price]);
+            $price_query = DB::table('prices')->where('id_size', $id_size)->where('id_state', $id_state)->where('id_type', $id_type)->first();
+
+            //Antes de insertar comprobamos que existan los datos
+            if($price_query->price == 0) {
+                //INICIO--------Comprobamos la tabla "type_state"
+                $type_state = DB::table('type_state')->where('id_estado', $id_state)->where('id_type', $id_type)->first();
+                if (count($type_state) == 0) {
+                    $sumarizedData1 = [
+                        'id_estado' => $id_state,
+                        'id_type' => $id_type,
+                    ];
+                    DB::table('type_state')->insert($sumarizedData1);
+                }
+                //END--------Comprobamos la tabla "type_state"
+
+                //INICIO--------Comprobamos la tabla "size_type"
+                $size_type = DB::table('size_type')->where('id_size', $id_size)->where('id_type', $id_type)->first();
+                if (count($size_type) == 0) {
+                    $sumarizedData2 = [
+                        'id_size' => $id_size,
+                        'id_type' => $id_type,
+                    ];
+                    DB::table('size_type')->insert($sumarizedData2);
+                }
+                //END--------Comprobamos la tabla "size_type"
+
+                //INICIO--------Comprobamos la tabla "prices"
+                $prices = DB::table('prices')->where('id_size', $id_size)->where('id_state', $id_state)->where('id_type', $id_type)->first();
+                if (count($prices) == 0) {
+                    $sumarizedData3 = [
+                        'id_size' => $id_size,
+                        'id_type' => $id_type,
+                        'id_state' => $id_state,
+                        'price' => $price,
+                    ];
+                    DB::table('prices')->insert($sumarizedData3);
+                }
+                //END--------Comprobamos la tabla "prices"
+
+            } else
+            {
+                DB::table('prices')->where('id_type', $id_type)->where('id_size', $id_size)->where('id_state', $id_state)->update(['price' => $price]);
+            }
 
             return 1;
         }

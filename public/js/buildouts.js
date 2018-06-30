@@ -182,7 +182,8 @@ $(document).ready(function()
 
         $.ajax
         ({
-            url: '../orders/types/'+id_interesting,
+            //url: '../orders/types/'+id_interesting,
+            url: '../orders/estadolist',
             data: '',
             type: 'get',
             success: function(data)
@@ -209,7 +210,8 @@ $(document).ready(function()
         $('#newBuildout').attr('disabled', 'disabled');
 
         $.ajax({
-            url: '../orders/sizes/'+type,
+            //url: '../orders/sizes/'+type,
+            url: '../orders/sizeslist',
             data: '',
             type:  'get',
             dataType: 'json',
