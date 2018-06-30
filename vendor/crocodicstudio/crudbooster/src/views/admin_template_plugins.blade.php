@@ -44,18 +44,18 @@
 	<script src="{{asset('vendor/crudbooster/jquery.price_format.2.0.min.js')}}"></script>
 
 	<!--DATATABLE-->	
-  	<link rel="stylesheet" href="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/datatables/dataTables.bootstrap.css')}}">
-  	{{--<link rel="stylesheet" href="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/datatable-editor/Buttons-1.3.1/css/buttons.dataTables.min.css')}}">
-  	<link rel="stylesheet" href="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/datatable-editor/DataTables-1.10.15/css/dataTables.bootstrap.min.css')}}">
-  	<link rel="stylesheet" href="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/datatable-editor/datatables.min.css')}}">--}}
+  	{{--<link rel="stylesheet" href="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/datatables/dataTables.bootstrap.css')}}">
 
 	<script src="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/datatables/jquery.dataTables.min.js')}}"></script>
-	<script src="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/datatables/dataTables.bootstrap.min.js')}}"></script>
+	<script src="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/datatables/dataTables.bootstrap.min.js')}}"></script>--}}
 
-	{{--<script src="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/datatable-editor/DataTables-1.10.15/js/dataTables.bootstrap.min.js')}}"></script>
-	<script src="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/datatable-editor/Buttons-1.3.1/js/dataTables.buttons.min.js')}}"></script>
-	<script src="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/datatable-editor/Responsive-2.1.1/js/dataTables.responsive.min.js')}}"></script>
-	<script src="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/datatable-editor/DataTables-1.10.15/js/jquery.dataTables.min.js')}}"></script>--}}
+	<link rel="stylesheet" href="{{ asset ('js/datatable-editor/DataTables-1.10.15/css/dataTables.bootstrap.css')}}">
+	<script src="{{ asset ('js/datatable-editor/DataTables-1.10.15/js/jquery.dataTables.min.js')}}"></script>
+	<script src="{{ asset ('js/datatable-editor/DataTables-1.10.15/js/dataTables.bootstrap.min.js')}}"></script>
+	<script src="{{ asset ('js/datatable-editor/Buttons-1.3.1/js/dataTables.buttons.min.js')}}"></script>
+	<script src="{{ asset ('js/datatable-editor/Responsive-2.1.1/js/dataTables.responsive.min.js')}}"></script>
+
+	<script src="{{ asset ('js/jquery.jeditable.js')}}"></script>
 
 	<script>
 		var ASSET_URL           = "{{asset('/')}}";

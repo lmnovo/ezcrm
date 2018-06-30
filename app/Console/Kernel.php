@@ -28,8 +28,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         //$schedule->command('sendEmail:HappyBirthday');
-        $schedule->command('sendEmail:MailsApp')
-            ->cron('* * * * *');
+        $schedule->command('sendEmail:MailsApps');
+            //->cron('* * * * *');
     }
 
     /**

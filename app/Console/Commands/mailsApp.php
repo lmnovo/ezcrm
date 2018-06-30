@@ -384,6 +384,8 @@ class mailsApp extends Command
                                 $message->subject($subject);
                             });
 
+                            print_r('Sending Emails...');
+
                             $emailTemp = '';
                             foreach ($emails as $item) {
                                 if ($emailTemp != '') {

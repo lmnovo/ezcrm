@@ -5,6 +5,7 @@
 	use DB;
 	use CRUDBooster;
 	use Illuminate\Pagination\Paginator;
+	use Carbon\Carbon;
 
 	class AdminProductsController extends \crocodicstudio\crudbooster\controllers\CBController {
 
@@ -342,6 +343,13 @@
 	        return 1;
         }
 
+        public function getDeletetype(\Illuminate\Http\Request $request) {
+            //DB::table('type')->where('id', $request->get('id'))->delete();
+            DB::table('type')->where('id', $request->get('id'))->update(['deleted_at'=>  Carbon::now(config('app.timezone'))]);
+
+            return 1;
+        }
+
         public function getIndex() {
             //First, Add an auth
             if(!CRUDBooster::isView()) CRUDBooster::redirect(CRUDBooster::adminPath(),trans('crudbooster.denied_access'));
@@ -455,6 +463,12 @@
             $this->cbView('products.create',$data);
         }
 
+        //Muestra el listado de productos
+        public function getTypes() {
+            $data = DB::table('type')->where('deleted_at','=',null)->get();
+            return $data;
+        }
+
         //Agregar Nuevo Producto a la base de datos
         public function getAddproductname(\Illuminate\Http\Request $request) {
             $sumarizedData = [
@@ -462,6 +476,23 @@
             ];
 
             DB::table('type')->insertGetId($sumarizedData);
+
+            return 1;
+        }
+
+        //Editar Buildout en la base de datos
+        public function getEditbuildout(\Illuminate\Http\Request $request) {
+            $name = $request->get('nombre');
+            $precio = $request->get('precio');
+
+	        if (isset($name) ) {
+                DB::table('buildout')->where('id', $request->get('id'))->update(['nombre'=> $request->get('nombre') ]);
+            }
+            elseif (isset($precio)) {
+                DB::table('buildout')->where('id', $request->get('id'))->update(['precio'=> $request->get('precio') ]);
+            }
+
+
 
             return 1;
         }
