@@ -90,6 +90,26 @@ $(document).ready(function()
         });
     });
 
+    $(document).on("click","#btneliminarbuildout",function(e) {
+        e.preventDefault();
+
+        var item = $(this).data('id');
+        console.log(item);
+        var tr = $(this).closest('td').parent();
+
+        $.ajax({
+            url:  '../products/deletebuildout',
+            data: '&id='+item,
+            type:  'get',
+            dataType: 'json',
+            success : function(data) {
+                //Eliminamos la fila de la vista
+                swal('Deleted!', 'Delete selected successfully !', 'success');
+                tr.hide();
+            }
+        });
+    });
+
     $('#edit_interesting').on('click',function(){
         $('#newProductModal').modal('show');
 
@@ -235,11 +255,11 @@ $(document).ready(function()
                                 '<span class="original">'+datas[i].descripcion,
                                 '</span>' +
                                 '<span class="editors hide"><input class="col-md-12 col-sm-12 form-control number editable" data-id="'+datas[i].id+'" value="'+datas[i].precio+'"/></span>'+
-                                '<span id="precio_buildout" class="original">'+datas[i].precio,
+                                '<span id="precio_buildout" data-id="'+datas[i].id+'" class="original">'+datas[i].precio,
                                 '</span>' +
                                 '<div class="btn-group" role="group" aria-label="..." id="'+datas[0].id+'">'+
                                 '<div class="btn-group" role="group" aria-label="..." id="'+datas[0].id+'">'+
-                                '<button type="button" class="btn btn-sm btn-warning btn-delete" id="btneliminar">'+
+                                '<button type="button" class="btn btn-sm btn-warning btn-delete" data-id="'+datas[i].id+'" id="btneliminarbuildout">'+
                                 '<span class="fa fa-trash"></span>'+
                                 '</button>'+
                                 '</div>'
@@ -375,7 +395,7 @@ $(document).ready(function()
                                     '</span>' +
                                     '<div class="btn-group" role="group" aria-label="..." id="'+datas[0].id+'">'+
                                     '<div class="btn-group" role="group" aria-label="..." id="'+datas[0].id+'">'+
-                                    '<button type="button" class="btn btn-sm btn-warning btn-delete" id="btneliminar">'+
+                                    '<button type="button" class="btn btn-sm btn-warning btn-delete" data-id="'+datas[i].id+'" id="btneliminarbuildout">'+
                                     '<span class="fa fa-trash"></span>'+
                                     '</button>'+
                                     '</div>'

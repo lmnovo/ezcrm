@@ -350,6 +350,12 @@
             return 1;
         }
 
+        public function getDeletebuildout(\Illuminate\Http\Request $request) {
+            DB::table('buildout')->where('id', $request->get('id'))->update(['deleted_at'=>  Carbon::now(config('app.timezone'))]);
+
+            return 1;
+        }
+
         public function getIndex() {
             //First, Add an auth
             if(!CRUDBooster::isView()) CRUDBooster::redirect(CRUDBooster::adminPath(),trans('crudbooster.denied_access'));
@@ -432,7 +438,7 @@
                     SELECT buildout.id, buildout.nombre, buildout.descripcion, buildout.precio, buildout.tipo, type.type
                     FROM buildout
                     INNER JOIN type ON buildout.tipo = type.id
-                    WHERE type.id=$interesting;
+                    WHERE type.id=$interesting AND ISNULL(buildout.deleted_at);
                 ")
                 );
                 \Illuminate\Support\Facades\DB::commit();
@@ -447,7 +453,7 @@
                         INNER JOIN size_type ON size_type.id_type = type.id
                         INNER JOIN size ON size_type.id_size = size.id
                         WHERE buildout.tipo='".$interesting."'
-                        AND size.id='".$size."' AND buildout.nombre LIKE CONCAT('%',size.size,'%')
+                        AND size.id='".$size."' AND ISNULL(buildout.deleted_at) AND buildout.nombre LIKE CONCAT('%',size.size,'%')
                 ")
                 );
                 \Illuminate\Support\Facades\DB::commit();
