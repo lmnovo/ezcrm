@@ -497,9 +497,13 @@
             elseif (isset($precio)) {
                 DB::table('buildout')->where('id', $request->get('id'))->update(['precio'=> $request->get('precio') ]);
             }
+            return 1;
+        }
 
-
-
+        //Editar Product en la base de datos
+        public function getEditproduct(\Illuminate\Http\Request $request) {
+            $type = $request->get('type');
+            DB::table('type')->where('id', $request->get('id'))->update(['type'=> $request->get('type') ]);
             return 1;
         }
 	    //By the way, you can still create your own method in here... :) 

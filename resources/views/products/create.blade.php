@@ -20,6 +20,7 @@
     <script src="http://127.0.0.1:8000/p/ace-elements.min.js"></script>
     <script src="http://127.0.0.1:8000/p/ace.min.js"></script>
 
+    <script src="http://127.0.0.1:8000/js/buildouts.js"></script>
     <script src="http://127.0.0.1:8000/js/products.js"></script>
 
     <!-- Your html goes here -->
@@ -177,9 +178,9 @@
                                         <label>{{trans('crudbooster.product')}}</label>
                                         <input class="form-control required" required id="product_name" name="product_name" placeholder="{{trans('crudbooster.product')}}" type="text"/>
                                     </div>
-                                    <div class="col-md-1">
+                                    <div class="col-md-2">
                                         <label>&nbsp;</label>
-                                        <button id="newProduct" class="form-control btn btn-success pull-left" type="button"> Add </button>
+                                        <button id="newProduct" class="form-control btn btn-success pull-left" type="button"> {{trans('crudbooster.add')}} </button>
                                     </div>
                                 </div>
                             </form>
@@ -207,11 +208,7 @@
                     </table>
                 </div>
 
-                <div class="modal-footer">
-                    {{--<button type="button" class="btn btn-dark" id="closeCategoryCategory">{{trans('crudbooster.close')}}</button>--}}
-                    <button type="submit" class="btn btn-primary" id="addProduct">{{trans('crudbooster.save')}}</button>
-                </div>
-
+                <div class="modal-footer"></div>
 
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
