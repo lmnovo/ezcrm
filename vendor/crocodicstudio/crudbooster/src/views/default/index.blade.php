@@ -11,75 +11,79 @@
 
             var td_user,campo_user,valor_user,id_user,id_user_user,id_account_user,isclient,url_action;
             var datos_user = '';
-            $(document).on("click","td",function(e)
+            var $d = null;
+            var td_user_selected = null;
+            $('.table_class_account').on("click","td",function(e)
             {
                 //Conocer la posición de la oolumna y la fila seleccionada
-                var $d = $(this);
+                $d = $(this);
+                $d.addClass('usuario_edit');
+
                 var id_row = $d.parent().children().html();
                 var col = $d.parent().children().index($d);
                 var row = $d.parent().parent().children().index($d.parent());
 
                 //Editando el campo "Status" en el listado de "Proyects"
-                var col_text = $('th:nth-child(5)').text();
+                /*var col_text = $('th:nth-child(5)').text();
                 var patternEnglish = /.*Step/;
                 var patternSpanish = /.*Paso/;
                 if( (col == 4 || col == 5) && (patternEnglish.test(col_text) || patternSpanish.test(col_text))) {
                     e.preventDefault();
                     window.location.href = 'http://127.0.0.1:8000/crm/orders/detail/'+id_row;
-                }
+                }*/
 
                 id_account_user = $(this).siblings('*')[0].children[0].value;
                 url_action = "account/edituser";
 
-                e.preventDefault();
                 if($(this).html().length < 100) {
                     if($(this).next().next().html().length > 1000) {
+                        console.log(td_user_selected);
 
-                        //Reiniciamos el listado de users para el select
-                        datos_user = '';
-                        campo_user = 'id_usuario';
-                        id_user = $(this).html();
-                        valor_user = $(this).html();
-                        td_user=$(this).closest("td");
+                        //Comprobar que no existe un usuario en selección...
+                        if (td_user_selected == null) {
+                            //Reiniciamos el listado de users para el select
+                            datos_user = '';
+                            campo_user = 'id_usuario';
+                            id_user = $(this).html();
+                            valor_user = $(this).html();
+                            td_user = $(this).closest("td");
+                            td_user_selected = td_user.html();
 
-                        //Obtener el listado de usuarios existentes en bd
-                        $.ajax({
-                            type: "GET",
-                            url: "account/users",
-                            data: { campo: campo_user, valor: nuevovalor_user, id: id_user }
-                        })
-                            .done(function(data) {
-                                for(var i=0;i<data.length;i++)
-                                {
-                                    if (valor_user == data[i].name) {
-                                        datos_user += '<option selected="true" value='+data[i].id+' >'+data[i].name+'</option>';
-                                    } else {
-                                        datos_user += '<option value='+data[i].id+' >'+data[i].name+'</option>';
+                            //Obtener el listado de usuarios existentes en bd
+                            $.ajax({
+                                type: "GET",
+                                url: "account/users",
+                                data: {campo: campo_user, valor: nuevovalor_user, id: id_user}
+                            })
+                                .done(function (data) {
+                                    selected = true;
+                                    for (var i = 0; i < data.length; i++) {
+                                        if (valor_user == data[i].name) {
+                                            datos_user += '<option selected="true" value=' + data[i].id + ' >' + data[i].name + '</option>';
+                                        } else {
+                                            datos_user += '<option value=' + data[i].id + ' >' + data[i].name + '</option>';
+                                        }
                                     }
-                                }
-                                td_user.text("").html("" +
-                                    "<select class='form-control' id='cms_users' name='"+campo_user+"' placeholder='Select' required>"
-                                    + datos_user +
-                                    "</select>" +
-                                    " <a class='enlace guardar_user' href='#'><i class=\"fa fa-check-circle\"></i></a> " +
-                                    "<a class='enlace cancelar_user' href='#'><i class=\"fa fa-times-circle\"></i></a>");
-                            });
+                                    td_user.text("").html("" +
+                                        "<select class='form-control' id='cms_users' name='" + campo_user + "' placeholder='Select' required>"
+                                        + datos_user +
+                                        "</select>");
+                                });
+                        }
+                        else { //Si ya existe un usuario en selección, le ponemos el valor que ya tenia
+                            td_user.html(td_user_selected);
+                            td_user_selected = null;
+                        }
+
                     }
                 }
-
-            });
-
-            $(document).on("click",".cancelar_user",function(e)
-            {
-                e.preventDefault();
-                td_user.html(valor_user);
-                window.location.href = 'http://127.0.0.1:8000/crm/account';
             });
 
             var nuevovalor_user;
-            $(document).on("click",".guardar_user",function(e)
+            $(document).on("change",".usuario_edit",function(e)
             {
-                e.preventDefault();
+                td_user_selected = null; //Reiniciamos el estado de usuario seleccionado
+                $d.removeClass('usuario_edit');
                 nuevovalor_user=$('#cms_users').val();
                 $.ajax({
                     type: "GET",
@@ -90,8 +94,6 @@
                         td_user.html(data);
                     });
             });
-
-
         });
     </script>
 

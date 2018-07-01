@@ -5,61 +5,57 @@
     <script>
         $(document).ready(function()
         {
-            var td,campo,valor,id,id_user;
-            var datos = '';
-            $(document).on("click","td.editable .edit_user",function(e)
-            {
-                e.preventDefault();
-                $("input:not(#id)").removeClass("editable");
-                td=$(this).closest("td");
-                campo=$(this).closest("td").data("campo");
-                id_user=$('#id_user').val();
-                id_account=$('#id_lead').val();
-                valor=$('td.editable a').text();
-                id=$(this).closest("tr").find("#id").val();
+            /*$(document).on('click','.original',function(){
+                var combo =$(this).siblings().find('.editable');
+                openEditable(this,combo);
+            });
+            $(document).on('blur','.editable',function(){
+                var original = $(this).parent().parent().find('.original');
+                saveNewData(this,original);
+            });
+            function openEditable(elem,combo) {
+                $(elem).addClass('hide');
+                $(elem).siblings().removeClass('hide');
+                $(elem).siblings().find('.editable').focus();
 
-                //Reiniciamos el listado de users para el select
-                datos = '';
-
-                //Obtener el listado de usuarios existentes en bd
                 $.ajax({
-                    type: "GET",
-                    url: "../users",
-                    data: { campo: campo, valor: nuevovalor, id: id }
-                })
-                    .done(function(data) {
-                        for(var i=0;i<data.length;i++)
-                        {
-                            if (valor == data[i].name) {
-                                datos += '<option selected="true" value='+data[i].id+' >'+data[i].name+'</option>';
-                            } else {
-                                datos += '<option value='+data[i].id+' >'+data[i].name+'</option>';
-                            }
+                    url:  '../users',
+                    data: "",
+                    type:  'get',
+                    dataType: 'json',
+                    success : function(data) {
+                        combo.html('');
+                        for(var i=0;i<data.length;i++) {
+                            combo.append('<option data-iduser="'+data[i].id+'" value="'+data[i].name+'">'+data[i].name+'</option>');
                         }
-                        td.text("").html("" +
-                            "<select class='form-control' id='cms_users' name='"+campo+"' placeholder='Select' required>"
-                                + datos +
-                            "</select>");
-                    });
 
+                        $('#modal-loading').modal('hide');
+                    }
+                });
 
-            });
+            }
+            function saveNewData(elem,original){
+                $('#modal-loading').modal('show');
+                var newVal = $(elem).val();
+                var id_account = $('#id_lead').val();
+                var id_user = $('.editable option:selected').data('iduser');
 
-            var nuevovalor;
-            $(document).on("blur",".editable",function(e)
-            {
-                e.preventDefault();
-                nuevovalor=$('#cms_users').val();
-                console.log(nuevovalor);
                 $.ajax({
-                    type: "GET",
-                    url: "../edituser",
-                    data: { campo: campo, valor: nuevovalor, id_user: id_user, id_account: id_account }
-                })
-                    .done(function( data ) {
-                        td.html("<a href=http://127.0.0.1:8000/crm/users/detail/"+nuevovalor+">"+data+"</a> <span title='{{trans('crudbooster.edit')}}' class=\"edit_user\"><i class=\"fa fa-edit\"></i></span>");
-                    });
-            });
+                    url:  '../edituser',
+                    data: { valor: id_user, id_account: id_account },
+                    type:  'get',
+                    dataType: 'json',
+                    success : function(data) {
+                        $('#modal-loading').modal('hide');
+                    }
+                });
+
+                original.text(newVal);
+                $('#modal-loading').modal('show');
+
+                $('.editors').addClass('hide');
+                $('.original').removeClass('hide');
+            }*/
 
         });
     </script>
@@ -232,10 +228,14 @@
 
                                 <tr>
                                     <td><strong>{{trans('crudbooster.assign_to')}}</strong></td>
-                                        <td class='editable' data-campo='id_usuario'>
-                                            <a href='{{CRUDBooster::adminpath("users/detail/$lead->id_usuario")}}'>{{ $assign_to->fullname }}</a>
-                                            <span title="{{trans('crudbooster.edit')}}" class="edit_user"><i class="fa fa-edit"></i></span>
-                                        </td>
+                                    <td>
+                                        {{--<span class="editors hide">
+                                            <select class="col-md-12 col-sm-12 editable form-control combo" ></select>
+                                        </span>
+                                        <span id="type" class="original" data-id="{{ $id }}">{{ $assign_to->name }}</span>--}}
+
+                                        <a href="{{CRUDBooster::adminpath("users/detail/$assign_to->id")}}">{{ $assign_to->name }}</a>
+                                    </td>
                                     <td><strong>{{trans('crudbooster.notes')}}</strong></td>
                                     <td>
                                         @if( $lead->notes == "Yes")

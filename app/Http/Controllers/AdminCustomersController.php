@@ -557,7 +557,7 @@ class AdminCustomersController extends \crocodicstudio\crudbooster\controllers\C
 
     //Permite editar la información del usuario en el lead (account)
     public function getEdituser(\Illuminate\Http\Request $request) {
-        DB::table('account')->where('id', $request->get('id_account'))->update([$request->get('campo') => $request->get('valor')]);
+        DB::table('account')->where('id', $request->get('id_account'))->update(['id_usuario' => $request->get('valor')]);
         $data = DB::table('cms_users')->where('id', $request->get('valor'))->first();
 
         return $data->name;

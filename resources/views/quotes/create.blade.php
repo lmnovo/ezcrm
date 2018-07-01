@@ -1,6 +1,9 @@
 @extends('crudbooster::admin_template')
 @section('content')
 
+    <script src="{{ asset ('js/parsleyjs/dist/parsley.min.js')}}"></script>
+
+
     <script src='http://127.0.0.1:8000/p/jquery-ui.custom.min.js'></script>
     <script src="http://127.0.0.1:8000/p/jquery.ui.touch-punch.min.js"></script>
     <script src="http://127.0.0.1:8000/p/chosen.jquery.min.js"></script>
@@ -24,16 +27,11 @@
         $(document).ready(function()
         {
 
+
+
             $('#table_edit_categories').dataTable( {
                 "aaSorting": [[ 0, "desc" ]],
             } );
-
-            /*$('#saveQuote').on('click',function(){
-                $('#hidden_description').val(($('#description_text').html()));
-                //$("#form_quote_principal").validate();
-                //$("#form_quote_principal").submit();
-            });*/
-
 
             $('#table_edit_products').dataTable( {
                 "aaSorting": [[ 0, "desc" ]],
@@ -260,52 +258,7 @@
                     });
             });
 
-            //Editando dinámicamente en la tabla de appliances
-            var selectedAnother = false;
-            var td,campo,valor,id;
-            $(document).on("click","td.editable span",function(e)
-            {
-                if(selectedAnother == true) {
-                    td.html("<span>"+valor+"</span>");
-                    $("input:not(#id)").addClass("editable");
-                }
-
-                selectedAnother = true;
-                $("input:not(#id)").removeClass("editable");
-                td=$(this).closest("td");
-                campo=$(this).closest("td").data("campo");
-                valor=$(this).text();
-                id=$(this).closest("tr").find("#id").val();
-                td.text("").html("<input type='text' name='"+campo+"' value='"+valor+"'>" +
-                    "<a class='enlace guardar' href='#'><i class=\"fa fa-check-circle\"></i></a> " +
-                    "<a class='enlace cancelar' href='#'><i class=\"fa fa-times-circle\"></i></a>")
-                ;
-            });
-            $(document).on("click",".cancelar",function(e)
-            {
-                td.html("<span>"+valor+"</span>");
-                $("input:not(#id)").addClass("editable");
-            });
-            $(document).on("click",".guardar",function(e)
-            {
-                selectedAnother = false;
-                nuevovalor=$(this).closest("td").find("input").val();
-                $.ajax({
-                    type: "GET",
-                    url: "../editquote",
-                    data: { campo: campo, valor: nuevovalor, id: id }
-                })
-                    .done(function( msg ) {
-                        $('#total_appliance').html(nuevovalor * $('#price_appliance').text());
-                        td.html("<span>"+nuevovalor+"</span>");
-                        $("td:not(#id)").addClass("editable");
-                        window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/'+msg;
-                    });
-            });
-
         });
-
-
 
 
 
@@ -347,37 +300,7 @@
             <form class='form-horizontal' id="form_quote_principal" enctype="multipart/form-data" action='<?php echo e($action); ?>'>
 
                 <input type="hidden" id="quote_id" name="quote_id" value="{{ $id }}">
-                <input type="hidden" id="applianceitem_1" name="applianceitem_1" value="">
-                <input type="hidden" id="applianceitem_2" name="applianceitem_2" value="">
-                <input type="hidden" id="applianceitem_3" name="applianceitem_3" value="">
-                <input type="hidden" id="applianceitem_4" name="applianceitem_4" value="">
-                <input type="hidden" id="applianceitem_5" name="applianceitem_5" value="">
-                <input type="hidden" id="applianceitem_6" name="applianceitem_6" value="">
-                <input type="hidden" id="applianceitem_7" name="applianceitem_7" value="">
-                <input type="hidden" id="applianceitem_8" name="applianceitem_8" value="">
-                <input type="hidden" id="applianceitem_9" name="applianceitem_9" value="">
-                <input type="hidden" id="applianceitem_10" name="applianceitem_10" value="">
-                <input type="hidden" id="applianceitem_11" name="applianceitem_11" value="">
-                <input type="hidden" id="applianceitem_12" name="applianceitem_12" value="">
-                <input type="hidden" id="applianceitem_13" name="applianceitem_13" value="">
-                <input type="hidden" id="applianceitem_14" name="applianceitem_14" value="">
-                <input type="hidden" id="applianceitem_15" name="applianceitem_15" value="">
-                <input type="hidden" id="applianceitem_16" name="applianceitem_16" value="">
-                <input type="hidden" id="applianceitem_17" name="applianceitem_17" value="">
-                <input type="hidden" id="applianceitem_18" name="applianceitem_18" value="">
-                <input type="hidden" id="applianceitem_19" name="applianceitem_19" value="">
-                <input type="hidden" id="applianceitem_20" name="applianceitem_20" value="">
-                <input type="hidden" id="applianceitem_21" name="applianceitem_21" value="">
-                <input type="hidden" id="applianceitem_22" name="applianceitem_22" value="">
-                <input type="hidden" id="applianceitem_23" name="applianceitem_23" value="">
-                <input type="hidden" id="applianceitem_24" name="applianceitem_24" value="">
-                <input type="hidden" id="applianceitem_25" name="applianceitem_25" value="">
-                <input type="hidden" id="applianceitem_26" name="applianceitem_26" value="">
-                <input type="hidden" id="applianceitem_27" name="applianceitem_27" value="">
-                <input type="hidden" id="applianceitem_28" name="applianceitem_28" value="">
-                <input type="hidden" id="applianceitem_29" name="applianceitem_29" value="">
-                <input type="hidden" id="applianceitem_30" name="applianceitem_30" value="">
-
+                <input type="hidden" id="account_id" name="account_id" value="{{ $quotes->idaccount }}">
                 <input type="hidden" id="send_email" name="send_email" value="">
 
                 <div class="row">
@@ -582,26 +505,34 @@
                         <tr role="row" class="odd">
                             <input id='id' type="hidden" value="{{ $items->id }}"/>
                             <td class="sorting_1">
+                                <span class="editors hide"><select class="col-md-12 col-sm-12 editable form-control combo" ></select></span>
                                 <span class="originals" id="tbl_sel_category">{{ $items->item_category }}</span>
                             </td>
                             <td>
+                                <span class="editors hide"><select class="col-md-12 col-sm-12 editable form-control combo" ></select></span>
                                 <span class="originals" id="tbl_sel_appliance">{{ $items->item_name }}</span>
                             </td>
                             <td>
+                                <span class="editors hide"><select class="col-md-12 col-sm-12 editable form-control combo" ></select></span>
                                 <span class="originals" id="tbl_sel_subcategory">{{ $items->item_subcategory }}</span>
                             </td>
                             <td>
-                            <span class="originals">{{ $items->descripcion_details }}</span>
+                                <span class="editors hide"><input class="col-md-12 col-sm-12 editable form-control" value="{{ $items->descripcion_details }}"/></span>
+                                <span class="originals">{{ $items->descripcion_details }}</span>
                             </td>
                             <td>
+                                <span class="editors hide"><input class="col-md-12 col-sm-12 editable form-control number" value="{{ $items->price }}"/></span>
                                 <span id="price_appliance" class="originals">{{ $items->price }}</span>
                             </td>
-                            <td class='editable' data-campo='cant'><span>{{ $items->cant }}</span></td>
+                            <td class='editable' data-campo='cant'>
+                                <span class="editors hide"><input class="col-md-12 col-sm-12 editable form-control number" value="{{ $items->cant }}"/></span>
+                                <span class="originals">{{ $items->cant }}</span>
+                            </td>
                             <td id="total_appliance">
                                 {{ $items->cant * $items->price }}
                             </td>
                             <td>
-                                <button class="btn btn-danger" name="{{ $items->id }}" type="button" id="eliminar">
+                                <button class="btn btn-danger" value="{{ $items->id }}" name="{{ $items->id }}" type="button" id="eliminar">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </button>
                             </td>
@@ -745,7 +676,7 @@
 
                     <div class='col-sm-4'>
                         <label>{{trans('crudbooster.how_soon_you_need_it')}}?*</label>
-                        <input type='text' name='date_limit' required id='date_limit' class='form-control required' value="<?php if(isset($date_limit)) echo $date_limit ?>"/>
+                        <input type='text' name='date_limit' required id='date_limit' class='form-control required' value="{{ $date_limit }}"/>
                     </div>
                 </div>
 

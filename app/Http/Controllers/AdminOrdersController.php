@@ -389,6 +389,249 @@
                             }
                     });
                     
+                    //codigo para la edicion de la tabla
+                    ETable_applaince={
+                        \"existingValue\":\"\",
+                        \"init\":function(){
+                            $('#accesorios').on('click','.originals',function(){
+                                ETable_applaince.openEditable(this);
+                            });
+        
+                            $('#accesorios').on('blur','.editable',function(){
+                                var original = $(this).parent().parent().find('.original');
+                                ETable_applaince.saveNewData(this,original);
+                            });
+                        },
+                        \"openEditable\":function(elem){
+                            $(elem).siblings().removeClass('hide');
+        
+                            //verifico si es la categoria
+                            if($(elem).attr('id')==='tbl_sel_category')
+                            {
+                                //lleno el combo de las categorias
+                                $.ajax({
+                                    url: \"../appliances\",
+                                    type:  'get',
+                                    dataType: 'json',
+                                    success : function(data) {
+                                        $(elem).siblings().find('.editable').html('');
+                                        for(var i=0;i<data.length;i++)
+                                        {
+                                            $(elem).siblings().find('.editable').append('<option data-id=\"'+data[i].id+'\" value=\"'+data[i].id+'\">'+data[i].category+'</option>');
+                                        }
+                                        $(elem).siblings().find('option:contains(\"'+$(elem).html()+'\")').prop('selected', true);
+                                    },
+                                    complete:function(){}
+                                });
+                                
+                                $(elem).hide();
+                                $(elem).siblings().show();
+                                $(elem).siblings().find('.editable').focus();
+                            }
+                            else if($(elem).attr('id')==='tbl_sel_appliance')
+                            {
+                               //var categoria = $(elem).parents('tr').find('td:eq(\"0\") .editors option:selected').val();
+                               var categoria = $(elem).parents('tr').find('td:eq(\"0\") .originals').html();
+                               var tipo = $('#interesting').val();
+                              
+                               $.ajax({
+                                        url:  \"../applianceslistname\",
+                                        data: \"&categoria=\"+categoria,
+                                        type:  'get',
+                                        dataType: 'json',
+                                        success : function(data) {
+                                          $(elem).siblings().find('.editable').html('');
+                                            for(var i=0;i<data.length;i++)
+                                            {
+                                               $(elem).siblings().find('.editable').append('<option value=\"'+data[i].id+'\">'+data[i].name+'</option>');
+                                            }
+                                            $(elem).siblings().find(\"option\").filter(function(){
+                                                return $(this).text() === $(elem).html();
+                                            }).prop('selected', true);
+                                        },
+                                        complete:function(){
+                                             $('#modal-loading').modal('hide');
+                                        }
+                                     });
+                                     
+                                $(elem).hide();
+                                $(elem).siblings().show();
+                                $(elem).siblings().find('.editable').focus();
+                            }
+                            else if($(elem).attr('id')==='tbl_sel_subcategory')
+                            {
+                                var id_categoria = $(elem).parents('tr').find('td:eq(\"1\") .combo').val();
+                                
+                                if(id_categoria != null) {
+                                    $.ajax({
+                                            url: '../listadosub',
+                                            data: \"id=\"+id_categoria,
+                                            type:  'get',
+                                            dataType: 'json',
+                                            success : function(data) {
+                                                $(elem).siblings().find('.editable').html('');
+                                                for(var i=0;i<data.length;i++)
+                                                {
+                                                   $(elem).siblings().find('.editable').append('<option value=\"'+data[i].id+'\">'+data[i].name+'</option>');
+                                                }
+                                                $(elem).siblings().find(\"option\").filter(function(){
+                                                    return $(this).text() === $(elem).html();
+                                                }).prop('selected', true);
+                                           },
+                                            complete:function(){                                               
+                                               $('#modal-loading').modal('hide');
+                                            }
+                                    });
+                                    
+                                $(elem).hide();
+                                $(elem).siblings().show();
+                                $(elem).siblings().find('.editable').focus();
+                                    
+                                } else {
+                                    $(elem).siblings().addClass('hide');
+                                }
+                            }else {
+                                $(elem).hide();
+                                $(elem).siblings().show();
+                                $(elem).siblings().find('.editable').focus();
+                            }                           
+        
+                            
+                            oTableaccesorios.existingValue=$(elem).html();
+                        },
+                        \"saveNewData\":function(elem){
+                            var newVal=$(elem).val();
+                            var texto=\"\";
+                            
+                            //obtengo el index de la columna sobre la que estoy accionando
+                            var columnIdx = oTableaccesorios.cell( $(elem).parents('td')).index().column;
+                            $('#modal-loading').modal('show');
+                            
+                            if($(elem).hasClass('combo')){
+                                texto=$(elem).find('option:selected').text();
+        
+                                if(texto!==$(elem).parent().siblings().html())
+                                {
+                                    $(elem).parent().siblings().html(texto);
+        
+                                    if(columnIdx ===0)
+                                    {
+                                        var cell = oTableaccesorios.cell( $(elem).parents('td').next() );
+                                        cell.data('<span class=\"editors\"><select class=\"editable form-control combo\"></select></span><span class=\"originals\" id=\"tbl_sel_appliance\">Select an appliance</span>').draw();
+                                        var cell = oTableaccesorios.cell( $(elem).parents('tr').find('td:eq(\"2\")') );
+                                        cell.data('<span class=\"editors\"><select class=\"editable form-control combo\"></select></span><span class=\"originals\" id=\"tbl_sel_subcategory\">Select a detail</span>').draw();
+                                        var cell = oTableaccesorios.cell( $(elem).parents('tr').find('td:eq(\"3\")') );
+                                        cell.data('<span class=\"editors\"><input class=\"editable form-control\" value=\"Description\"/></span><span class=\"originals\">Description</span>');
+                                        var cell = oTableaccesorios.cell( $(elem).parents('tr').find('td:eq(\"4\")') );
+                                        cell.data('<span class=\"editors\"><input class=\"editable form-control number\" value=\"0.00\"/></span><span class=\"originals\">0.00</span>');
+                                        var cell = oTableaccesorios.cell( $(elem).parents('tr').find('td:eq(\"5\")') );
+                                        cell.data('<span class=\"editors\"><input class=\"editable form-control number\" value=\"1\"/></span><span class=\"originals\">1</span>');
+                                        var cell = oTableaccesorios.cell( $(elem).parents('tr').find('td:eq(\"6\")') );
+                                        cell.data('0.00');
+                                        actualizar_total();
+                                    }
+                                    if(columnIdx ===1)
+                                    {
+                                        var cell = oTableaccesorios.cell( $(elem).parents('tr').find('td:eq(\"2\")') );
+                                        cell.data('<span class=\"editors\"><select class=\"editable form-control combo\"></select></span><span class=\"originals\" id=\"tbl_sel_subcategory\">Select a detail</span>').draw();
+                                        var cell = oTableaccesorios.cell( $(elem).parents('tr').find('td:eq(\"3\")') );
+                                        cell.data('<span class=\"editors\"><input class=\"editable form-control\" value=\"Description\"/></span><span class=\"originals\">Description</span>');
+                                        var cell = oTableaccesorios.cell( $(elem).parents('tr').find('td:eq(\"4\")') );
+                                        cell.data('<span class=\"editors\"><input class=\"editable form-control number\" value=\"0.00\"/></span><span class=\"originals\">0.00</span>');
+                                        var cell = oTableaccesorios.cell( $(elem).parents('tr').find('td:eq(\"5\")') );
+                                        cell.data('<span class=\"editors\"><input class=\"editable form-control number\" value=\"1\"/></span><span class=\"originals\">1</span>');
+                                        var cell = oTableaccesorios.cell( $(elem).parents('tr').find('td:eq(\"6\")') );
+                                        cell.data('0.00');
+                                        actualizar_total();
+                                    }
+                                    if(columnIdx ===2)
+                                    {
+                                        var id_subcategoria = $(elem).parents('tr').find('td:eq(\"2\") .combo').val();           
+        
+                                        $.ajax({
+                                            url: '../applianceslistinside',
+                                            data: \"id=\"+id_subcategoria,
+                                            type:  'get',
+                                            dataType: 'json',
+                                            success : function(data) {        
+                                                var cell = oTableaccesorios.cell( $(elem).parents('tr').find('td:eq(\"3\")') );
+                                                cell.data('<span class=\"editors hide\"><input class=\"editable form-control\" value=\"'+data[0].description+'\"/></span><span class=\"originals\">'+data[0].description+'</span>');
+                                                var cell = oTableaccesorios.cell( $(elem).parents('tr').find('td:eq(\"4\")') );
+                                                cell.data('<span class=\"editors hide\"><input class=\"editable form-control number\" value=\"'+data[0].price+'\"/></span><span class=\"originals\">'+data[0].price+'</span>');
+                                            },
+                                            complete:function(){
+                                               //Guardamos en BD
+                                               //var id_appliance = $(elem).parent().parent().parent().children().val();
+                                               var id_appliance = $(elem).parents('tr').find('td:eq(\"7\")').children().val();
+                                               var item_category = $(elem).parents('tr').find('td:eq(\"0\") .originals').text();
+                                               var item_name = $(elem).parents('tr').find('td:eq(\"1\") .originals').text();
+                                               var item_subcategory = $(elem).parents('tr').find('td:eq(\"2\") .originals').text();
+                                               var descripcion_details = $(elem).parents('tr').find('td:eq(\"3\") .originals').text();
+                                               var price = $(elem).parents('tr').find('td:eq(\"4\") .originals').text();
+                                               var cant = $(elem).parents('tr').find('td:eq(\"5\") .originals').text();
+                                               
+                                               $.ajax({
+                                                    url: '../updateappliance',
+                                                    data: \"id_appliance=\"+id_appliance+\"&item_category=\"+item_category+\"&item_name=\"+item_name+\"&item_subcategory=\"+item_subcategory+\"&descripcion_details=\"+descripcion_details+\"&price=\"+price+\"&cant=\"+cant,
+                                                    type:  'get',
+                                                    dataType: 'json',
+                                                    success : function(data) {
+                                                        var precio=$(elem).parents('tr').find('td:eq(\"4\") .originals').html();
+                                                        var cantidad=$(elem).parents('tr').find('td:eq(\"5\") .originals').html();
+                                                        var cell = oTableaccesorios.cell( $(elem).parents('tr').find('td:eq(\"6\")'));
+                                                        cell.data(precio * cantidad ).draw();
+                                                        $('#modal-loading').modal('hide');                         
+                                                   }
+                                                });
+                                               
+                                            }
+                                        });
+                                    }
+                                    
+                                }
+                            }else{
+                                $(elem).parent().siblings().html(newVal);
+                            }
+                            
+                            if(columnIdx ===3 || columnIdx ===4 || columnIdx ===5)
+                            {
+                                //Guardamos en BD
+                                //var id_appliance = $(elem).parent().parent().parent().children().val();
+                                var id_appliance = $(elem).parents('tr').find('td:eq(\"7\")').children().val();
+                                var item_category = $(elem).parents('tr').find('td:eq(\"0\") .originals').text();
+                                var item_name = $(elem).parents('tr').find('td:eq(\"1\") .originals').text();
+                                var item_subcategory = $(elem).parents('tr').find('td:eq(\"2\") .originals').text();
+                                var descripcion_details = $(elem).parents('tr').find('td:eq(\"3\") .originals').text();
+                                var price = $(elem).parents('tr').find('td:eq(\"4\") .originals').text();
+                                var cant = $(elem).parents('tr').find('td:eq(\"5\") .originals').text();
+                                        
+                                $.ajax({
+                                    url: '../updateappliance',
+                                    data: \"id_appliance=\"+id_appliance+\"&item_category=\"+item_category+\"&item_name=\"+item_name+\"&item_subcategory=\"+item_subcategory+\"&descripcion_details=\"+descripcion_details+\"&price=\"+price+\"&cant=\"+cant,
+                                    type:  'get',
+                                    dataType: 'json',
+                                    success : function(data) {                                                
+                                        $('#modal-loading').modal('hide');                         
+                                   }
+                                });
+                            }
+                            
+                            //actualizo la columna del precio total, solo hago la suma y multiplicacion cuando cambio la cantidad y no cuando cambio la descripcion
+                            if(columnIdx ===4 || columnIdx ===5)
+                            {
+                                var precio=$(elem).parents('tr').find('td:eq(\"4\") .originals').html();
+                                var cantidad=$(elem).parents('tr').find('td:eq(\"5\") .originals').html();
+                                var cell = oTableaccesorios.cell( $(elem).parents('tr').find('td:eq(\"6\")'));
+                                cell.data(precio * cantidad ).draw();
+                            }
+                            $('#modal-loading').modal('hide');
+                            $('.editors').hide();
+                            $('.originals').show();
+                        }
+                    };
+                    ETable_applaince.init();                    
+                    
+                    
 	        		 $('#interesting').on('change',function(){
                           Actualizar_Estado();
                           updateTotales();
@@ -782,7 +1025,7 @@
                         var to = $('#form-tag-to').val();
                         var id = $('#quote_id').val();
                         
-                        console.log('ID: '+id);
+                        //console.log('ID: '+id);
                         $.ajax({
                             url: '../sendemailpersonal',
                             data: \"id=\"+id+\"&to=\"+to,
@@ -874,20 +1117,37 @@
                         var quantity = $('#quantity').val();
                         var parcialtotal = $('#total').val();
                         
-                        count = count + 1;
-                        
-                        $('#applianceitem_'+count).val(appliance + \"_**_\" + product + \"_**_\" + subcategory + \"_**_\" + description + \"_**_\" + price + \"_**_\" + quantity + \"_**_\" + parcialtotal);
-                        
-                        oTableaccesorios.row.add( [
-                            '<span class=\"originals\" id=\"tbl_sel_category\">'+appliance+'</span>',
-                            '<span class=\"originals\" id=\"tbl_sel_appliance\">'+product+'</span>',
-                            '<span class=\"originals\" id=\"tbl_sel_subcategory\">'+subcategory+'</span>',
-                            '<span class=\"originals\">'+description+'</span>',
-                            '<span class=\"originals\">'+price+'</span>',
-                            '<span class=\"originals\">'+quantity+'</span>',
-                            parcialtotal,
-                           '<button class=\"btn btn-danger\" name='+count+' type=\"button\" id=\"eliminar\"><span class=\"glyphicon glyphicon-trash\"></span></button>'
-                       ]).draw( false );
+                        //Guardamos el appliance insertado
+                        var id_truck = $('#quote_id').val();
+                        var id_account = $('#account_id').val();
+                        var item_category = appliance;
+                        var item_name = product;
+                        var item_subcategory = subcategory;
+                        var descripcion_details = description;
+                        var cant = quantity;
+                        var from_where = 2; //Insertado desde el CRM
+                       
+                         $.ajax({
+                            url: '../addappliance',
+                            data: \"id_truck=\"+id_truck+\"&item_category=\"+item_category+\"&item_name=\"+item_name+\"&item_subcategory=\"+item_subcategory+\"&descripcion_details=\"+descripcion_details+\"&price=\"+price+\"&cant=\"+cant+\"&id_account=\"+id_account+\"&from_where=\"+from_where,
+                            type:  'get',
+                            dataType: 'json',
+                            success : function(data) {                                
+                                
+                                oTableaccesorios.row.add( [
+                                     '<span class=\"editors hide\"><select class=\"col-md-12 col-sm-12 editable form-control combo\" ></select></span><span class=\"originals\" id=\"tbl_sel_category\">'+appliance+'</span>',
+                                     '<span class=\"editors hide\"><select class=\"col-md-12 col-sm-12 editable form-control combo\" ></select></span><span class=\"originals\" id=\"tbl_sel_appliance\">' + product + '</span>',
+                                     '<span class=\"editors hide\"><select class=\"col-md-12 col-sm-12 editable form-control combo\" ></select></span><span class=\"originals\" id=\"tbl_sel_subcategory\">' + subcategory + '</span>',
+                                     '<span class=\"editors hide\"><input class=\"col-md-12 col-sm-12 editable form-control\" value=\"' + description + '\"/></span><span class=\"originals\">' + description + '</span>',
+                                     '<span class=\"editors hide\"><input class=\"col-md-12 col-sm-12 editable form-control number\" value=\"' + price + '\"/></span><span class=\"originals\">' + price + '</span>',
+                                     '<span class=\"editors hide\"><input class=\"col-md-12 col-sm-12 editable form-control number\" value=\"' + quantity + '\"/></span><span class=\"originals\">' + quantity + '</span>',
+                                     parcialtotal,
+                                   '<button class=\"btn btn-danger\" value='+data+' name='+data+' type=\"button\" id=\"eliminar\"><span class=\"glyphicon glyphicon-trash\"></span></button>'
+                               ]).draw( false );   
+                               
+                               $('#modal-loading').modal('hide');                    
+                           }
+                        }); 
                        
                        $('#description').val('');
                        $('#price2').val('');
@@ -3378,26 +3638,6 @@
 
             $customer = DB::table('account')->where('id', $quote->id_account)->first();
 
-            for ($i = 1; $i <= 30; $i++) {
-	            if ($request->get('applianceitem_'.$i) != null) {
-                    $appliances = explode("_**_", $request->get('applianceitem_'.$i));
-
-                    //Se guarda la quote_detail
-                    $sumarizedData = [
-                        'id_truck' => $orders_id,
-                        'id_account' => $customer->id,
-                        'item_category' => $appliances[0],
-                        'item_name' => $appliances[1],
-                        'price' => $appliances[4],
-                        'cant' => $appliances[5],
-                        'from_where' => 2,
-                        'item_subcategory' => $appliances[2],
-                        'descripcion_details' => $appliances[3],
-                    ];
-                    DB::table('truck_items')->insert($sumarizedData);
-                }
-            }
-
             if ($request->get('check_item') == 'on') {
                 $starting_with = $request->get('starting');
             }
@@ -3617,6 +3857,39 @@
             return $data;
         }
 
+        //Actualiza en base de datos las modificaciones de los appliances en el listado de la cotización
+        public function getUpdateappliance(\Illuminate\Http\Request $request) {
+            $sumarizedData = [
+                'item_category' => $request->get('item_category'),
+                'item_name' => $request->get('item_name'),
+                'item_subcategory' => $request->get('item_subcategory'),
+                'descripcion_details' => $request->get('descripcion_details'),
+                'price' => $request->get('price'),
+                'cant' => $request->get('cant'),
+            ];
+            DB::table('truck_items')->where('id', $request->get('id_appliance'))->update($sumarizedData);
+
+            return 1;
+        }
+
+        //Insertar en base de datos el appliance insertado dinámicamente
+        public function getAddappliance(\Illuminate\Http\Request $request) {
+            $sumarizedData = [
+                'id_truck' => $request->get('id_truck'),
+                'id_account' => $request->get('id_account'),
+                'item_category' => $request->get('item_category'),
+                'item_name' => $request->get('item_name'),
+                'item_subcategory' => $request->get('item_subcategory'),
+                'descripcion_details' => $request->get('descripcion_details'),
+                'price' => $request->get('price'),
+                'cant' => $request->get('cant'),
+                'from_where' => $request->get('from_where'),
+            ];
+            $data = DB::table('truck_items')->where('id', $request->get('id_appliance'))->insertGetId($sumarizedData);
+
+            return $data;
+        }
+
         //Función que permite guardar el "Precio de Costo" de la "Appliance" (retail_price)
         public function getUpdateprecioretail(\Illuminate\Http\Request $request) {
             $price= $request->get('precio');
@@ -3832,6 +4105,48 @@
                 ->get();
 
             return $data;
+        }
+
+        public function getApplianceslistname(\Illuminate\Http\Request $request) {
+	        $categoria = $request->get('categoria');
+
+            \Illuminate\Support\Facades\DB::beginTransaction();
+            $result = \Illuminate\Support\Facades\DB::select( DB::raw("
+                  SELECT appliance_inside.name,appliance_inside.id from appliance_inside 
+                  INNER join appliance on appliance.id=appliance_inside.id_appliance 
+                  WHERE id_type=4 AND appliance.category = '$categoria';
+                ")
+            );
+            \Illuminate\Support\Facades\DB::commit();
+
+            return $result;
+        }
+
+        public function getApplianceslistinside(\Illuminate\Http\Request $request) {
+	        $id = $request->get('id');
+
+            \Illuminate\Support\Facades\DB::beginTransaction();
+            $result = \Illuminate\Support\Facades\DB::select( DB::raw("
+                SELECT
+                appliance_inside_category.id,
+                appliance_inside_category.`name`,
+                appliance_inside_category.price,
+                appliance_inside_category.retail_price,
+                appliance_inside_category.description,
+                appliance_inside_category.imagen,
+                appliance_inside.`name` AS appliance_inside,
+                appliance_inside.id AS id_appliance,
+                appliance.id as appliance_id,
+                appliance.category
+                FROM appliance_inside_category
+                INNER JOIN appliance_inside ON appliance_inside_category.id_appliance_inside = appliance_inside.id
+                INNER JOIN appliance ON appliance.id = appliance_inside.id_appliance
+                where appliance_inside_category.id=$id order by appliance_inside_category.id desc;
+                ")
+            );
+            \Illuminate\Support\Facades\DB::commit();
+
+            return $result;
         }
 
         public function getPrices(\Illuminate\Http\Request $request) {

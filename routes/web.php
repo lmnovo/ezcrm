@@ -273,7 +273,6 @@ use crocodicstudio\crudbooster\helpers\CRUDBooster;
         return view('tour_default');
     });
 
-
     Route::get('lang/{lang}', function ($lang) {
         session(['lang' => $lang]);
         return \Redirect::back();
