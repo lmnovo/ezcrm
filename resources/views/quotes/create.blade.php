@@ -35,42 +35,10 @@
                 "bPaginate": 5,
             } );
 
-            $('#newApplianceModal').on('click','#edit_category_new',function(){
-                $('#newCategoryApplianceModal').modal('show');
-                $('#newApplianceModal').modal('hide');
-            });
-
             $('#saveQuote').on('click',function(){
 
                 $('#hidden_description').val($('.note-editable').html());
             });
-
-            $('#applianceModal').on('click','#edit_product_edit',function(){
-                $('#modalEditProductList').modal('show');
-                $('#applianceModal').modal('hide');
-            });
-
-            /*$('#closeModal').on('click',function(){
-                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/{{ $id }}';
-            });
-            $('#closeModal1').on('click',function(){
-                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/{{ $id }}';
-            });
-            $('#closeModal2').on('click',function(){
-                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/{{ $id }}';
-            });
-            $('#closeModal3').on('click',function(){
-                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/{{ $id }}';
-            });
-            $('#closeModal4').on('click',function(){
-                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/{{ $id }}';
-            });
-            $('#closeModal5').on('click',function(){
-                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/{{ $id }}';
-            });
-            $('#closeModal6').on('click',function(){
-                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/{{ $id }}';
-            });*/
 
             $("body").on("click",".upload-image",function(e){
                 $(this).parents("form").ajaxForm(options);
@@ -774,7 +742,6 @@
 
     </div>
 
-
     <div class="modal fade" id="modal-loading" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-body">
@@ -965,7 +932,7 @@
                                 </div>
                             </div>
                             <div class="col-md-5">
-                                <img style="width: 100%; height: 400px;" id="imagen" src="" class="img-responsive profile-user-img img-responsive img-bordered"/>
+                                <img style="width: 100%; height: 400px;" id="imagen" src="<?php echo e(asset('assets/images/appliances/image-not-found.png')); ?>" class="img-responsive profile-user-img img-responsive img-bordered"/>
                             </div>
                         </div>
                     </div>
@@ -1000,11 +967,9 @@
                                         <select required class="form-control" id="appliance_new" name="appliance" placeholder="Select" style="width: 100%" >
                                         </select>
                                     </div>
-                                    <div class="col-md-1">
-                                        <a title="" id="edit_category_new" class="btn btn-success btn-sm">
-                                            <i class="glyphicon glyphicon-plus-sign"></i>
-                                        </a>
-                                    </div>
+                                    <span class="input-group-btn">
+                                        <button title="{{trans('crudbooster.add')}}" class="btn btn-success" type="button" id="edit_category_new"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                                    </span>
                                 </div>
 
                                 <div class="form-group">
@@ -1013,11 +978,9 @@
                                         <select required class="form-control" id="product_new" name="product_new" placeholder="Select" style="width: 100%" >
                                         </select>
                                     </div>
-                                    <div class="col-md-1">
-                                        <a title="" id="edit_product_new" class="btn btn-success btn-sm">
-                                            <i class="glyphicon glyphicon-plus-sign"></i>
-                                        </a>
-                                    </div>
+                                    <span class="input-group-btn">
+                                        <button title="{{trans('crudbooster.add')}}" class="btn btn-success" type="button" id="edit_subcategory_new"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                                    </span>
                                 </div>
 
                                 <div class="form-group">

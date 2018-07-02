@@ -1157,45 +1157,6 @@
                     $('#applianceModal').on('click','#addNew',function(){
                         newApplianceModal();
                     });
-                    
-                    //Agregar nueva subcategoría
-                    $('#newApplianceModal').on('click','#edit_appliance_new',function(){
-                        $('#newApplianceModal').modal('hide');
-                        $('#newSubCategoryApplianceModal').modal('show');
-                        $.ajax({
-                          url: '../appliancescategories/',
-                          data: '',
-                          type:  'get',
-                          dataType: 'json',
-                          success : function(data) {
-                            $('#appliance_subcategory').append('<option value=\"\"></option>'); 
-                            for(var i=0;i<data.length;i++)
-                            {
-                               $('#appliance_subcategory').append('<option value=\"'+data[i].id+'\">'+data[i].category+'</option>');
-                            }                                
-                            
-                          }
-                       });                
-                    });
-                    
-                    $('#applianceModal').on('click','#edit_appliance_new',function(){
-                        $('#applianceModal').modal('hide');
-                        $('#newCategoryApplianceModal').modal('show');
-                        $.ajax({
-                          url: '../appliancescategories/',
-                          data: '',
-                          type:  'get',
-                          dataType: 'json',
-                          success : function(data) {
-                            $('#appliance_subcategory').append('<option value=\"\"></option>'); 
-                            for(var i=0;i<data.length;i++)
-                            {
-                               $('#appliance_subcategory').append('<option value=\"'+data[i].id+'\">'+data[i].category+'</option>');
-                            }                                
-                            
-                          }
-                       });                
-                    });
                      
                     function newApplianceModal() {
                         $('#applianceModal').modal('hide');                                             

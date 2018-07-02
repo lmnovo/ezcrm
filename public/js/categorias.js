@@ -105,6 +105,34 @@ $(document).ready(function()
 
     $('#edit_appliance_new').on('click',function(){
         $('#newCategoryApplianceModal').modal('show');
+        $('#applianceModal').modal('hide');
+
+        oTableCategorias.clear().draw();
+        $.ajax
+        ({
+            url: '../appliancescategories',
+            data: "",
+            type: 'get',
+            success: function(data)
+            {
+                for(var i=0;i<data.length;i++)
+                {
+                    oTableCategorias.row.add([
+                        '<span class="editors hide"><input class="col-md-12 col-sm-12 form-control editable" data-id="'+data[i].id+'" value="'+data[i].category+'"/></span>'+
+                        '<span id="type" class="original" data-id="'+data[i].id+'">'+data[i].category,
+                        '</span><button type="button" class="btn btn-warning btn-xs" id="btneliminarcategory" data-id="'+data[i].id+'">'+
+                        '<i class="fa fa-trash"></i>'+
+                        '</button>'
+                    ]).draw( false );
+                }
+            }
+        });
+    });
+
+    $('#edit_category_new').on('click',function(){
+        $('#newCategoryApplianceModal').modal('show');
+        $('#applianceModal').modal('hide');
+        $('#newApplianceModal').modal('hide');
 
         oTableCategorias.clear().draw();
         $.ajax
