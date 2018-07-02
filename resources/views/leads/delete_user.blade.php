@@ -41,9 +41,9 @@
 
             <form class='form-horizontal' id="form" enctype="multipart/form-data" action='<?php echo e($action); ?>'>
                 <input type="hidden" name="_token" value="04WEmigxCcCs05dhAXuQZvlOTccK4fKUG3OrTpQO">
-                <input type="hidden" name="return_url" value="http://127.0.0.1:8000/crm/campaigns?m=61">
-                <input type="hidden" name="ref_mainpath" value="http://127.0.0.1:8000/crm/campaigns">
-                <input type="hidden" name="ref_parameter" value="return_url=http://127.0.0.1:8000/crm/campaigns?m=61">
+                <input type="hidden" name="return_url" value="http://ezcrm.us/crm/campaigns?m=61">
+                <input type="hidden" name="ref_mainpath" value="http://ezcrm.us/crm/campaigns">
+                <input type="hidden" name="ref_parameter" value="return_url=http://ezcrm.us/crm/campaigns?m=61">
                 <input type="hidden" name="original_user" value="<?php echo e($id); ?>">
                 <div class="box-body" id="parent-form-area">
 
