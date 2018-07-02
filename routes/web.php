@@ -356,7 +356,7 @@ use crocodicstudio\crudbooster\helpers\CRUDBooster;
 
                 foreach ($profits as $profit) {
                     $precio = DB::table('appliance_inside_category')->where('name', $profit->item_subcategory)->first();
-                    $precio = ($precio->price) - ($precio->retail_price);
+                    $precio = ($profit->price) - ($precio->retail_price);
                     $ganancias += $precio;
                 }
 

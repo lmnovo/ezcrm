@@ -37,6 +37,7 @@
             $this->col[] = ["label"=>trans('crudbooster.state'),"name"=>"state_client"];
             $this->col[] = ["label"=>trans('crudbooster.city'),"name"=>"city"];
             $this->col[] = ["label"=>trans('crudbooster.date'),"name"=>"invoice_date"];
+            //$this->col[] = ["label"=>trans('crudbooster.assigned_to'),"name"=>"id_user","urlUser"=>"users"];
             $this->col[] = ["label"=>trans('crudbooster.assigned_to'),"name"=>"id_user","urlUser"=>"users"];
 			//$this->col[] = ["label"=>"Total","name"=>"total","callback_php"=>'number_format($row->total)'];
 			# END COLUMNS DO NOT REMOVE THIS LINE

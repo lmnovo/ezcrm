@@ -42,7 +42,7 @@
             $this->col[] = ["label"=>"Total","name"=>"truck_aprox_price"];
             $this->col[] = ["label"=>trans('crudbooster.profit'),"name"=>"profits","width"=>"8%"];
             $this->col[] = ["label"=>trans('crudbooster.financing'),"name"=>"financing"];
-            $this->col[] = ["label"=>trans('crudbooster.is_closed'),"name"=>"is_closed"];
+            //$this->col[] = ["label"=>trans('crudbooster.is_closed'),"name"=>"is_closed"];
 
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
@@ -859,26 +859,6 @@
                         $('#applianceModal').modal('show');                        
                     });
                     
-                    //Agregando Nueva Categoría de Appliance
-                    $('#newCategoryApplianceModal').on('click','#addCategoryCategory',function(){
-                        var categoria = $('#category_category_name').val();                         
-                    
-                        $.ajax({
-                                url:  '../addcategory',
-                                data: \"&categoria=\"+categoria,
-                                type:  'get',
-                                dataType: 'json',
-                                success : function(data) {
-                                    if(data == 1) {
-                                        $('#newCategoryApplianceModal').modal('hide');
-                                        $('#category_category_name').val('');
-                                        applianceModal();                                        
-                                    }                                                                                                  
-                                }
-                             });      
-                    });
-                    
-                    
                     //Agregando Nueva Subcategoría de Appliance
                     $('#newSubCategoryApplianceModal').on('click','#addSubCategory',function(){
                         var categoria = $('#appliance_subcategory').val();                         
@@ -1216,32 +1196,7 @@
                           }
                        });                
                     });
-                    
-                    $('#applianceModal').on('click','#edit_product_new',function(){
-                        $('#appliance_subcategory').html('');
-                        $('#select2-appliance_subcategory-container').html('**Select Data**');                         
-                        $('#subcategory_name').val('');
-                        
-                        $('#applianceModal').modal('hide');
-                        
-                        $.ajax({
-                          url: '../appliancescategories/',
-                          data: '',
-                          type:  'get',
-                          dataType: 'json',
-                          success : function(data) {
-                            $('#appliance_subcategory').append('<option value=\"\"></option>'); 
-                            for(var i=0;i<data.length;i++)
-                            {
-                               $('#appliance_subcategory').append('<option value=\"'+data[i].id+'\">'+data[i].category+'</option>');
-                            }    
-                            
-                            $('#newSubCategoryApplianceModal').modal('show');                         
-                            
-                          }
-                       });                
-                    });                    
-                    
+                     
                     function newApplianceModal() {
                         $('#applianceModal').modal('hide');                                             
                         
@@ -1610,7 +1565,6 @@
 
             for ($i=9; $i>=0; $i--) {
                 $quote_updated = DB::table('user_trucks')->where('id', $quotes[$i]->id)->first();
-
                 $ganancias = 0;
 
                 if (!empty($quote_updated)) {
@@ -1630,7 +1584,7 @@
 
                     foreach ($profits as $profit) {
                         $precio = DB::table('appliance_inside_category')->where('name', $profit->item_subcategory)->first();
-                        $precio = ($precio->price) - ($precio->retail_price);
+                        $precio = ($profit->price) - ($precio->retail_price);
                         $ganancias += $precio;
                     }
 
@@ -1845,7 +1799,7 @@
         //Agregar Categoría de Appliance a la base de datos
         public function getAddcategory(\Illuminate\Http\Request $request) {
             $sumarizedData = [
-                'category' => $request->get('categoria'),
+                'category' => $request->get('valor'),
                 'state' => 1,
             ];
 
@@ -3741,7 +3695,7 @@
             $profits  = DB::table('truck_items')->where('id_truck', $orders_id)->get();
             foreach ($profits as $profit) {
                 $precio = DB::table('appliance_inside_category')->where('name', $profit->item_subcategory)->first();
-                $precio = ($precio->price) - ($precio->retail_price);
+                $precio = ($profit->price) - ($precio->retail_price);
                 $ganancias += $precio;
             }
 
@@ -3818,7 +3772,7 @@
 
 	    //Funcion que permite guardar las "Category" de "Appliance"
         public function getEditcategory(\Illuminate\Http\Request $request) {
-            DB::table('appliance')->where('id', $request->get('id'))->update([$request->get('campo') => $request->get('valor')]);
+            DB::table('appliance')->where('id', $request->get('id'))->update(['category' => $request->get('valor')]);
 
             return $request->get('id');
         }
@@ -3852,6 +3806,7 @@
         public function getAppliances() {
             $data = DB::table('appliance')
                 ->select('id','category')
+                ->where('deleted_at', null)
                 ->get();
 
             return $data;
@@ -3868,6 +3823,26 @@
                 'cant' => $request->get('cant'),
             ];
             DB::table('truck_items')->where('id', $request->get('id_appliance'))->update($sumarizedData);
+
+            return 1;
+        }
+
+        //Actualiza en base de datos las modificaciones de los appliance_inside en el listado (subcategorias)
+        public function getUpdateapplianceinside(\Illuminate\Http\Request $request) {
+            $sumarizedData = [
+                'id_appliance' => $request->get('id_appliance'),
+            ];
+            DB::table('appliance_inside')->where('id', $request->get('id'))->update($sumarizedData);
+
+            return 1;
+        }
+
+        //Actualiza en base de datos las modificaciones de los appliance_inside en el listado (subcategorias)
+        public function getUpdateapplianceonlyname(\Illuminate\Http\Request $request) {
+            $sumarizedData = [
+                'name' => $request->get('name'),
+            ];
+            DB::table('appliance_inside')->where('id', $request->get('id'))->update($sumarizedData);
 
             return 1;
         }
@@ -4075,6 +4050,7 @@
 
         public function getAppliancescategories() {
             $data = DB::table('appliance')
+                ->where('deleted_at',null)
                 ->get();
             return $data;
         }
@@ -4115,6 +4091,22 @@
                   SELECT appliance_inside.name,appliance_inside.id from appliance_inside 
                   INNER join appliance on appliance.id=appliance_inside.id_appliance 
                   WHERE id_type=4 AND appliance.category = '$categoria';
+                ")
+            );
+            \Illuminate\Support\Facades\DB::commit();
+
+            return $result;
+        }
+
+        //Obtener cada subcategorías con su categoria asociada
+        public function getSubcategoriascategoria() {
+
+            \Illuminate\Support\Facades\DB::beginTransaction();
+            $result = \Illuminate\Support\Facades\DB::select( DB::raw("
+                  SELECT appliance_inside.name,appliance.category,appliance_inside.id
+                  FROM appliance_inside 
+                  INNER JOIN appliance ON appliance.id=appliance_inside.id_appliance
+                  WHERE ISNULL(appliance_inside.deleted_at);
                 ")
             );
             \Illuminate\Support\Facades\DB::commit();
@@ -4597,6 +4589,20 @@
 
             //Open Edit Campaign
             CRUDBooster::redirect(CRUDBooster::adminPath('campaign_automations/edit/'.$lastId),trans("crudbooster.text_open_edit_campaign"));
+        }
+
+        //Eliminar una categoría de la base de datos
+        public function getDeletecategoria(\Illuminate\Http\Request $request) {
+            DB::table('appliance')->where('id', $request->get('id'))->update(['deleted_at'=>  Carbon::now(config('app.timezone'))]);
+
+            return 1;
+        }
+
+        //Eliminar una subcategoría de la base de datos
+        public function getDeletesubcategoria(\Illuminate\Http\Request $request) {
+            DB::table('appliance_inside')->where('id', $request->get('id'))->update(['deleted_at'=>  Carbon::now(config('app.timezone'))]);
+
+            return 1;
         }
 
 

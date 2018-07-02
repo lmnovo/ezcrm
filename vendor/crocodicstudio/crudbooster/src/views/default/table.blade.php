@@ -230,7 +230,7 @@
               $("#table_dashboard #checkall").click(function() {
                 var is_checked = $(this).is(":checked");
                 $("#table_dashboard .checkbox").prop("checked",!is_checked).trigger("click");
-                $(".table_class_customers25 .checkbox").prop("checked",is_checked).trigger("click");
+                //$(".table_class_customers25 .checkbox").prop("checked",is_checked).trigger("click");
               })
 
               $('#btn_advanced_filter').click(function() {

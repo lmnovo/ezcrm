@@ -1,9 +1,6 @@
 @extends('crudbooster::admin_template')
 @section('content')
 
-    <script src="{{ asset ('js/parsleyjs/dist/parsley.min.js')}}"></script>
-
-
     <script src='http://127.0.0.1:8000/p/jquery-ui.custom.min.js'></script>
     <script src="http://127.0.0.1:8000/p/jquery.ui.touch-punch.min.js"></script>
     <script src="http://127.0.0.1:8000/p/chosen.jquery.min.js"></script>
@@ -23,12 +20,12 @@
     <script src="http://127.0.0.1:8000/p/ace-elements.min.js"></script>
     <script src="http://127.0.0.1:8000/p/ace.min.js"></script>
 
+    <script src="http://127.0.0.1:8000/js/categorias.js"></script>
+    <script src="http://127.0.0.1:8000/js/subcategorias.js"></script>
+
     <script>
         $(document).ready(function()
         {
-
-
-
             $('#table_edit_categories').dataTable( {
                 "aaSorting": [[ 0, "desc" ]],
             } );
@@ -48,31 +45,32 @@
                 $('#hidden_description').val($('.note-editable').html());
             });
 
-            $('#applianceModal').on('click','#edit_appliance_edit',function(){
-                $('#modalEditApplianceList').modal('show');
-                $('#applianceModal').modal('hide');
-            });
-
             $('#applianceModal').on('click','#edit_product_edit',function(){
                 $('#modalEditProductList').modal('show');
                 $('#applianceModal').modal('hide');
             });
 
-            $('#closeModal').on('click',function(){
-                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/{{ $id }}';
-            });$('#closeModal1').on('click',function(){
-                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/{{ $id }}';
-            });$('#closeModal2').on('click',function(){
-                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/{{ $id }}';
-            });$('#closeModal3').on('click',function(){
-                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/{{ $id }}';
-            });$('#closeModal4').on('click',function(){
-                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/{{ $id }}';
-            });$('#closeModal5').on('click',function(){
-                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/{{ $id }}';
-            });$('#closeModal6').on('click',function(){
+            /*$('#closeModal').on('click',function(){
                 window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/{{ $id }}';
             });
+            $('#closeModal1').on('click',function(){
+                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/{{ $id }}';
+            });
+            $('#closeModal2').on('click',function(){
+                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/{{ $id }}';
+            });
+            $('#closeModal3').on('click',function(){
+                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/{{ $id }}';
+            });
+            $('#closeModal4').on('click',function(){
+                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/{{ $id }}';
+            });
+            $('#closeModal5').on('click',function(){
+                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/{{ $id }}';
+            });
+            $('#closeModal6').on('click',function(){
+                window.location.href = 'http://127.0.0.1:8000/crm/orders/edit/{{ $id }}';
+            });*/
 
             $("body").on("click",".upload-image",function(e){
                 $(this).parents("form").ajaxForm(options);
@@ -888,48 +886,35 @@
                             <div class="col-md-7">
                                 <div class="form-group">
                                     <label for="appliance" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.category')}}</label>
-                                    <div class="col-md-7">
+                                    <div class="col-md-8">
                                         <select class="form-control" id="appliance" name="appliance" placeholder="Select" style="width: 100%" required="required">
                                         </select>
                                     </div>
-                                    <div class="col-md-2">
-                                        <a href="#" title="{{trans('crudbooster.add')}}" id="edit_appliance_new" class="btn btn-success btn-sm">
-                                            <i class="glyphicon glyphicon-plus-sign"></i>
-                                        </a>
-                                        <a href="#" title="{{trans('crudbooster.edit')}}" id="edit_appliance_edit" class="btn btn-success btn-sm">
-                                            <i class="glyphicon glyphicon-edit"></i>
-                                        </a>
-                                    </div>
+                                    <span class="input-group-btn">
+                                        <button title="{{trans('crudbooster.add')}}" class="btn btn-success" type="button" id="edit_appliance_new"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                                    </span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="product" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.appliance')}}</label>
-                                    <div class="col-md-7">
+                                    <div class="col-md-8">
                                         <select class="form-control" id="product" name="product" placeholder="Select" style="width: 100%" required>
                                         </select>
                                     </div>
-                                    <div class="col-md-2">
-                                        <a title="{{trans('crudbooster.add')}}" id="edit_product_new" class="btn btn-success btn-sm">
-                                            <i class="glyphicon glyphicon-plus-sign"></i>
-                                        </a>
-                                        <a href="#" title="{{trans('crudbooster.edit')}}" id="edit_product_edit" class="btn btn-success btn-sm">
-                                            <i class="glyphicon glyphicon-edit"></i>
-                                        </a>
-                                    </div>
+                                    <span class="input-group-btn">
+                                        <button title="{{trans('crudbooster.add')}}" class="btn btn-success" type="button" id="edit_product_new"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                                    </span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="appliance_inside_category" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.detail')}}</label>
-                                    <div class="col-md-7">
+                                    <div class="col-md-8">
                                         <select required class="form-control" id="appliance_inside_category" name="appliance_inside_category" placeholder="Select" style="width: 100%" >
-
                                         </select>
                                     </div>
-                                    <div class="col-md-1">
-                                        <a href="#" title="{{trans('crudbooster.add')}}" id="addNew" class="btn btn-success btn-sm">
-                                            <i class="glyphicon glyphicon-plus-sign"></i>
-                                        </a>
-                                    </div>
+                                    <span class="input-group-btn">
+                                        <button title="{{trans('crudbooster.add')}}" class="btn btn-success" type="button" id="addNew"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                                    </span>
                                 </div>
 
                                 <div class="form-group">
@@ -1099,25 +1084,48 @@
                     <h4 class="modal-title">{{trans('crudbooster.category_creation_new')}}</h4>
                 </div>
 
-                <div class="modal-body">
+                <div class="modal-body" >
                     <div class="container-fluid">
-                        <div class="col-md-7">
-                            <form id="form_product" data-parsley-validate  action="" method="post" class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="category_category_name" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.category')}}</label>
-                                    <div class="col-md-9">
-                                        <div class="input-group">
-                                            <input class="form-control" id="category_category_name" name="category_category_name" placeholder="{{trans('crudbooster.category')}}" type="text"/>                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+                        <div class="col-md-12">
 
+                            <div class="col-md-7">
+                                <form id="form_product" data-parsley-validate="" action="" method="post" class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="category_category_name" class="col-md-2 col-xs-7 col-sm-2 control-label">{{trans('crudbooster.category')}}</label>
+                                        <div class="col-md-7">
+                                            <input class="form-control number" id="category_category_name" name="category_category_name" placeholder="{{trans('crudbooster.category')}}" type="text">
+                                        </div>
+                                        <span class="input-group-btn">
+                                            <button title="Add" class="btn btn-success" type="button" id="newCategoria"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <div id="table_categorias" class="table-responsive hover" style="margin: 2%;">
+                    <table id="categorias" class="table table-striped table-responsive table-bordered" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>{{trans('crudbooster.category')}}</th>
+                            <th >{{trans('crudbooster.action')}}</th>
+                        </tr>
+                        </thead>
+                        <tbody style="font-size: 12px">
+
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th></th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
                 <div class="modal-footer">
-                    {{--<button type="button" class="btn btn-dark" id="closeCategoryCategory">{{trans('crudbooster.close')}}</button>--}}
-                    <button type="submit" class="btn btn-primary" id="addCategoryCategory">{{trans('crudbooster.save')}}</button>
+
                 </div>
 
 
@@ -1146,21 +1154,44 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="category_category_name" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.subcategory')}}</label>
-                                    <div class="col-md-9">
-                                        <div class="input-group">
-                                            <input class="form-control number" id="subcategory_name" name="subcategory_name"  placeholder="{{trans('crudbooster.subcategory')}}" type="text"/>
-                                        </div>
+                                    <label for="category_category_name" class="col-md-3 col-xs-7 col-sm-3 control-label">{{trans('crudbooster.subcategory')}}</label>
+                                    <div class="col-md-7">
+                                        <input class="form-control number" id="subcategory_name" name="subcategory_name"  placeholder="{{trans('crudbooster.subcategory')}}" type="text"/>
                                     </div>
+                                    <span class="input-group-btn">
+                                        <button title="{{trans('crudbooster.add')}}" class="btn btn-success" type="button" id="newSubCategoria"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                                    </span>
                                 </div>
+
+
                             </form>
                         </div>
 
                     </div>
                 </div>
+
+                <div id="table_subcategorias" class="table-responsive hover" style="margin: 2%;">
+                    <table id="subcategorias" class="table table-striped table-responsive table-bordered" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>{{trans('crudbooster.subcategory')}}</th>
+                            <th>{{trans('crudbooster.category')}}</th>
+                            <th >{{trans('crudbooster.action')}}</th>
+                        </tr>
+                        </thead>
+                        <tbody style="font-size: 12px">
+
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th></th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
                 <div class="modal-footer">
                     {{--<button type="button" class="btn btn-dark" id="closeSubCategory">{{trans('crudbooster.close')}}</button>--}}
-                    <button type="submit" class="btn btn-primary" id="addSubCategory">{{trans('crudbooster.save')}}</button>
                 </div>
 
 
@@ -1175,7 +1206,6 @@
                     <button type="button" id="closeModal5" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">{{trans('crudbooster.buildout_creation')}}</h4>
                 </div>
-
 
                 <form id="form_builout" action="" method="post" class="form-horizontal">
                     <div class="modal-body">
@@ -1209,115 +1239,5 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div>
-
-    <div class="modal fade" tabindex="-1" role="dialog" id="modalEditApplianceList">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color: #337ab7; color: white;">
-                    <button type="button" id="closeModal6" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">{{trans('crudbooster.editing_categories')}}</h4>
-                </div>
-
-                <div class="modal-body">
-                    <table id='table_edit_categories'class="table table-striped table-responsive table-bordered" cellspacing="0">
-                        <thead>
-                        <tr class="active">
-                            <th width='auto'>{{trans('crudbooster.name')}}</th>
-                            <th width='auto'>{{trans('crudbooster.actions')}}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                                $query = DB::table('appliance')->where('state',1)->where('deleted_at', null)->get();
-                            ?>
-
-                            @foreach($query as $item)
-                                <tr style="padding: 2px;">
-                                    <td id="{{ $item->id }}" class="editable_cat" data-campo="category" style="padding: 2px;" data-id="{{ $item->id }}">
-                                       <span>{{ $item->category }}</span>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-xs btn-warning btn-delete" title="{{trans('crudbooster.delete')}}" href="javascript:;" onclick="swal({
-                                                title: '{{trans('crudbooster.are_you_sure')}}',
-                                                text: '{{trans('crudbooster.message_delete')}}',
-                                                type: 'warning',
-                                                showCancelButton: true,
-                                                confirmButtonColor: '#ff0000',
-                                                confirmButtonText: '{{trans('crudbooster.yes')}}',
-                                                cancelButtonText: '{{trans('crudbooster.no')}}',
-                                                closeOnConfirm: false },
-                                                function(){
-                                                    var item = '{{ $item->id }}';
-                                                        $.ajax({
-                                                            url:  '../../products/deleteitem',
-                                                            data: '&id='+item,
-                                                            type:  'get',
-                                                            dataType: 'json',
-                                                            success : function(data) {
-                                                            swal('Deleted!', 'Delete selected successfully !', 'success');
-                                                            $('#{{ $item->id }}').parent().hide();
-                                                        }
-                                                    });
-
-                                                });"><i class="fa fa-trash"></i>
-                                        </a>
-
-                                    </td>
-                                </tr>
-                            @endforeach
-
-                        </tbody>
-                        <tfoot>
-
-                        </tfoot>
-                    </table>
-                </div>
-
-
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div>
-
-    <div class="modal fade" tabindex="-1" role="dialog" id="modalEditProductList">
-        <div class="modal-dialog modal-lg" role="document" style="position: relative">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color: #337ab7; color: white;">
-                    <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">{{trans('crudbooster.editing_subcategories')}}</h4>
-                </div>
-
-                <div class="modal-body">
-                    <table id='table_edit_products' class="table table-striped table-responsive table-bordered" cellspacing="0">
-                        <thead>
-                        <tr class="active">
-                            <th width='auto'>{{trans('crudbooster.category')}}</th>
-                            <th width='auto'>{{trans('crudbooster.subcategory')}}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        @foreach($subcategories as $item)
-                            <tr>
-                                <td class="editable_select_cat" data-campo="category" style="padding: 2px;" data-id_appliance_inside="{{ $item->id_appliance_inside }}" data-id="{{ $item->id_appliance }}">
-                                    <span>{{ $item->category }}</span>
-                                </td>
-                                <td class="editable_subcat_sub" data-campo="name" style="padding: 2px;" data-id="{{ $item->id_appliance_inside }}">
-                                    <span>{{ $item->name }}</span>
-                                </td>
-                            </tr>
-                        @endforeach
-
-
-                        </tbody>
-                        <tfoot>
-                        </tfoot>
-                    </table>
-                </div>
-
-            </div><!-- /.modal-content -->
-
-        </div><!-- /.modal-dialog -->
-    </div>
-
 
 @endsection
