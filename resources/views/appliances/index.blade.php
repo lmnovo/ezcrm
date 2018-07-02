@@ -1,6 +1,9 @@
 @extends('crudbooster::admin_template')
 @section('content')
 
+    <script src="http://127.0.0.1:8000/js/categorias_productos.js"></script>
+    <script src="http://127.0.0.1:8000/js/subcategorias_productos.js"></script>
+
     <script>
         $(document).ready(function() {
             /*$('#products_table').dataTable( {
@@ -272,11 +275,9 @@
                                     <select class="form-control required" id="appliance_new" name="appliance_new" placeholder="Select" style="width: 100%" >
                                     </select>
                                 </div>
-                                <div class="col-md-1">
-                                    <a title="" id="edit_category_new" class="btn btn-success btn-sm">
-                                        <i class="glyphicon glyphicon-plus-sign"></i>
-                                    </a>
-                                </div>
+                                <span class="input-group-btn">
+                                    <button title="{{trans('crudbooster.add')}}" class="btn btn-success" type="button" id="edit_appliance_new"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                                </span>
                             </div>
 
                             <div class="form-group">
@@ -285,11 +286,9 @@
                                     <select required class="form-control required" id="product_new" name="product_new" placeholder="Select" style="width: 100%" >
                                     </select>
                                 </div>
-                                <div class="col-md-1">
-                                    <a title="" id="edit_product_new" class="btn btn-success btn-sm">
-                                        <i class="glyphicon glyphicon-plus-sign"></i>
-                                    </a>
-                                </div>
+                                <span class="input-group-btn">
+                                        <button title="{{trans('crudbooster.add')}}" class="btn btn-success" type="button" id="edit_product_new"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                                    </span>
                             </div>
 
                             <div class="form-group">
@@ -539,6 +538,129 @@
                 <img style="width: 64px;" src="<?php echo e(asset('assets/images/loading.gif')); ?>" alt="Loading">
             </div>
         </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="newCategoryApplianceModal">
+        <div class="modal-dialog modal-lg" role="document"  style=" width: 90%">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #337ab7; color: white;">
+                    <button type="button" id="closeModal3" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{{trans('crudbooster.category_creation_new')}}</h4>
+                </div>
+
+                <div class="modal-body" >
+                    <div class="container-fluid">
+                        <div class="col-md-12">
+
+                            <div class="col-md-7">
+                                <form id="form_product" data-parsley-validate="" action="" method="post" class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="category_category_name" class="col-md-2 col-xs-7 col-sm-2 control-label">{{trans('crudbooster.category')}}</label>
+                                        <div class="col-md-7">
+                                            <input class="form-control number" id="category_category_name" name="category_category_name" placeholder="{{trans('crudbooster.category')}}" type="text">
+                                        </div>
+                                        <span class="input-group-btn">
+                                            <button title="Add" class="btn btn-success" type="button" id="newCategoria"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="table_categorias" class="table-responsive hover" style="margin: 2%;">
+                    <table id="categorias" class="table table-striped table-responsive table-bordered" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>{{trans('crudbooster.category')}}</th>
+                            <th >{{trans('crudbooster.action')}}</th>
+                        </tr>
+                        </thead>
+                        <tbody style="font-size: 12px">
+
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th></th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="modal-footer">
+
+                </div>
+
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="newSubCategoryApplianceModal">
+        <div class="modal-dialog modal-lg" role="document"  style=" width: 90%">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #337ab7; color: white;">
+                    <button type="button" id="closeModal4" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{{trans('crudbooster.subcategory_creation_new')}}</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="col-md-7">
+                            <form id="form_product" data-parsley-validate  action="" method="post" class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="appliance" class="col-md-3 col-xs-12 col-sm-3 control-label">{{trans('crudbooster.category')}}</label>
+                                    <div class="col-md-8">
+                                        <select class="form-control" id="appliance_subcategory" name="appliance_subcategory" placeholder="Select" style="width: 100%" required="required">
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="category_category_name" class="col-md-3 col-xs-7 col-sm-3 control-label">{{trans('crudbooster.subcategory')}}</label>
+                                    <div class="col-md-7">
+                                        <input class="form-control number" id="subcategory_name" name="subcategory_name"  placeholder="{{trans('crudbooster.subcategory')}}" type="text"/>
+                                    </div>
+                                    <span class="input-group-btn">
+                                        <button title="{{trans('crudbooster.add')}}" class="btn btn-success" type="button" id="newSubCategoria"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                                    </span>
+                                </div>
+
+
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="table_subcategorias" class="table-responsive hover" style="margin: 2%;">
+                    <table id="subcategorias" class="table table-striped table-responsive table-bordered" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>{{trans('crudbooster.subcategory')}}</th>
+                            <th>{{trans('crudbooster.category')}}</th>
+                            <th >{{trans('crudbooster.action')}}</th>
+                        </tr>
+                        </thead>
+                        <tbody style="font-size: 12px">
+
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th></th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="modal-footer">
+                    {{--<button type="button" class="btn btn-dark" id="closeSubCategory">{{trans('crudbooster.close')}}</button>--}}
+                </div>
+
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
     </div>
 
 

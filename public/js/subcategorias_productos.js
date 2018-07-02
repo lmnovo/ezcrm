@@ -22,7 +22,7 @@ $(document).ready(function()
             {
                 //lleno el combo de las categorias
                 $.ajax({
-                    url: "../appliances",
+                    url: "orders/appliances",
                     type:  'get',
                     dataType: 'json',
                     success : function(data) {
@@ -61,7 +61,7 @@ $(document).ready(function()
 
                 //Guardamos en BD
                 $.ajax({
-                    url: '../updateapplianceinside',
+                    url: 'orders/updateapplianceinside',
                     data: "id="+id_appliance_inside+"&id_appliance="+newVal,
                     type:  'get',
                     dataType: 'json',
@@ -77,7 +77,7 @@ $(document).ready(function()
 
                 //Guardamos en BD
                 $.ajax({
-                    url: '../updateapplianceonlyname',
+                    url: 'orders/updateapplianceonlyname',
                     data: "id="+id_appliance_inside+"&name="+newVal,
                     type:  'get',
                     dataType: 'json',
@@ -108,7 +108,7 @@ $(document).ready(function()
         var tr = $(this).closest('td').parent();
 
         $.ajax({
-            url:  '../deletesubcategoria',
+            url:  'orders/deletesubcategoria',
             data: '&id='+item,
             type:  'get',
             dataType: 'json',
@@ -126,7 +126,7 @@ $(document).ready(function()
 
         if(valor != '' && categoria_select !='') {
             $.ajax({
-                url: '../addsubcategory',
+                url: 'orders/addsubcategory',
                 data: "subcategoria="+valor+"&categoria="+categoria_select,
                 type:  'get',
                 dataType: 'json',
@@ -134,7 +134,7 @@ $(document).ready(function()
                     oTableSubCategorias.clear().draw();
                     $.ajax
                     ({
-                        url: '../subcategoriascategoria',
+                        url: 'orders/subcategoriascategoria',
                         data: "",
                         type: 'get',
                         success: function(data)
@@ -164,63 +164,10 @@ $(document).ready(function()
         $('#appliance_subcategory').html('');
         $('#select2-appliance_subcategory-container').html('**Select Data**');
         $('#subcategory_name').val('');
-
-        $('#applianceModal').modal('hide');
-
-        $.ajax({
-            url: '../appliancescategories/',
-            data: '',
-            type:  'get',
-            dataType: 'json',
-            success : function(data) {
-                $('#appliance_subcategory').append('<option value=""></option>');
-                for(var i=0;i<data.length;i++)
-                {
-                    $('#appliance_subcategory').append('<option value="'+data[i].id+'">'+data[i].category+'</option>');
-                }
-
-                $('#newSubCategoryApplianceModal').modal('show')
-
-                //Ahora llenamos el listado de subcategorias
-                oTableSubCategorias.clear().draw();
-                $.ajax
-                ({
-                    url: '../subcategoriascategoria',
-                    data: "",
-                    type: 'get',
-                    success: function(data)
-                    {
-                        for(var i=0;i<data.length;i++)
-                        {
-                            oTableSubCategorias.row.add([
-                                '<span class="editors hide"><input class="col-md-12 col-sm-12 form-control editable" data-id="'+data[i].id+'" value="'+data[i].name+'"/></span>'+
-                                '<span id="type" class="original" data-id="'+data[i].id+'">'+data[i].name,
-                                '<span class="editors hide"><select class="col-md-12 col-sm-12 editable form-control combo" ></select></span><span class="original" id="tbl_category">'+data[i].category+'</span>',
-                                '</span><button type="button" value="'+data[i].id+'" class="btn btn-warning btn-xs" id="btneliminarsubcategory" data-id="'+data[i].id+'">'+
-                                '<i class="fa fa-trash"></i>'+
-                                '</button>'
-                            ]).draw( false );
-                        }
-                    }
-                });
-
-            }
-        });
-
-
-    });
-
-    $('#edit_subcategory_new').on('click',function(){
-        $('#newSubCategoryApplianceModal').modal('show');
-        $('#appliance_subcategory').html('');
-        $('#select2-appliance_subcategory-container').html('**Select Data**');
-        $('#subcategory_name').val('');
-
-        $('#applianceModal').modal('hide');
         $('#newApplianceModal').modal('hide');
 
         $.ajax({
-            url: '../appliancescategories/',
+            url: 'orders/appliancescategories/',
             data: '',
             type:  'get',
             dataType: 'json',
@@ -237,7 +184,7 @@ $(document).ready(function()
                 oTableSubCategorias.clear().draw();
                 $.ajax
                 ({
-                    url: '../subcategoriascategoria',
+                    url: 'orders/subcategoriascategoria',
                     data: "",
                     type: 'get',
                     success: function(data)
@@ -261,6 +208,7 @@ $(document).ready(function()
 
 
     });
+
 
 
 });
