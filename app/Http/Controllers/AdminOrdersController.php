@@ -2560,25 +2560,44 @@
                 ->where('account.id', $lead_id->id_account)->first();
 
             if ($is_client == 1) {
-                //Convertir Client asociado al Quote en Lead
-                //DB::table('account')->where('id', $lead_id->id_account)->update(['is_client' => 0]);
-                //DB::table('fases')->where('customers_id', $lead_id->customers_id)->where('orders_id', $id)->delete();
 
                 //Create Client-Quote
                 $maxId = DB::table('client_quotes')->select(\Illuminate\Support\Facades\DB::raw('MAX(id) as id'))->first();
                 $maxId = $maxId->id + 1;
 
-                //deshabilitar la client-quote del listado
+                //habilitar la client-quote del listado
                 $client_quotes = DB::table('client_quotes')
                     ->where('id_client', $idClient->client_id)
                     ->where('id_quote', $id)
                     ->first();
 
-                DB::table('client_quotes')->where('id', $client_quotes->id)->update(['main' => 1]);
+                if($client_quotes == null) {
+                    $sumarizedDataClientQuotes = [
+                        'id' => $maxId,
+                        'id_client' => $idClient->client_id,
+                        'date_create' => Carbon::now(config('app.timezone')),
+                        'id_quote' => $id,
+                        'main' => 1
+                    ];
+
+                    DB::table('client_quotes')->insert($sumarizedDataClientQuotes);
+                }
+                else {
+
+                    $sumarizedDataClientQuotes = [
+                        'id' => $maxId,
+                        'id_client' => $idClient->client_id,
+                        'date_create' => Carbon::now(config('app.timezone')),
+                        'id_quote' => $id,
+                        'main' => 1
+                    ];
+
+                    DB::table('client_quotes')->where('id',$client_quotes->id)->update($sumarizedDataClientQuotes);
+                }
 
                 DB::table('user_trucks')->where('id', $id)->update(['is_closed' => 1]);
 
-                //Getionando las fases
+                //Gestionando las fases
                 $phases = DB::table('fases')->where('customers_id', $lead_id->id_account)->where('orders_id', $id)->get();
 
                 if (count($phases) == 0) {
@@ -2746,7 +2765,7 @@
                         ->join('account', 'account.email', '=', 'clients.email')
                         ->where('account.id', $lead_id->id_account)->first();
 
-                } else {
+                } else { // Si no es cliente
 
                     //Create Client-Quote
                     $maxId = DB::table('client_quotes')->select(\Illuminate\Support\Facades\DB::raw('MAX(id) as id'))->first();
