@@ -640,5 +640,11 @@ return [
     'estado_creation_new'  => 'Agregar Nuevo Estado',
     'size_creation_new'  => 'Agregar Nuevo Tamaño',
     'estado'  => 'Estado',
+    'menu_Project\'s Accounts'  => 'Cuentas de Proyectos',
+    'economy'  => 'Cuenta de Economía',
+    'design'  => 'Cuenta de Diseñador(a)',
+    'sales'  => 'Cuenta de Ventas',
+    'production_manager'  => 'Cuenta de Gerente de Producción',
+    'information'  => 'Información',
 
 ];

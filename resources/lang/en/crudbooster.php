@@ -630,6 +630,12 @@ return [
     'estado_creation_new'  => 'Add New State',
     'size_creation_new'  => 'Add New Size',
     'estado'  => 'State',
+    'menu_Project\'s Accounts'  => 'Project\'s Accounts',
+    'economy'  => 'Economy\'s Account',
+    'design'  => 'Design\'s Account',
+    'sales'  => 'Sales\'s Account',
+    'production_manager'  => 'Production Manager\'s Account',
+    'information'  => 'Information',
 
 
 ];
