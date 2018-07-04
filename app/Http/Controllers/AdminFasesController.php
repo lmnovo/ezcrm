@@ -4,6 +4,7 @@
 	use Request;
 	use DB;
 	use CRUDBooster;
+	use Carbon\Carbon;
 
 	class AdminFasesController extends \crocodicstudio\crudbooster\controllers\CBController {
 
@@ -335,6 +336,63 @@
 	        //Your code here
 
 	    }
+
+        //Agregar notas a las fases o etapas del Quote actual
+        public function getAddnote(\Illuminate\Http\Request $request) {
+            $name = $request->get('name');
+            $fases_id = $request->get('fases_id');
+
+            $sumarizedData = [
+                'created_at' => Carbon::now(config('app.timezone')),
+                'name' => $name,
+                'fases_id' => $fases_id,
+            ];
+
+            DB::table('notes_fases')->insertGetId($sumarizedData);
+
+            return 1;
+        }
+
+        //Enviar email de alerta de Paso finalizado
+        public function getStage2(\Illuminate\Http\Request $request) {
+            $step_id = $request->get('step_id');
+
+            $fase = DB::table('fases')->where('id',$step_id)->first();
+
+            //Actualizar fecha de terminada la segunda etapa
+            DB::table('fases')->where('id',$step_id)->update(['datetime' => Carbon::now(config('app.timezone'))]);
+
+            $to[] = $fase->email;
+            $orders_id = $fase->orders_id;
+            $step_name = $fase->name;
+
+            $subject = trans("crudbooster.text_steps_second");
+
+            $html = "<p>".trans("crudbooster.text_dear_user").", ".trans("crudbooster.text_steps_ini"). $step_name. " ".trans("crudbooster.text_steps_end")."</p>
+                                   <a href='http://ezcrm.us/crm/orders/detail/$orders_id'>".trans("crudbooster.text_details_here")."</a>
+                            <p>".trans("crudbooster.phase_sign")." Chef Units</p>";
+
+            //Send Email with notification End Step
+            \Mail::send("crudbooster::emails.blank",['content'=>$html],function($message) use ($to,$subject) {
+                $message->priority(1);
+                $message->to($to);
+
+                $message->subject($subject);
+            });
+
+            //Actualizar la fase en la quote actual
+            DB::table('user_trucks')->where('id',$fase->orders_id)->update(['fases_id' => $step_id]);
+
+            //Adicionar "Recent Activity" del envío de Email
+            DB::table('fases_activity')->insert([
+                'fases_id'=>$step_id,
+                'description'=>'A notification email was sent to: '.$to[0],
+                'orders_id'=>$orders_id,
+                'created_at'=>Carbon::now(config('app.timezone'))->toDateTimeString(),
+            ]);
+
+            return $to;
+        }
 
 
 	}

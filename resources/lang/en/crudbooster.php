@@ -269,6 +269,7 @@ return [
     'privileges_module_list_delete' =>'Delete',
 
     'text_change_quotes'            => 'Changed Quote´s Status',
+    'text_change_fases'            => 'Changed Stage´s Status',
     'text_save_invoice'            => 'Invoice is Saved Successfully!',
 
 
@@ -279,6 +280,7 @@ return [
     'text_quote_added'           => 'Quote Saved Successfully!',
     'text_invoice_added'         => 'Invoice Created Successfully!',
     'text_open_edit_quote'       => 'You can create new quote!',
+    'text_step_change'           => 'Changed Stage´s Status',
     'text_open_edit_campaign'    => 'You can create new campaign!',
     'new_tasks_lead_en'  => 'New task created to the lead: ',
     'new_tasks_lead_es'  => 'Nueva tarea creada al prospecto: ',
@@ -295,9 +297,13 @@ return [
     'phase_sign'  => 'Greetings,',
     'edit_quote'  => 'Edit Quote',
     'text_dear'  => 'Dear',
+    'text_dear_user'  => 'Dear User',
     'text_client_1'  => 'you have become client of CRM Chefunits',
     'text_steps'  => 'Dear user a phase has come to an end correctly.',
-    'text_steps_first'  => 'You have finalized the first phase of negotiation satisfactorily.',
+    'text_steps_first'  => 'You have finalized the First Stage of negotiation satisfactorily.',
+    'text_steps_second'  => 'You have finalized the Second Stage of negotiation satisfactorily.',
+    'text_steps_ini'  => 'You have finalized the stage: ',
+    'text_steps_end'  => 'satisfactorily.',
     'text_phase_name'  => 'Phase Name',
     'text_details_here'  => 'See details here',
     'text_notes'  => 'Notes',
@@ -636,6 +642,12 @@ return [
     'sales'  => 'Sales\'s Account',
     'production_manager'  => 'Production Manager\'s Account',
     'information'  => 'Information',
+    'add_files'  => 'Add Files & Photos',
+    'stages_files'  => 'Stage Files',
+    'Stage\'s Information'  => 'Stage\'s Information',
+    'no_files'  => 'No Files',
+    'click_to_view'  => 'Click To View',
+    'history'  => 'Recent Activity',
 
 
 ];

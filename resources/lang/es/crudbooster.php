@@ -278,6 +278,7 @@ return [
 
     //Actualizados para EazyCRM
     'text_change_quotes'         => 'Cambiado el Estado de las Cotizaciones',
+    'text_change_fases'          => 'Cambiado el Estado de la Fase',
     'text_save_invoice'          => 'Invoice fue Guardada Correctamente!',
 
     'text_note_added'            => 'Nota Guardada Satisfactoriamente!',
@@ -304,9 +305,14 @@ return [
     'phase_sign'  => 'Saludos Cordiales,',
     'edit_quote'  => 'Editar Cotización',
     'text_dear'  => 'Estimado',
+    'text_dear_user'  => 'Estimado Usuario',
     'text_client_1'  => 'usted se ha convertido en cliente del CRM Chefunits',
     'text_steps'  => 'Estimado usuario ha finalizado satisfactoriamente una etapa.',
-    'text_steps_first'  => 'Estimado usuario ha finalizado satisfactoriamente la primera etapa de negociación.',
+    'text_steps_first'  => 'Estimado usuario ha finalizado satisfactoriamente la Primera Etapa de negociación.',
+    'text_steps_second'  => 'Estimado usuario ha finalizado satisfactoriamente la Segunda Etapa de negociación.',
+    'text_step_change'   => 'Ha cambiado el estado de la Etapa',
+    'text_steps_ini'  => 'ha finalizado satisfactoriamente la etapa: ',
+    'text_steps_end'  => 'satisfactoriamente.',
     'text_details_here'  => 'Ver detalles aquí',
     'text_phase_name'  => 'Nombre de Etapa',
     'text_notes'  => 'Notas',
@@ -646,5 +652,11 @@ return [
     'sales'  => 'Cuenta de Ventas',
     'production_manager'  => 'Cuenta de Gerente de Producción',
     'information'  => 'Información',
+    'add_files'  => 'Agregar Archivos y Fotos',
+    'stages_files'  => 'Archivos de la Etapa',
+    'Stage\'s Information'  => 'Información de la Etapa',
+    'no_files'  => 'No Existen Archivos',
+    'click_to_view'  => 'Click Para Visualizar',
+    'history'  => 'Historial de Acciones',
 
 ];

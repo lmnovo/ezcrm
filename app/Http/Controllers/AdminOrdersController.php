@@ -2551,7 +2551,6 @@
 
             //Obtener información del Lead asociado al Quote
             $leads = DB::table('account')->where('id', $lead_id->id_account)->first();
-
             $is_client = $leads->is_client;
 
             $idClient =  DB::table('clients')
@@ -2560,7 +2559,6 @@
                 ->where('account.id', $lead_id->id_account)->first();
 
             if ($is_client == 1) {
-
                 //Create Client-Quote
                 $maxId = DB::table('client_quotes')->select(\Illuminate\Support\Facades\DB::raw('MAX(id) as id'))->first();
                 $maxId = $maxId->id + 1;
@@ -2583,7 +2581,6 @@
                     DB::table('client_quotes')->insert($sumarizedDataClientQuotes);
                 }
                 else {
-
                     $sumarizedDataClientQuotes = [
                         'id' => $maxId,
                         'id_client' => $idClient->client_id,
@@ -2638,7 +2635,6 @@
 
                 //Generar payload
                 \Illuminate\Support\Facades\DB::beginTransaction();
-
                 $paid_vendor = \Illuminate\Support\Facades\DB::select( DB::raw("
                         SELECT user_trucks.id,(select Sum(price*cant) from truck_items where id_truck =  user_trucks.id and appliance = 1) as appliance,
                         CASE 
@@ -2661,27 +2657,17 @@
                         ;
                     ")
                 );
-
                 \Illuminate\Support\Facades\DB::commit();
 
                 $total =number_format($paid_vendor[0]->registration + $paid_vendor[0]->price_item + $paid_vendor[0]->tax_item + $paid_vendor[0]->precio + $paid_vendor[0]->appliance + $paid_vendor[0]->truck_tax - $paid_vendor[0]->discount , 2, '.', ' ');
 
                 //add the commision each quote the quote select
                 $comision = 0;
-                if($total > 0 && $total < 50000){
-                    $comision = 3;
-                }
-                elseif($total > 51000 && $total < 100000){
-                    $comision = 5;
-                    return ;
-                }
-                elseif($total > 101000){
-                    $comision = 6;
-                    return ;
-                }
-                //    $total= Reple
+                if($total > 0 && $total < 50000) { $comision = 3; }
+                elseif($total > 51000 && $total < 100000){ $comision = 5; return ; }
+                elseif($total > 101000){ $comision = 6; return; }
+                //$total= Reple
                 $calculo = ($comision/100) * $total;
-
 
                 $sumarizedDataVendor = [
                     'id_user' => $paid_vendor[0]->id_usuario,
@@ -2690,20 +2676,19 @@
                     'pago' => $calculo,
                     'mes' => date("F"),
                 ];
-
                 DB::table('paid_vendor')->insert($sumarizedDataVendor);
 
                 //Mensaje de confirmación de template activada
                 CRUDBooster::redirect($_SERVER['HTTP_REFERER'],"Changed Quote´s Status","success");
 
-            } else {
-                //if client exist them no insert.
+            } else { //Si no es cliente
                 $exist = DB::table('clients')->where('email', $leads->email)->first();
 
                 if(count($exist) == 0) {
                     $maxIdC = DB::table('clients')->select(\Illuminate\Support\Facades\DB::raw('MAX(id) as id'))->first();
                     $maxIdC = $maxIdC->id + 1;
 
+                    //Si no es cliente lo inserto en la tabla de clientes
                     $sumarizedDataClients = [
                         'id' => $maxIdC,
                         'email' => $leads->email,
@@ -2723,7 +2708,6 @@
                         'estado' => $leads->estado,
                         'id_usuario' => $leads->id_usuario
                     ];
-
                     DB::table('clients')->insert($sumarizedDataClients);
 
                     $clientContent = DB::table('clients')->where('id', $maxIdC)->first();
@@ -2757,7 +2741,6 @@
                         'id_quote' => $id,
                         'main' => 1
                     ];
-
                     DB::table('client_quotes')->insert($sumarizedDataClientQuotes);
 
                     $idClient =  DB::table('clients')
@@ -2765,8 +2748,7 @@
                         ->join('account', 'account.email', '=', 'clients.email')
                         ->where('account.id', $lead_id->id_account)->first();
 
-                } else { // Si no es cliente
-
+                } else { // Si no esta en el listado de clients
                     //Create Client-Quote
                     $maxId = DB::table('client_quotes')->select(\Illuminate\Support\Facades\DB::raw('MAX(id) as id'))->first();
                     $maxId = $maxId->id + 1;
@@ -2789,12 +2771,17 @@
                 if (count($phases) == 0) {
                     $phasesTemplate = DB::table('fases')->where('customers_id', 0)->get();
 
+
+                    $user_email = DB::table('cms_users')->where('id',$leads->id_usuario)->first();
+
                     foreach ($phasesTemplate as $phase) {
                         //Establecemos la primera fase por defecto
                         if ($phase->fases_type_id == 1) {
+
                             $faseId = DB::table('fases')->insertGetId([
                                 'customers_id'=>$lead_id->id_account,
-                                'email'=>$leads->email,
+                                'email'=>$user_email->email, //email del vendedor
+                                'assigned_to'=>$phase->assigned_to,
                                 'datetime'=>Carbon::now(config('app.timezone')),
                                 'name'=>$phase->name,
                                 'notes'=>'Quote Closed',
@@ -2802,6 +2789,9 @@
                                 'orders_id'=>$id,
                                 'cms_users_id'=>$leads->id_usuario,
                             ]);
+
+                            //Por defecto asignamos la primera fase a la quote
+                            DB::table('user_trucks')->where('id', $id)->update(['fases_id' => $faseId]);
 
                             //Actualizamos la tabla de proyectos
                             $proyect = DB::table('proyects')->where('orders_id', $id)->first();
@@ -2831,9 +2821,27 @@
                             }
 
                         } else {
+                            //Obtener los emails a los que se enviaría por cada etapa
+                            $assigned_to_email = DB::table('project_accounts')->where('id',1)->first();
+                            $email_temp = $user_email->email; //email del vendedor
+
+                            if($phase->assigned_to == 'economy') {
+                                $email_temp = $assigned_to_email->economy;
+                            }
+                            elseif($phase->assigned_to == 'design') {
+                                $email_temp = $assigned_to_email->design;
+                            }
+                            elseif($phase->assigned_to == 'sales') {
+                                $email_temp = $assigned_to_email->sales;
+                            }
+                            elseif($phase->assigned_to == 'production_manager') {
+                                $email_temp = $assigned_to_email->production_manager;
+                            }
+
                             DB::table('fases')->insert([
                                 'customers_id'=>$lead_id->id_account,
-                                'email'=>$leads->email,
+                                'email'=>$email_temp,
+                                'assigned_to'=>$phase->assigned_to,
                                 'name'=>$phase->name,
                                 'fases_type_id'=>$phase->fases_type_id,
                                 'orders_id'=>$id,
@@ -2844,8 +2852,12 @@
 
                     //Enviamos correo al responsable de la fase creada
                     if ($leads->id_usuario != null) {
-                        $usuario_email  = DB::table('cms_users')->where('id', $leads->id_usuario)->first();
-                        $to[] = $usuario_email->email;
+                        $quote = DB::table('user_trucks')->where('id',$id)->first();
+                        $account = DB::table('account')->where('id',$quote->id_account)->first();
+                        $usuario_email  = DB::table('cms_users')->where('id', $account->id_usuario)->first();
+
+                        //$to[] = $usuario_email->email;
+                        $to_seller[] = $usuario_email->email;
 
                         $subject = trans("crudbooster.text_steps_first");
 
@@ -2854,12 +2866,20 @@
                             <p>".trans("crudbooster.phase_sign")." Chef Units</p>";
 
                         //Send Email with notification End Step
-                        \Mail::send("crudbooster::emails.blank",['content'=>$html],function($message) use ($to,$subject) {
+                        \Mail::send("crudbooster::emails.blank",['content'=>$html],function($message) use ($to_seller,$subject) {
                             $message->priority(1);
-                            $message->to($to);
+                            $message->to($to_seller);
 
                             $message->subject($subject);
                         });
+
+                        //Adicionar "Recent Activity" del envío de Email
+                        DB::table('fases_activity')->insert([
+                            'fases_id'=>$faseId,
+                            'description'=>'A notification email was sent to: '.$to_seller[0],
+                            'orders_id'=>$id,
+                            'created_at'=>Carbon::now(config('app.timezone'))->toDateTimeString(),
+                        ]);
                     }
 
                 }
@@ -2868,12 +2888,10 @@
                 //CRUDBooster::redirect($_SERVER['HTTP_REFERER'],"The Lead ".$leads->name." is convert in Client success!","success");
             }
 
-
-
-            $this->getDetailClientAdvanced($idClient->client_id);
+            $this->getDetailClientAdvanced($idClient->client_id, $id);
         }
 
-        public function getDetailClientAdvanced($id) {
+        public function getDetailClientAdvanced($id, $id_quote) {
             //Create an Auth
             if(!CRUDBooster::isRead() && $this->global_privilege==FALSE || $this->button_edit==FALSE) {
                 CRUDBooster::redirect(CRUDBooster::adminPath(),trans("crudbooster.denied_access"));
@@ -2899,20 +2917,12 @@
                 ->join('account', 'account.id', '=', 'user_trucks.id_account')
                 ->where('user_trucks.id_account', $id)->first();
 
-            $data['phases1'] = DB::table('fases')->where('customers_id', $id)->where('fases_type_id', 1)->first();
-            $data['phases2'] = DB::table('fases')->where('customers_id', $id)->where('fases_type_id', 2)->first();
-            $data['phases3'] = DB::table('fases')->where('customers_id', $id)->where('fases_type_id', 3)->first();
-            $data['phases4'] = DB::table('fases')->where('customers_id', $id)->where('fases_type_id', 4)->first();
-            $data['phases5'] = DB::table('fases')->where('customers_id', $id)->where('fases_type_id', 5)->first();
-
             $data['quotes_closed'] = DB::table('user_trucks')->where('id_account', $id)->where('is_closed', 1)->where('is_invoice', 0)->get()->toArray();
             $data['quotes_opened'] = DB::table('user_trucks')->where('id_account', $id)->where('is_closed', -1)->where('is_invoice', 0)->get()->toArray();
 
-
-
-
             //Please use cbView method instead view method from laravel
-            CRUDBooster::redirect(CRUDBooster::adminPath("customers25/detail/$id"),trans("crudbooster.text_change_quotes"));
+            CRUDBooster::redirect(CRUDBooster::adminPath("orders/detail/$id_quote"),trans("crudbooster.text_change_fases"));
+            //CRUDBooster::redirect(CRUDBooster::adminPath("customers25/detail/$id"),trans("crudbooster.text_change_quotes"));
 
             //$this->cbView('clients.perfil',$data);
         }
@@ -3000,61 +3010,11 @@
                 }
             }
 
+            $data['quote'] = DB::table('user_trucks')->where('id',$id)->first();
+            $data['fases_activity'] = DB::table('fases_activity')->where('orders_id', $id)->orderby('created_at','desc')->get();
+
             $data['stepActual'] = $stepActual;
             $data['stepActualName'] = $stepActualName;
-
-            $data['phases1'] = DB::table('fases')->where('customers_id', $data['row']->id_account)->where('fases_type_id', 1)->where('orders_id', $id)->first();
-            $data['phases2'] = DB::table('fases')->where('customers_id', $data['row']->id_account)->where('fases_type_id', 2)->where('orders_id', $id)->first();
-            $data['phases3'] = DB::table('fases')->where('customers_id', $data['row']->id_account)->where('fases_type_id', 3)->where('orders_id', $id)->first();
-            $data['phases4'] = DB::table('fases')->where('customers_id', $data['row']->id_account)->where('fases_type_id', 4)->where('orders_id', $id)->first();
-            $data['phases5'] = DB::table('fases')->where('customers_id', $data['row']->id_account)->where('fases_type_id', 5)->where('orders_id', $id)->first();
-            $data['phases6'] = DB::table('fases')->where('customers_id', $data['row']->id_account)->where('fases_type_id', 6)->where('orders_id', $id)->first();
-            $data['phases7'] = DB::table('fases')->where('customers_id', $data['row']->id_account)->where('fases_type_id', 7)->where('orders_id', $id)->first();
-            $data['phases8'] = DB::table('fases')->where('customers_id', $data['row']->id_account)->where('fases_type_id', 8)->where('orders_id', $id)->first();
-            $data['phases9'] = DB::table('fases')->where('customers_id', $data['row']->id_account)->where('fases_type_id', 9)->where('orders_id', $id)->first();
-            $data['phases10'] = DB::table('fases')->where('customers_id', $data['row']->id_account)->where('fases_type_id', 10)->where('orders_id', $id)->first();
-
-            $data['isCompletedPhase1'] = false;
-            $data['isCompletedPhase2'] = false;
-            $data['isCompletedPhase3'] = false;
-            $data['isCompletedPhase4'] = false;
-            $data['isCompletedPhase5'] = false;
-            $data['isCompletedPhase6'] = false;
-            $data['isCompletedPhase7'] = false;
-            $data['isCompletedPhase8'] = false;
-            $data['isCompletedPhase9'] = false;
-            $data['isCompletedPhase10'] = false;
-
-            if ($data['phases1']->name != null && $data['phases1']->email != null && $data['phases1']->datetime && $data['phases1']->notes) {
-                $data['isCompletedPhase1'] = true;
-            }
-            if ($data['phases2']->name != null && $data['phases2']->email != null && $data['phases2']->datetime && $data['phases2']->notes) {
-                $data['isCompletedPhase2'] = true;
-            }
-            if ($data['phases3']->name != null && $data['phases3']->email != null && $data['phases3']->datetime && $data['phases3']->notes) {
-                $data['isCompletedPhase3'] = true;
-            }
-            if ($data['phases4']->name != null && $data['phases4']->email != null && $data['phases4']->datetime && $data['phases4']->notes) {
-                $data['isCompletedPhase4'] = true;
-            }
-            if ($data['phases5']->name != null && $data['phases5']->email != null && $data['phases5']->datetime && $data['phases5']->notes) {
-                $data['isCompletedPhase5'] = true;
-            }
-            if ($data['phases6']->name != null && $data['phases6']->email != null && $data['phases6']->datetime && $data['phases6']->notes) {
-                $data['isCompletedPhase6'] = true;
-            }
-            if ($data['phases7']->name != null && $data['phases7']->email != null && $data['phases7']->datetime && $data['phases7']->notes) {
-                $data['isCompletedPhase7'] = true;
-            }
-            if ($data['phases8']->name != null && $data['phases8']->email != null && $data['phases8']->datetime && $data['phases8']->notes) {
-                $data['isCompletedPhase8'] = true;
-            }
-            if ($data['phases9']->name != null && $data['phases9']->email != null && $data['phases9']->datetime && $data['phases9']->notes) {
-                $data['isCompletedPhase9'] = true;
-            }
-            if ($data['phases10']->name != null && $data['phases10']->email != null && $data['phases10']->datetime && $data['phases10']->notes) {
-                $data['isCompletedPhase10'] = true;
-            }
 
             //Please use cbView method instead view method from laravel
             $this->cbView('quotes.perfil',$data);
@@ -4584,6 +4544,5 @@
 
             return 1;
         }
-
 
 	}

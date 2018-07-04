@@ -17,6 +17,10 @@ use crocodicstudio\crudbooster\helpers\CRUDBooster;
     Route::get('ajaxImageUpload', ['uses'=>'AjaxImageUploadController@ajaxImageUpload']);
     Route::post('ajaxImageUpload', ['as'=>'ajaxImageUpload','uses'=>'ImageUploadController@imageUploadPost']);
 
+    Route::get('file','FileController@create');
+    Route::post('file','FileController@store');
+
+
     Route::get('/', function () {
         return view('welcome');
     });
