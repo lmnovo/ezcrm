@@ -54,18 +54,17 @@ class FileController extends Controller
         DB::table('fases')->where('id',request('fases_id'))->update($sumarizedData);
 
         $fase = DB::table('fases')->where('id',request('fases_id'))->first();
+        $userLogin = CRUDBooster::myName();
 
         if ($cont != 0) {
             //Crear "Recent Activity" del envío de Email
             DB::table('fases_activity')->insert([
                 'fases_id'=>request('fases_id'),
-                'description'=>$cont.' file(s) has been uploaded',
+                'description'=>$cont.' file(s) has been uploaded by: '.$userLogin,
                 'orders_id'=>$fase->orders_id,
                 'created_at'=>Carbon::now(config('app.timezone'))->toDateTimeString(),
             ]);
         }
-
-
 
         return back()->with('success', 'Your files has been successfully added');
     }

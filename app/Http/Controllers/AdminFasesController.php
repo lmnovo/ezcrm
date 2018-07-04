@@ -354,39 +354,103 @@
         }
 
         //Enviar email de alerta de Paso finalizado
-        public function getStage2(\Illuminate\Http\Request $request) {
-            $step_id = $request->get('step_id');
+        public function getDeliveryontime() {
 
+        }
+
+        //Enviar email de alerta de Paso finalizado
+        public function getStageterminate(\Illuminate\Http\Request $request) {
+            $step_id = $request->get('step_id');
             $fase = DB::table('fases')->where('id',$step_id)->first();
 
-            //Actualizar fecha de terminada la segunda etapa
+            //Actualizar fecha de terminada la etapa actual
             DB::table('fases')->where('id',$step_id)->update(['datetime' => Carbon::now(config('app.timezone'))]);
 
+            //Obtener información de la etapa para enviar notificaciones por email
             $to[] = $fase->email;
             $orders_id = $fase->orders_id;
             $step_name = $fase->name;
 
-            $subject = trans("crudbooster.text_steps_second");
+            $quote = DB::table('user_trucks')->where('id',$orders_id)->first();
 
-            $html = "<p>".trans("crudbooster.text_dear_user").", ".trans("crudbooster.text_steps_ini"). $step_name. " ".trans("crudbooster.text_steps_end")."</p>
-                                   <a href='http://ezcrm.us/crm/orders/detail/$orders_id'>".trans("crudbooster.text_details_here")."</a>
+            if ($fase->fases_type_id == 2) {
+                $subject = trans("crudbooster.text_steps_second");
+            } elseif ($fase->fases_type_id == 3) {
+                $subject = trans("crudbooster.text_steps_third");
+            } elseif ($fase->fases_type_id == 4) {
+                $subject = trans("crudbooster.text_steps_fourth");
+            } elseif ($fase->fases_type_id == 5) {
+                $subject = trans("crudbooster.text_steps_fifth");
+                $to = null;
+                $to[] = "accounts@chefunits.com";
+            } elseif ($fase->fases_type_id == 6) {
+                $subject = trans("crudbooster.text_steps_sixth");
+                DB::table('fases')->where('id',$step_id)->update(['updated_at' => Carbon::now(config('app.timezone'))]);
+            } elseif ($fase->fases_type_id == 7) {
+                $subject = trans("crudbooster.text_steps_seventh");
+                $account = DB::table('account')->where('id', $quote->id_account)->first();
+
+                if (count($account) != 0) {
+                    $users = DB::table('cms_users')->where('id', $account->id_usuario)->first();
+                    if (count($users) != 0) {
+                        $to[] = $users->email;
+                    }
+                }
+
+                $description = 'A notification email was sent to: '.$to[1];
+
+                //Adicionar "Recent Activity" del envío de Email
+                DB::table('fases_activity')->insert([
+                    'fases_id'=>$step_id,
+                    'description'=>$description,
+                    'orders_id'=>$orders_id,
+                    'created_at'=>Carbon::now(config('app.timezone'))->toDateTimeString(),
+                ]);
+            }
+
+            if ($fase->fases_type_id == 6) {
+                $html = "<p>".trans("crudbooster.text_dear_user").", ".trans("crudbooster.text_steps_confirm")."</p>
+                            ".trans("crudbooster.Business_Name").": $quote->truck_name
+                                   &nbsp; <a href='http://ezcrm.us/crm/orders/edit/$orders_id'>".trans("crudbooster.text_details_here")."</a>
+                                   <br>
+                                   <br><a href='http://ezcrm.us/deliveryontime/$orders_id/1/$step_id'>".trans("crudbooster.text_delivery_on_time")."</a>
+                                   &nbsp; &nbsp;<a href='http://ezcrm.us/deliveryontime/$orders_id/0/$step_id'>".trans("crudbooster.text_delivery_out_date")."</a>
                             <p>".trans("crudbooster.phase_sign")." Chef Units</p>";
+                //Send Email with notification End Step
+                \Mail::send("crudbooster::emails.blank",['content'=>$html],function($message) use ($to,$subject) {
+                    $message->priority(1);
+                    $message->to($to);
 
-            //Send Email with notification End Step
-            \Mail::send("crudbooster::emails.blank",['content'=>$html],function($message) use ($to,$subject) {
-                $message->priority(1);
-                $message->to($to);
+                    $message->subject($subject);
+                });
+            } else {
+                $html = "<p>".trans("crudbooster.text_dear_user").", ".trans("crudbooster.text_steps_ini")." '$step_name' ".trans("crudbooster.text_steps_end")."</p>
+                            ".trans("crudbooster.Business_Name").": $quote->truck_name
+                                   <br><a href='http://ezcrm.us/crm/orders/detail/$orders_id'>".trans("crudbooster.text_details_here")."</a>
+                            <p>".trans("crudbooster.phase_sign")." Chef Units</p>";
+                //Send Email with notification End Step
+                \Mail::send("crudbooster::emails.blank",['content'=>$html],function($message) use ($to,$subject) {
+                    $message->priority(1);
+                    $message->to($to);
 
-                $message->subject($subject);
-            });
+                    $message->subject($subject);
+                });
+            }
 
-            //Actualizar la fase en la quote actual
-            DB::table('user_trucks')->where('id',$fase->orders_id)->update(['fases_id' => $step_id]);
+
+            if ($fase->fases_type_id == 6) {
+                $description = 'A confirmation email was sent to: '.$to[0];
+            } else {
+                $description = 'A notification email was sent to: '.$to[0];
+
+                //Actualizar la fase en la quote actual
+                DB::table('user_trucks')->where('id',$fase->orders_id)->update(['fases_id' => $step_id]);
+            }
 
             //Adicionar "Recent Activity" del envío de Email
             DB::table('fases_activity')->insert([
                 'fases_id'=>$step_id,
-                'description'=>'A notification email was sent to: '.$to[0],
+                'description'=>$description,
                 'orders_id'=>$orders_id,
                 'created_at'=>Carbon::now(config('app.timezone'))->toDateTimeString(),
             ]);

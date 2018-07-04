@@ -37,29 +37,39 @@
             });
 
             $(document).on('click','.step-check-actual',function(){
+
                 var stages_id = $(this).data('id');
                 var stages_id_position = $(this).data('type');
                 var item = $(this);
                 var quote_id = $('#quotes_id').val();
-                $('#modal-loading').modal('show');
 
-                if(stages_id_position == 2) {
-                    $.ajax({
-                        url: '../../fases/stage2',
-                        data: "step_id="+stages_id,
-                        type:  'get',
-                        dataType: 'json',
-                        success : function(data) {
-                            item.removeClass('bg-gray');
-                            item.addClass('bg-blue');
-                            $('#modal-loading').modal('hide');
-                            window.location.href = 'http://ezcrm.us/crm/orders/detail/'+quote_id;
-                        }
+                swal({
+                        title: "Do you want to finalize this stage?",
+                        text: "Stage "+stages_id_position,
+                        type: "info",
+                        showCancelButton: true,
+                        closeOnConfirm: false,
+                        showLoaderOnConfirm: true,
+                    },
+                    function(){
+                        $.ajax({
+                            url: '../../fases/stageterminate',
+                            data: "step_id="+stages_id,
+                            type:  'get',
+                            dataType: 'json',
+                            success : function(data) {
+                                if (stages_id_position != 6) {
+                                    item.removeClass('bg-gray');
+                                    item.addClass('bg-blue');
+                                } else {
+                                    item.removeClass('bg-gray');
+                                    item.addClass('bg-red');
+                                }
+                                window.location.href = 'http://ezcrm.us/crm/orders/detail/'+quote_id;
+                            }
+                        });
                     });
-                }
-                else if(stages_id_position == 3) {
-                    swal("Development Mode!", "Sorry!", "success");
-                }
+
 
 
 
@@ -118,6 +128,8 @@
                                             <li>
                                                 @if($step->id <= $quote->fases_id)
                                                     <i id="{{ $step->id }}" data-id="{{ $step->id }}" data-type="{{ $step->fases_type_id }}" class="fa fa-check-circle bg-blue step-check-active"></i>
+                                                @elseif($step->id == $quote->fases_id+1 && $step->fases_type_id == 6 && $step->updated_at != null)
+                                                    <i id="{{ $step->id }}" data-id="{{ $step->id }}" data-type="{{ $step->fases_type_id }}" class="fa fa-check-circle bg-red step-check-active"></i>
                                                 @elseif($step->id == $quote->fases_id+1)
                                                     <i id="{{ $step->id }}" data-id="{{ $step->id }}" data-type="{{ $step->fases_type_id }}" class="fa fa-check-circle bg-gray step-check-actual"></i>
                                                 @else
@@ -125,7 +137,7 @@
                                                 @endif
 
                                                 <div class="timeline-item">
-                                                    <span class="time" style="font-size: 13px">Date:  <i class="fa fa-clock-o"></i> {{ $step->datetime }}</span>
+                                                    <span class="time" style="font-size: 13px">End Date:  <i class="fa fa-clock-o"></i> {{ $step->datetime }}</span>
 
                                                     <h3 class="timeline-header">
                                                         <a href="#" class="view_details">{{ $step->name }}</a>

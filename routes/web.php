@@ -277,6 +277,60 @@ use crocodicstudio\crudbooster\helpers\CRUDBooster;
         return view('tour_default');
     });
 
+    /*Permite confirmar la entrega a tiempo o no*/
+    Route::get('deliveryontime/{quote}/{valor}/{step_id}', function () {
+        $orders_id = request('quote');
+        $valor = request('valor');
+        $step_id = request('step_id');
+
+        $quote = DB::table('user_trucks')->where('id', $orders_id)->first();
+
+        if (count($quote) != 0) {
+            if ($valor == 1) {
+                DB::table('fases')->where('id',$step_id)->update(['name' => 'Delivery On Time', 'updated_at' => null]);
+
+                $html = trans('crudbooster.text_steps_confirm_1')." <br><br> ".trans("crudbooster.Business_Name").": $quote->truck_name
+            &nbsp; <a href='http://ezcrm.us/crm/orders/edit/$orders_id'>".trans("crudbooster.text_details_here")."</a>";
+            } else {
+                DB::table('fases')->where('id',$step_id)->update(['name' => 'Delivery Out Date', 'updated_at' => null, ]);
+
+                $html = trans('crudbooster.text_steps_confirm_0')." <br><br> ".trans("crudbooster.Business_Name").": $quote->truck_name
+            &nbsp; <a href='http://ezcrm.us/crm/orders/edit/$orders_id'>".trans("crudbooster.text_details_here")."</a>";
+            }
+
+            DB::table('user_trucks')->where('id',$orders_id)->update(['fases_id' => $step_id]);
+
+            //Mandar email como confirmación de la acción seleccionada
+            $subject = trans('crudbooster.text_steps_confirm_subject');
+            $email = DB::table('project_accounts')->first();
+            $email = $email->production_manager;
+
+            \Mail::send("crudbooster::emails.blank", ['content' => $html], function ($message) use ($email, $subject) {
+                $message->priority(1);
+                $message->to($email);
+                $message->subject($subject);
+            });
+
+            $description = '';
+            if ($valor == 1) {
+                $description = 'The account: '.$email.' has confirmed that the delivery will take effect on time.';
+            } else {
+                $description = 'The account: '.$email.' has confirmed that the delivery will take effect out of date.';
+            }
+
+
+            //Adicionar "Recent Activity" del envío de Email
+            DB::table('fases_activity')->insert([
+                'fases_id'=>$step_id,
+                'description'=>$description,
+                'orders_id'=>$orders_id,
+                'created_at'=>Carbon::now(config('app.timezone'))->toDateTimeString(),
+            ]);
+        }
+
+        return view('tour_default');
+    });
+
     Route::get('lang/{lang}', function ($lang) {
         session(['lang' => $lang]);
         return \Redirect::back();
