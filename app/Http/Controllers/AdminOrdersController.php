@@ -2714,7 +2714,7 @@
                     $to[] = $clientContent->email;
                     $subject = trans("crudbooster.updated_information");
 
-                    $html = "<p>".trans("crudbooster.text_dear")." $clientContent->name $clientContent->lastname, ".trans("crudbooster.text_client_1")."</p>
+                    /*$html = "<p>".trans("crudbooster.text_dear")." $clientContent->name $clientContent->lastname, ".trans("crudbooster.text_client_1")."</p>
                             <p>".trans("crudbooster.phase_sign")." Chef Units</p>
                     ";
 
@@ -2724,7 +2724,7 @@
                         $message->to($to);
 
                         $message->subject($subject);
-                    });
+                    });*/
 
                     //Convertir Lead asociado al Quote en Client
                     DB::table('account')->where('id', $lead_id->id_account)->update(['is_client' => 1]);

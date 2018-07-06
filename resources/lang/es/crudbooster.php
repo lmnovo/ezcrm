@@ -670,5 +670,7 @@ return [
     'no_files'  => 'No Existen Archivos',
     'click_to_view'  => 'Click Para Visualizar',
     'history'  => 'Historial de Acciones',
+    'note_creation'  => 'Agregar Notas',
+    'add_notes'  => 'Agregar Notas',
 
 ];

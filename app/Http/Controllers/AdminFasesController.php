@@ -338,17 +338,19 @@
 	    }
 
         //Agregar notas a las fases o etapas del Quote actual
-        public function getAddnote(\Illuminate\Http\Request $request) {
-            $name = $request->get('name');
+        public function getAddfasesnotes(\Illuminate\Http\Request $request) {
             $fases_id = $request->get('fases_id');
 
-            $sumarizedData = [
-                'created_at' => Carbon::now(config('app.timezone')),
-                'name' => $name,
-                'fases_id' => $fases_id,
-            ];
+            DB::table('fases')->where('id', $fases_id)->update(['notes'=>$request->get('notes')]);
+            $fases = DB::table('fases')->where('id', $fases_id)->first();
 
-            DB::table('notes_fases')->insertGetId($sumarizedData);
+            //Adicionar "Recent Activity" del envío de Email
+            DB::table('fases_activity')->insert([
+                'fases_id'=>$fases_id,
+                'description'=>'A note has been added by: '.CRUDBooster::myName(),
+                'orders_id'=>$fases->orders_id,
+                'created_at'=>Carbon::now(config('app.timezone'))->toDateTimeString(),
+            ]);
 
             return 1;
         }

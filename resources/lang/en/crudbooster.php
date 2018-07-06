@@ -659,6 +659,8 @@ return [
     'no_files'  => 'No Files',
     'click_to_view'  => 'Click To View',
     'history'  => 'Recent Activity',
+    'note_creation'  => 'Add Notes',
+    'add_notes'  => 'Add Notes',
 
 
 ];

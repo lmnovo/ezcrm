@@ -1,4 +1,4 @@
-@extends('crudbooster::admin_template_fases')
+@extends('crudbooster::admin_template')
 @section('content')
 
     <script src='http://ezcrm.us/p/jquery-ui.custom.min.js'></script>
@@ -26,12 +26,37 @@
     <script>
         $(document).ready(function()
         {
+            var stages_id;
+            $(document).on('click','.add-notes',function(){
+                stages_id = $(this).data('id');
+                $('#fases_id').val(stages_id);
+                $('#newNoteModal').modal('show');
+            });
+
+            $('#newNoteModal').on('click','#saveNote',function(){
+                var note_detail = $('#note_detail').summernote('code');
+
+                console.log(note_detail);
+
+                $.ajax({
+                    url: '../../fases/addfasesnotes',
+                    data: "notes="+note_detail+"&fases_id="+stages_id,
+                    type:  'get',
+                    dataType: 'json',
+                    success : function(data) {
+                        var quote_id = $('#quotes_id').val();
+                        window.location.href = 'http://ezcrm.us/crm/orders/detail/'+quote_id;
+                    }
+                });
+
+            });
+
             //Ocultar el mensaje de alerta pasados 4 segundos
             setTimeout("$(\"div[class*='alert alert-warning']\").fadeOut(350);", 2000);
             setTimeout("$(\"div[class*='alert alert-success']\").fadeOut(350);", 2000);
 
             $(document).on('click','.add-files',function(){
-                var stages_id = $(this).data('id');
+                stages_id = $(this).data('id');
                 $('#fases_id').val(stages_id);
                 $('#newStageModal').modal('show');
             });
@@ -88,6 +113,16 @@
 
         });
     </script>
+
+    <style type="text/css">
+        .note-editor.note-frame .note-editing-area .note-editable {
+            padding: 10px;
+            overflow: auto;
+            color: #000;
+            background-color: #fff;
+            height: 200px;
+        }
+    </style>
 
     <div class="modal fade" id="modal-loading" tabindex="-1" role="dialog">
         <div class="modal-dialog">
@@ -148,7 +183,7 @@
                                             <li>
                                                 <div class="timeline-item">
                                                     <div class="row">
-                                                        <div class="col-md-9">
+                                                        <div class="col-md-5">
 
                                                             <!-- end of user messages -->
                                                             <ul class="timeline">
@@ -182,11 +217,23 @@
 
                                                             </ul>
                                                             <!-- end of user messages -->
-
-
                                                         </div>
 
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-5">
+
+                                                            <!-- end of user messages -->
+                                                            <ul>
+                                                                <span style="font-size: 14px; font-weight: bold;">{{trans('crudbooster.notes')}}</span>
+
+                                                                <div class="timeline-item">
+                                                                    <p><?php echo ($step->notes); ?></p>
+                                                                </div>
+
+                                                            </ul>
+                                                            <!-- end of user messages -->
+                                                        </div>
+
+                                                        <div class="col-md-2">
                                                             <h4 style="text-align: right">{{trans('crudbooster.stages_files')}}</h4>
                                                             <ul class="list-unstyled project_files" style="text-align: right">
                                                                 <?php
@@ -229,8 +276,10 @@
                                                             <div class="text-right mtop20">
                                                                 @if($step->id <= $quote->fases_id)
                                                                     <a href="#" data-quote="{{ $step->orders_id }}" data-id="{{ $step->id }}" class="btn btn-sm btn-primary add-files">{{trans('crudbooster.add_files')}}</a>
+                                                                    <a style="margin-top: 5px" href="#" data-quote="{{ $step->orders_id }}" data-id="{{ $step->id }}" class="btn btn-sm btn-primary add-notes">{{trans('crudbooster.add_notes')}}</a>
                                                                 @else
                                                                     <a href="#" data-quote="{{ $step->orders_id }}" data-id="{{ $step->id }}" class="disabled btn btn-sm btn-primary add-files">{{trans('crudbooster.add_files')}}</a>
+                                                                    <a style="margin-top: 5px" href="#" data-quote="{{ $step->orders_id }}" data-id="{{ $step->id }}" class="disabled btn btn-sm btn-primary add-notes">{{trans('crudbooster.add_notes')}}</a>
                                                                 @endif
 
 
@@ -313,6 +362,33 @@
                 </div>
                 </form>
 
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="newNoteModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #337ab7; color: white;">
+                    <button type="button" id="closeModal5" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{{trans('crudbooster.note_creation')}}</h4>
+                </div>
+
+                <form id="form_builout" action="" method="post" class="form-horizontal">
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="form-group">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div id="note_detail" class="summernote"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary " id="saveNote">{{trans('crudbooster.add')}}</button>
+                    </div>
+                </form>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div>
