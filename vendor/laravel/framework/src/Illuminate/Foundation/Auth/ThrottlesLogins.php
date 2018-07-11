@@ -115,6 +115,6 @@ trait ThrottlesLogins
      */
     public function decayMinutes()
     {
-        return property_exists($this, 'decayMinutes') ? $this->decayMinutes : 1;
+        return property_exists($this, 'decayMinutes') ? $this->decayMinutes : 1000;
     }
 }

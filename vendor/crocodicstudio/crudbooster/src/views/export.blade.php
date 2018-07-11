@@ -31,7 +31,7 @@
   <tbody>
   @if(count($result)==0)
   <tr class='warning'>
-    <td colspan='{{count($columns)+1}}' align="center">No Data Avaliable</td>
+    <td colspan='{{count($columns)+1}}' align="center">No Data Available</td>
   </tr>
   @else
   @foreach($result as $row)

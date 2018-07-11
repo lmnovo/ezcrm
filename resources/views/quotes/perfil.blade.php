@@ -281,8 +281,6 @@
                                                                     <a href="#" data-quote="{{ $step->orders_id }}" data-id="{{ $step->id }}" class="disabled btn btn-sm btn-primary add-files">{{trans('crudbooster.add_files')}}</a>
                                                                     <a style="margin-top: 5px" href="#" data-quote="{{ $step->orders_id }}" data-id="{{ $step->id }}" class="disabled btn btn-sm btn-primary add-notes">{{trans('crudbooster.add_notes')}}</a>
                                                                 @endif
-
-
                                                             </div>
 
                                                         </div>

@@ -131,7 +131,7 @@ return [
     'form_back_to_list'         => 'Back To List Data :module',
     'not_logged_in'             => 'You are not logged in !',
     'menu_navigation'           => "Navigation",
-    'table_data_not_found'      => "No Data Avaliable",
+    'table_data_not_found'      => "No Data Available",
     "notice_delete_file_upload" => "* If you want to upload other file, please first delete the file.",
     "file_broken"               => "Oops looks like File was Broken !. Click Delete and Re-Upload.",
 
