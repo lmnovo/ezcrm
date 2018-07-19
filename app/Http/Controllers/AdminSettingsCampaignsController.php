@@ -178,7 +178,8 @@
                                 type: 'get',
                                 success: function(data)
                                 {
-                                    $('#subject').val(data[0].subject);
+                                    //$('#subject').val(data[0].subject);
+                                    $('#subject').val(data[0].name);
                                     $('.note-editing-area:nth-child(3) p').append(data[0].content);
                                 }
                             });
