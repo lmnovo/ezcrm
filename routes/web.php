@@ -754,6 +754,8 @@ use crocodicstudio\crudbooster\helpers\CRUDBooster;
     /*Script Diario*/
     Route::get('/update', function () {
 
+        //*****************************************************************
+        //Cambiar el name de los customers type de "Junks" por "Junk"
         \Illuminate\Support\Facades\DB::beginTransaction()
         ;
         $result = \Illuminate\Support\Facades\DB::select( DB::raw("
@@ -761,6 +763,33 @@ use crocodicstudio\crudbooster\helpers\CRUDBooster;
         ")
         );
         \Illuminate\Support\Facades\DB::commit();
+
+        //*****************************************************************
+        //Cambiar el id_usuario con valores nulos por el id = 0
+        \Illuminate\Support\Facades\DB::beginTransaction()
+        ;
+        $result = \Illuminate\Support\Facades\DB::select( DB::raw("
+          UPDATE account SET id_usuario = 0 WHERE ISNULL(id_usuario);
+        ")
+        );
+        \Illuminate\Support\Facades\DB::commit();
+
+        //*****************************************************************
+        //Insertar el usuario "Not Assigned" en la tabla "cms_users"
+
+        $empty = DB::table('cms_users')->where('name', 'LIKE', '%Not Assigned%')->first();
+
+        if(count($empty) == 0) {
+            \Illuminate\Support\Facades\DB::beginTransaction()
+            ;
+            $result = \Illuminate\Support\Facades\DB::select( DB::raw("
+            INSERT INTO cms_users (id, created_at, updated_at, name, photo, email, password, id_cms_privileges, status, deleted_at, address, password_email, fullname, latitude, longitude, firma, color, date_birthday, phone) VALUES (0, NULL, NULL, 'Not Assigned', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.000000', '0.000000', NULL, NULL, NULL, NULL);
+        ")
+            );
+            \Illuminate\Support\Facades\DB::commit();
+            $lastId = DB::table('cms_users')->select(\Illuminate\Support\Facades\DB::raw('MAX(id) as id'))->first();
+            DB::table('cms_users')->where('id', $lastId->id)->update(['id'=>0]);
+        }
 
         dd('Script Finalizado Exitosamente');
 

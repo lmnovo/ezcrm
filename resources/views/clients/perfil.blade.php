@@ -329,9 +329,10 @@
 
 
                 <div class='panel panel-default'>
-                    <div class='panel-heading' style="background-color: #337ab7; color: white;"><strong><i class="fa fa-book"></i> {{trans('crudbooster.List_Tasks')}}</strong></div>
-                    <a title="{{trans('crudbooster.show_calendar')}}" class='btn btn-primary pull-right' style="margin-left: 2px" href='{{CRUDBooster::adminpath("task_calendar")}}'><i class="fa fa-calendar"></i> </a>
-                    <a title="{{trans('crudbooster.add_task')}}" id="addTasks" class='btn btn-primary pull-right' style="margin: 2px" href='#'><i class="fa fa-book"></i></a>
+                    <div class='panel-heading' style="background-color: #337ab7; color: white;"><strong><i class="fa fa-book"></i> {{trans('crudbooster.List_Tasks')}}</strong>
+                        <a title="{{trans('crudbooster.show_calendar')}}" class='btn btn-warning pull-right' style="margin-left: 2px" href='{{CRUDBooster::adminpath("task_calendar")}}'><i class="fa fa-calendar"></i> </a>
+                        <a title="{{trans('crudbooster.add_task')}}" id="addTasks" class='btn btn-warning pull-right' href='#'><i class="fa fa-book"></i></a>
+                    </div>
                 </div>
 
                 <div class="table-responsive" style="padding-left: 20px; padding-right: 20px">

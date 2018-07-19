@@ -333,10 +333,11 @@
                 </div>
 
                 <div class='panel panel-default'>
-                    <div class='panel-heading' style="background-color: #337ab7; color: white;"><strong><i class="fa fa-book"></i> {{trans('crudbooster.List_Tasks')}}</strong></div>
-                    <a title="{{trans('crudbooster.show_calendar')}}" class='btn btn-primary pull-right' style="margin-left: 2px" href='{{CRUDBooster::adminpath("task_calendar")}}'><i class="fa fa-calendar"></i> </a>
-                    {{--<a title="{{trans('crudbooster.add_task')}}" id="addTasks" class='btn btn-primary pull-right' href='http://ezcrm.us/crm/eazy_tasks/add?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fadmin%2Fnotes%3Fforeign_key%3Dcustomers_id%26label%3DNotes%26parent_columns%3Dname%26parent_id%3D{{$id}}%26parent_table%3Dcustomers%26return_url%3Dhttp%253A%252F%252F127.0.0.1%253A8000%252Fadmin%252Fcustomers%253Fm%253D50&parent_id={{$id}}&parent_field=customers_id'><i class="fa fa-book"></i></a>--}}
-                    <a title="{{trans('crudbooster.add_task')}}" id="addTasks" class='btn btn-primary pull-right' href='#'><i class="fa fa-book"></i></a>
+                    <div class='panel-heading' style="background-color: #337ab7; color: white;"><strong><i class="fa fa-book"></i> {{trans('crudbooster.List_Tasks')}}</strong>
+                        <a title="{{trans('crudbooster.show_calendar')}}" class='btn btn-warning pull-right' style="margin-left: 2px" href='{{CRUDBooster::adminpath("task_calendar")}}'><i class="fa fa-calendar"></i> </a>
+                        <a title="{{trans('crudbooster.add_task')}}" id="addTasks" class='btn btn-warning pull-right' href='#'><i class="fa fa-book"></i></a>
+                    </div>
+
                 </div>
 
                 <div class="table-responsive" style="padding-left: 20px; padding-right: 20px">
