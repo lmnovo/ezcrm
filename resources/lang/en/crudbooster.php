@@ -661,6 +661,8 @@ return [
     'history'  => 'Recent Activity',
     'note_creation'  => 'Add Notes',
     'add_notes'  => 'Add Notes',
+    'Proyects'  => 'Proyects',
+    'fase_type'  => 'Stage Type',
 
 
 ];

@@ -672,5 +672,7 @@ return [
     'history'  => 'Historial de Acciones',
     'note_creation'  => 'Agregar Notas',
     'add_notes'  => 'Agregar Notas',
+    'Proyects'  => 'Proyectos',
+    'fase_type'  => 'Tipo de Etapa',
 
 ];

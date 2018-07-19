@@ -14,11 +14,11 @@
 			$this->limit = "50";
 			$this->orderby = "orders_id,desc";
 			$this->global_privilege = true;
-			$this->button_table_action = false;
+			$this->button_table_action = true;
 			$this->button_bulk_action = false;
 			$this->button_action_style = "button_icon";
 			$this->button_add = false;
-			$this->button_edit = false;
+			$this->button_edit = true;
 			$this->button_delete = false;
 			$this->button_detail = false;
 			$this->button_show = false;
@@ -30,7 +30,7 @@
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>trans('crudbooster.quote_id'),"name"=>"orders_id"];
+			//$this->col[] = ["label"=>trans('crudbooster.quote_id'),"name"=>"orders_id"];
 			$this->col[] = ["label"=>trans('crudbooster.name'),"name"=>"name"];
 			$this->col[] = ["label"=>trans('crudbooster.client'),"name"=>"customers_id","join"=>"account,name"];
 			$this->col[] = ["label"=>trans('crudbooster.interesed'),"name"=>"interesting","join"=>"type,type"];
@@ -42,14 +42,14 @@
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Name','name'=>'name','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter'];
-			$this->form[] = ['label'=>'Notes','name'=>'notes','type'=>'textarea','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Email','name'=>'email','type'=>'email','validation'=>'required|min:1|max:255|email|unique:fases','width'=>'col-sm-10','placeholder'=>'Please enter a valid email address'];
-			$this->form[] = ['label'=>'Datetime','name'=>'datetime','type'=>'date','validation'=>'required|date','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Fases Type Id','name'=>'fases_type_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'fases_type,name'];
-			$this->form[] = ['label'=>'Customers Id','name'=>'customers_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'customers,name'];
-			$this->form[] = ['label'=>'Orders Id','name'=>'orders_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'orders,id'];
-			$this->form[] = ['label'=>'Cms Users Id','name'=>'cms_users_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'cms_users,name'];
+			$this->form[] = ['label'=>trans('crudbooster.name'),'name'=>'name','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter'];
+			//$this->form[] = ['label'=>trans('crudbooster.notes'),'name'=>'notes','type'=>'textarea','validation'=>'string|min:5|max:5000','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>trans('crudbooster.email'),'name'=>'email','type'=>'email','validation'=>'required|min:1|max:255|email|unique:fases','width'=>'col-sm-10','placeholder'=>'Please enter a valid email address'];
+			$this->form[] = ['label'=>trans('crudbooster.date'),'name'=>'datetime','type'=>'date','validation'=>'required|date','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>trans('crudbooster.fase_type'),'name'=>'fases_type_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'fases_type,name'];
+			$this->form[] = ['label'=>trans('crudbooster.client'),'name'=>'customers_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'customers,name'];
+			$this->form[] = ['label'=>trans('crudbooster.quote_id'),'name'=>'orders_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'user_trucks,id'];
+			$this->form[] = ['label'=>trans('crudbooster.assign_to'),'name'=>'cms_users_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'cms_users,name'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM

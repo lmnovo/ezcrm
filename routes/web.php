@@ -430,7 +430,8 @@ use crocodicstudio\crudbooster\helpers\CRUDBooster;
 
     });
 
-    Route::get('/proyects', function () {
+    Route::get('/proyects', function ()
+    {
 
         for ($i=1870; $i>1700; $i--) {
             $proyect = DB::table('proyects')->where('orders_id', $i)->first();
@@ -531,6 +532,29 @@ use crocodicstudio\crudbooster\helpers\CRUDBooster;
                 DB::table('clients')->where('id', $q->customers_id)->update(['notes'=>'Yes']);
             }
         }
+    });
+
+    Route::get('/stages', function () {
+
+        //Limpiamos la tabla de stages
+        DB::table('fases')->where('id', '!=', 0)->delete();
+
+        \Illuminate\Support\Facades\DB::beginTransaction()
+        ;
+        $result = \Illuminate\Support\Facades\DB::select( DB::raw("
+            INSERT INTO `fases` (`id`, `name`, `notes`, `email`, `assigned_to`, `datetime`, `fases_type_id`, `files`, `created_at`, `updated_at`, `deleted_at`, `customers_id`, `orders_id`, `cms_users_id`) VALUES 
+            (1, 'Signing Contract', NULL, '', NULL, NULL, 1, NULL, '2012-02-29', NULL, NULL, 0, NULL, NULL),
+            (2, 'First Payment', NULL, '', 'economy', NULL, 2, NULL, '2012-02-29 02:36:26', NULL, NULL, 0, NULL, NULL),
+            (3, 'Design', NULL, '', 'design', NULL, 3, NULL, '2012-02-29 02:36:26', NULL, NULL, 0, NULL, NULL),
+            (4, 'Second Payment', NULL, '', 'economy', NULL, 4, NULL, '2012-02-29 02:36:26', NULL, NULL, 0, NULL, NULL),
+            (5, 'Trailer/Truck Payment', NULL, '', 'sales', NULL, 5, NULL, '2012-02-29 02:36:26', NULL, NULL, 0, NULL, NULL),
+            (6, 'Delivery To Time', NULL, '', 'production_manager', NULL, 6, NULL, '2012-02-29 02:36:26', NULL, NULL, 0, NULL, NULL),
+            (7, 'Delivery And Third Payment', NULL, '', 'economy', NULL, 7, NULL, '2012-02-29 02:36:26', NULL, NULL, 0, NULL, NULL);
+            ")
+        );
+        \Illuminate\Support\Facades\DB::commit();
+
+
     });
 
     //Route::get('/admin/wizard/statistics', function () {
