@@ -303,7 +303,7 @@
                 labels: [
                     "Normal",
                     "Favorite",
-                    "Junks",
+                    "Junk",
                     "Lost"
                 ]
             },
@@ -407,7 +407,7 @@
             tipo = 'Favorite';
         }
         if ( activePoint1[0]._index == 2 ) {
-            tipo = 'Junks';
+            tipo = 'Junk';
         }
         if ( activePoint1[0]._index == 3 ) {
             tipo = 'Lost';

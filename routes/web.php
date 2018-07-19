@@ -750,5 +750,22 @@ use crocodicstudio\crudbooster\helpers\CRUDBooster;
     });
 
 
+
+    /*Script Diario*/
+    Route::get('/update', function () {
+
+        \Illuminate\Support\Facades\DB::beginTransaction()
+        ;
+        $result = \Illuminate\Support\Facades\DB::select( DB::raw("
+          UPDATE customer_type SET name = 'Junk' WHERE name LIKE '%Junk%' ;
+        ")
+        );
+        \Illuminate\Support\Facades\DB::commit();
+
+        dd('Script Finalizado Exitosamente');
+
+    });
+
+
 });
 
