@@ -605,7 +605,7 @@ return [
     'crm_gratis'  => 'Comience con EazyCRM Gratis',
     'access'  => 'Comience Ahora',
     'text_client'  => '¿Ya se encuentra registrado?',
-    'text_tour_promotion'  => 'EazyCRM le permite tener su negocio organizado en una única herramienta. Obtendrá la gestión de sus clientes con menos esfuerzo.',
+    'text_tour_promotion'  => 'EzCRM le permite administrar tu negocio adicionando prospectos, clientes potenciales, oportunidades de ventas, recordatorios, notificaciones, notas, tareas automatizadas, campañas, gráficas estadísticas. Permite enviar correos electrónicos y sms. Ezcrm es una forma fácil y simple usted puede organizar su negocio en pocos minutos.',
     'text_tour_first_steps'  => 'Primeros Pasos',
     'first_steps'  => 'Primeros Pasos - Configuración Inicial',
     'Content'  => 'Contenido',

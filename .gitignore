@@ -1,6 +1,5 @@
-/public/uploads
-/storage/*.key
-/storage
 /.idea
 .env
-/public/assets/images
+storage/framework/views/*
+storage/framework/sessions/*
+storage/framework/cache/*
