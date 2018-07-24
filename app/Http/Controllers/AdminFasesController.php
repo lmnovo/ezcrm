@@ -413,10 +413,10 @@
             if ($fase->fases_type_id == 6) {
                 $html = "<p>".trans("crudbooster.text_dear_user").", ".trans("crudbooster.text_steps_confirm")."</p>
                             ".trans("crudbooster.Business_Name").": $quote->truck_name
-                                   &nbsp; <a href='http://ezcrm.us/crm/orders/edit/$orders_id'>".trans("crudbooster.text_details_here")."</a>
+                                   &nbsp; <a href='http://18.222.4.15/crm/orders/edit/$orders_id'>".trans("crudbooster.text_details_here")."</a>
                                    <br>
-                                   <br><a href='http://ezcrm.us/deliveryontime/$orders_id/1/$step_id'>".trans("crudbooster.text_delivery_on_time")."</a>
-                                   &nbsp; &nbsp;<a href='http://ezcrm.us/deliveryontime/$orders_id/0/$step_id'>".trans("crudbooster.text_delivery_out_date")."</a>
+                                   <br><a href='http://18.222.4.15/deliveryontime/$orders_id/1/$step_id'>".trans("crudbooster.text_delivery_on_time")."</a>
+                                   &nbsp; &nbsp;<a href='http://18.222.4.15/deliveryontime/$orders_id/0/$step_id'>".trans("crudbooster.text_delivery_out_date")."</a>
                             <p>".trans("crudbooster.phase_sign")." Chef Units</p>";
                 //Send Email with notification End Step
                 \Mail::send("crudbooster::emails.blank",['content'=>$html],function($message) use ($to,$subject) {
@@ -428,7 +428,7 @@
             } else {
                 $html = "<p>".trans("crudbooster.text_dear_user").", ".trans("crudbooster.text_steps_ini")." '$step_name' ".trans("crudbooster.text_steps_end")."</p>
                             ".trans("crudbooster.Business_Name").": $quote->truck_name
-                                   <br><a href='http://ezcrm.us/crm/orders/detail/$orders_id'>".trans("crudbooster.text_details_here")."</a>
+                                   <br><a href='http://18.222.4.15/crm/orders/detail/$orders_id'>".trans("crudbooster.text_details_here")."</a>
                             <p>".trans("crudbooster.phase_sign")." Chef Units</p>";
                 //Send Email with notification End Step
                 \Mail::send("crudbooster::emails.blank",['content'=>$html],function($message) use ($to,$subject) {

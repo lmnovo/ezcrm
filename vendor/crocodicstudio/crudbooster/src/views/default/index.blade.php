@@ -29,7 +29,7 @@
                 var patternSpanish = /.*Paso/;
                 if( (col == 4 || col == 5) && (patternEnglish.test(col_text) || patternSpanish.test(col_text))) {
                     e.preventDefault();
-                    window.location.href = 'http://ezcrm.us/crm/orders/detail/'+id_row;
+                    window.location.href = 'http://18.222.4.15/crm/orders/detail/'+id_row;
                 }*/
 
                 id_account_user = $(this).siblings('*')[0].children[0].value;

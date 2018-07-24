@@ -1,8 +1,8 @@
 @extends('crudbooster::admin_template')
 @section('content')
 
-    <script src="http://ezcrm.us/js/categorias_productos.js"></script>
-    <script src="http://ezcrm.us/js/subcategorias_productos.js"></script>
+    <script src="http://18.222.4.15/js/categorias_productos.js"></script>
+    <script src="http://18.222.4.15/js/subcategorias_productos.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -158,7 +158,7 @@
                         $('#price2_edit').val(data[0].price);
                         $('#price2_retail_edit').val(data[0].retail_price);
                         $('#weight_edit').val(data[0].weight);
-                        $('#appliance_imagen').attr('src','http://ezcrm.us/assets/images/appliances/'+data[0].imagen);
+                        $('#appliance_imagen').attr('src','http://18.222.4.15/assets/images/appliances/'+data[0].imagen);
                         $('#editApplianceModal').modal('show');
                     }
                 });
@@ -483,8 +483,8 @@
                 <tr>
                     <td style="width: 2%">{{$row->id}}</td>
                     <td style="width: 6%">
-                        <a data-lightbox="roadtrip" rel="group_{products}" title="{{$row->description}}" href="http://ezcrm.us/assets/images/appliances/{{$row->imagen}}">
-                            <img width="40px" height="40px" src="http://ezcrm.us/assets/images/appliances/{{$row->imagen}}">
+                        <a data-lightbox="roadtrip" rel="group_{products}" title="{{$row->description}}" href="http://18.222.4.15/assets/images/appliances/{{$row->imagen}}">
+                            <img width="40px" height="40px" src="http://18.222.4.15/assets/images/appliances/{{$row->imagen}}">
                         </a>
                     </td>
                     <td style="width: 12%">{{$row->category}}</td>
@@ -508,7 +508,7 @@
                                 cancelButtonText: '{{trans('crudbooster.no')}}',
                                 closeOnConfirm: false },
                                 function(){
-                                location.href='http://ezcrm.us/crm/products/delete/{{ $row->id }}'
+                                location.href='http://18.222.4.15/crm/products/delete/{{ $row->id }}'
                                 });"><i class="fa fa-trash"></i>
                         </a>
                     </td>

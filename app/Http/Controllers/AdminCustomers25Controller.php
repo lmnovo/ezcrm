@@ -199,7 +199,7 @@ class AdminCustomers25Controller extends \crocodicstudio\crudbooster\controllers
                             type:  'get',
                             dataType: 'json',
                             success : function(data) {
-                                window.location.href = 'http://ezcrm.us/crm/customers25/detail/'+lead_id; 
+                                window.location.href = 'http://18.222.4.15/crm/customers25/detail/'+lead_id; 
                                $('#taskLeadModal').modal('hide');
                             }
                          }); 
