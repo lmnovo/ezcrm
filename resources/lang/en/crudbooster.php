@@ -600,7 +600,7 @@ return [
     'retail_price'  => 'Retail Price',
     'add'  => 'Add',
     'task_creation'  => 'Add Task',
-    'crm_gratis'  => 'Begin with Free EazyCRM',
+    'crm_gratis'  => 'Begin with Free EzCRM',
     'access'  => 'Begin Now',
     'text_client'  => 'Already have an account?',
     'text_tour_promotion'  => 'EzCRM allows managing your business adding prospects, potential customers, opportunities of sales, reminders, notifications, notes, automated tasks, campaigns, statistical charts. It allows sending e-mails and sms. Ezcrm is an easy and simple way you can organize your business in a few minutes.',

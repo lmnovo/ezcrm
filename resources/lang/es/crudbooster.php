@@ -602,7 +602,7 @@ return [
     'add'  => 'Agregar',
     'Appliances Inside'  => 'Appliances Inside',
     'task_creation'  => 'Agregar Tarea',
-    'crm_gratis'  => 'Comience con EazyCRM Gratis',
+    'crm_gratis'  => 'Comience con EzCRM Gratis',
     'access'  => 'Comience Ahora',
     'text_client'  => '¿Ya se encuentra registrado?',
     'text_tour_promotion'  => 'EzCRM le permite administrar tu negocio adicionando prospectos, clientes potenciales, oportunidades de ventas, recordatorios, notificaciones, notas, tareas automatizadas, campañas, gráficas estadísticas. Permite enviar correos electrónicos y sms. Ezcrm es una forma fácil y simple usted puede organizar su negocio en pocos minutos.',
