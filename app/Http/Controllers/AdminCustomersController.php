@@ -336,14 +336,14 @@ class AdminCustomersController extends \crocodicstudio\crudbooster\controllers\C
 
         if ($id != 1) {
             $query->where(['is_client' => 0])
-                ->where('id_usuario', $user_id)/*
+                ->where('id_usuario', $user_id)
                 ->where('estado', '!=', 2)
-                ->where('estado', '!=', 3)*/;
+                ->where('estado', '!=', 3);
         }
         else {
-            $query->where(['is_client' => 0])/*
+            $query->where(['is_client' => 0])
                 ->where('estado', '!=', 2)
-                ->where('estado', '!=', 3)*/;
+                ->where('estado', '!=', 3);
         }
 
         \Illuminate\Support\Facades\DB::beginTransaction()

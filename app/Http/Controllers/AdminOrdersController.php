@@ -33,8 +33,8 @@
 			$this->col = [];
 			$this->col[] = ["label"=>trans('crudbooster.Business_Name'),"name"=>"truck_name","width"=>"15%"];
             $this->col[] = ["label"=>trans('crudbooster.interesed'),"name"=>"interesting","join"=>"type,type","width"=>"8%"];
-            $this->col[] = ["label"=>trans('crudbooster.lead_name'),"name"=>"id_account", "urlLeadQuote"=>"account","width"=>"10%"];
-            //$this->col[] = ["label"=>trans('crudbooster.lead_name'),"name"=>"id_account","join"=>"account,name"];
+            //$this->col[] = ["label"=>trans('crudbooster.lead_name'),"name"=>"id_account", "urlLeadQuote"=>"account","width"=>"10%"];
+            $this->col[] = ["label"=>trans('crudbooster.lead_name'),"name"=>"id_account","join"=>"account,name"];
             $this->col[] = ["label"=>trans('crudbooster.creation_date'),"name"=>"truck_date_created","width"=>"10%"];
             $this->col[] = ["label"=>trans('crudbooster.budget'),"name"=>"truck_budget","callback_php"=>'number_format($row->truck_budget)',"width"=>"7%"];
             $this->col[] = ["label"=>trans('crudbooster.assigned_to'),"name"=>"id_account","urlUserQuote"=>"users","width"=>"10%"];

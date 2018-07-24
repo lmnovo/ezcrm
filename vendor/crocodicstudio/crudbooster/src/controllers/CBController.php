@@ -567,7 +567,8 @@ class CBController extends Controller {
 		                $account_id = DB::table('account')->where('id', $value)->first();
                         $result = DB::table('cms_users')->where('id', $account_id->id_usuario)->first();
 
-                        $value = "<a href=".$col['urlUserQuote'].'/detail/'.$account_id->id_usuario.">$result->name</a>";
+                        //$value = "<a href=".$col['urlUserQuote'].'/detail/'.$account_id->id_usuario.">$result->name</a>";
+                        $value = $result->name;
                     }
 
                     if($col['urlTemplate']) {

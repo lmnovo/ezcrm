@@ -2507,9 +2507,7 @@ table.table_class_customers25 th:nth-child(10){display: none;}
   table.table_class_orders td:nth-child(6),
   table.table_class_orders th:nth-child(6),
   table.table_class_orders td:nth-child(8),
-  table.table_class_orders th:nth-child(8),
-  table.table_class_orders td:nth-child(12),
-  table.table_class_orders th:nth-child(12){display: none;}
+  table.table_class_orders th:nth-child(8){display: none;}
 
   table.table_class_customers25 td:nth-child(7),
   table.table_class_customers25 th:nth-child(7),
