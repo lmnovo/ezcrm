@@ -107,12 +107,12 @@ return [
     'button_save_more'       => 'Save & Add More',
     'button_import'          => ' ',
     'button_export'          => ' ',
-    'button_filter'          => 'Filter',
+    'button_filter'          => '',
     'button_close'           => 'Close',
     'button_submit'          => 'Submit',
     'button_logout'          => 'Logout',
     'button_sign_in'         => 'Sign In',
-    'button_selected_action' => 'Bulk Actions',
+    'button_selected_action' => 'Actions',
     'button_download_file'   => 'Download file',
     'button_reset'           => 'Reset',
 
@@ -340,7 +340,7 @@ return [
     'subcategory'  => 'Subcategory',
 
     'text_information'  => 'Statistics',
-    'text_quick_tour'  => 'Quick Tour Here!',
+    'text_quick_tour'  => 'Tour',
     'menu_Leads'   => 'Leads',
     'menu_Quotes'  => 'Quotes',
     'menu_Charts'  => 'Charts',
@@ -427,7 +427,7 @@ return [
     'discount' => 'Discount',
     'tax' => 'Tax',
     'leads' => 'Leads',
-    'Need_create_a_lead' => 'Begin Now - Click Here',
+    'Need_create_a_lead' => 'Begin Now',
     'General_System' => 'Quick Tour - General System',
     'Add_Lead' => 'Quick Tour - Add Lead',
     'Edit_Lead' => 'Quick Tour - Edit Lead',
@@ -603,14 +603,14 @@ return [
     'crm_gratis'  => 'Begin with Free EzCRM',
     'access'  => 'Begin Now',
     'text_client'  => 'Already have an account?',
-    'text_tour_promotion'  => 'EzCRM allows managing your business adding prospects, potential customers, opportunities of sales, reminders, notifications, notes, automated tasks, campaigns, statistical charts. It allows sending e-mails and sms. Ezcrm is an easy and simple way you can organize your business in a few minutes.',
+    'text_tour_promotion'  => 'EzCRM allows managing your business adding potential customers, reminders, notifications, notes, automated tasks, campaigns, statistical charts. It allows sending e-mails and sms. Ezcrm is an easy and simple way you can organize your business in a few minutes.',
     'text_tour_first_steps'  => 'First Steps',
     'first_steps'  => 'First Steps - Initial Configuration',
     'Content'  => 'Content',
 
     'add_buildout'  => 'Add Build Out',
     'buildout_creation'  => 'Add Build Out',
-    'text_login'  => 'Login Here!',
+    'text_login'  => 'Login',
     'text_email'  => 'Enter email here...',
     'text_forgot'  => 'Your password was recovered satisfactorily. From now on we show your data:',
 
@@ -663,6 +663,8 @@ return [
     'add_notes'  => 'Add Notes',
     'Proyects'  => 'Proyects',
     'fase_type'  => 'Stage Type',
+
+    'date_due' => 'Date Due',
 
 
 ];

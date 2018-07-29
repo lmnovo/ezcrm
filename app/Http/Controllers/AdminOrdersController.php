@@ -918,7 +918,7 @@
                        $('#price2').val('');
                        $('#quantity').val('');
                        $('#total').val('');
-                       $('#imagen').attr('src','http://18.222.4.15/assets/images/appliances/image-not-found.png');
+                       $('#imagen').attr('src','http://18.220.213.59/assets/images/appliances/image-not-found.png');
                        var categoria = $('#appliance').val();
                        $('#modal-loading').modal('show');                       
                        $('#select2-product-container').html('**Select Data**');                         
@@ -950,7 +950,7 @@
                            $('#price2').val('');
                            $('#quantity').val('');
                            $('#total').val('');
-                           $('#imagen').attr('src','http://18.222.4.15/assets/images/appliances/image-not-found.png');
+                           $('#imagen').attr('src','http://18.220.213.59/assets/images/appliances/image-not-found.png');
                            var id = $(this).val(); 
                            $('#modal-loading').modal('show');
                            $('#select2-appliance_inside_category-container').html('**Select Data**');
@@ -990,9 +990,9 @@
                                  $('#total').val(data[0].price);                                 
                                 
                                  if(data[0].imagen==null) 
-                                   $('#imagen').attr('src','http://18.222.4.15/assets/images/appliances/no_photo.jpg');
+                                   $('#imagen').attr('src','http://18.220.213.59/assets/images/appliances/no_photo.jpg');
                                  else
-                                   $('#imagen').attr('src','http://18.222.4.15/assets/images/appliances/'+data[0].imagen);
+                                   $('#imagen').attr('src','http://18.220.213.59/assets/images/appliances/'+data[0].imagen);
                                    $('#modal-loading').modal('hide');
                                    
                                    updateTotales();
@@ -1137,7 +1137,7 @@
                        $('#appliance').val('');
                        $('#product').val('');
                        $('#appliance_inside_category').val(''); 
-                       $('#imagen').attr('src','http://18.222.4.15/assets/images/appliances/no_photo.jpg');
+                       $('#imagen').attr('src','http://18.220.213.59/assets/images/appliances/no_photo.jpg');
                        
                        actualizar_total();
                        $('#applianceModal').modal('hide');    
@@ -1560,21 +1560,9 @@
             }
 
             if ($id != 1) {
-                /*$query->join('account', 'account.id', '=', 'user_trucks.id_account')
-                    ->where('account.id_usuario', $user_id)
-                    ->where('account.is_client', 0)
-                    ->where('user_trucks.is_active', 0)
-                ;*/
-                $query->join('account', 'account.id', '=', 'user_trucks.id_account')
-                    ->where('account.id_usuario', $user_id)
-                    ->where('user_trucks.is_active', 0)
+                $query->where('account.id_usuario', $user_id)
                 ;
-
             } else {
-                /*$query->join('account', 'account.id', '=', 'user_trucks.id_account')
-                    ->where('account.is_client', 0)
-                    ->where('user_trucks.is_active', 0)
-                ;*/
                 $query->where('user_trucks.is_active', 0)
                 ;
             }
@@ -2619,7 +2607,7 @@
                         $subject = trans("crudbooster.text_steps_first");
 
                         $html = "<p>".trans("crudbooster.text_dear")." $usuario_email->fullname, ".trans("crudbooster.text_steps_first")."</p>
-                                   <a href='http://18.222.4.15/crm/orders/detail/$id'>".trans("crudbooster.text_details_here")."</a>
+                                   <a href='http://18.220.213.59/crm/orders/detail/$id'>".trans("crudbooster.text_details_here")."</a>
                             <p>".trans("crudbooster.phase_sign")." Chef Units</p>";
 
                         //Send Email with notification End Step
@@ -2862,7 +2850,7 @@
                         $subject = trans("crudbooster.text_steps_first");
 
                         $html = "<p>".trans("crudbooster.text_dear")." $usuario_email->fullname, ".trans("crudbooster.text_steps_first")."</p>
-                                   <a href='http://18.222.4.15/crm/orders/detail/$id'>".trans("crudbooster.text_details_here")."</a>
+                                   <a href='http://18.220.213.59/crm/orders/detail/$id'>".trans("crudbooster.text_details_here")."</a>
                             <p>".trans("crudbooster.phase_sign")." Chef Units</p>";
 
                         //Send Email with notification End Step

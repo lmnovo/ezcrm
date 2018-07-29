@@ -225,7 +225,7 @@ class AdminCustomersController extends \crocodicstudio\crudbooster\controllers\C
                             type:  'get',
                             dataType: 'json',
                             success : function(data) {
-                               window.location.href = 'http://18.222.4.15/crm/account/detail/'+lead_id; 
+                               window.location.href = 'http://18.220.213.59/crm/account/detail/'+lead_id; 
                                $('#taskLeadModal').modal('hide');
                             }
                          }); 
@@ -346,15 +346,10 @@ class AdminCustomersController extends \crocodicstudio\crudbooster\controllers\C
                 ->where('estado', '!=', 3)*/;
         }
 
-        \Illuminate\Support\Facades\DB::beginTransaction()
-        ;
+        \Illuminate\Support\Facades\DB::beginTransaction();
         $result = \Illuminate\Support\Facades\DB::select( DB::raw("
-                        SELECT count(id) as cant, id_account
-                        FROM user_trucks 
-                        WHERE is_active = 0
-                        GROUP BY id_account
-                        ORDER BY id_account DESC
-                        LIMIT 10                        
+                        SELECT count(id) as cant, id_account FROM user_trucks WHERE is_active = 0
+                        GROUP BY id_account ORDER BY id_account DESC LIMIT 10                        
                         ")
         );
         \Illuminate\Support\Facades\DB::commit();

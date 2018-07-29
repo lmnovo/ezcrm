@@ -114,12 +114,12 @@ return [
 	'button_save_more'       =>'Guardar y Añadir otro',
 	'button_import'          =>' ',
 	'button_export'          =>' ',
-	'button_filter'          =>'Filtros',
+	'button_filter'          =>'',
 	'button_close'           =>'Cerrar',
 	'button_submit'          =>'Enviar',
 	'button_logout'          =>'Salir',	
 	'button_sign_in'         =>'Iniciar',
-	'button_selected_action' =>'Acciones Masivas',
+	'button_selected_action' =>'Acciones',
 	'button_download_file'   =>'Descargar Fichero',
 	'button_reset'           =>'Resetear',
 	'button_add_to_table'    =>'Agregar a la Tabla',
@@ -341,7 +341,7 @@ return [
     'all_times'  => '',
 
     'text_information'  => 'Estadísticas',
-    'text_quick_tour'  => '¡Manuales Aquí!',
+    'text_quick_tour'  => 'Manual',
     'menu_Leads'  => 'Prospectos',
     'menu_Quotes'  => 'Cotizaciones',
     'menu_Charts'  => 'Reportes',
@@ -429,7 +429,7 @@ return [
     'discount' => 'Descuento',
     'tax' => 'Impuesto',
     'leads' => 'Prospectos',
-    'Need_create_a_lead' => 'Comience Ahora - Clic Aquí',
+    'Need_create_a_lead' => 'Comience Ahora',
     'General_System' => 'Guía rápida - Sistema General',
     'Add_Lead' => 'Guía rápida - Crear Prospecto',
     'Edit_Lead' => 'Guía rápida - Editar Prospecto',
@@ -605,7 +605,7 @@ return [
     'crm_gratis'  => 'Comience con EzCRM Gratis',
     'access'  => 'Comience Ahora',
     'text_client'  => '¿Ya se encuentra registrado?',
-    'text_tour_promotion'  => 'EzCRM le permite administrar tu negocio adicionando prospectos, clientes potenciales, oportunidades de ventas, recordatorios, notificaciones, notas, tareas automatizadas, campañas, gráficas estadísticas. Permite enviar correos electrónicos y sms. Ezcrm es una forma fácil y simple usted puede organizar su negocio en pocos minutos.',
+    'text_tour_promotion'  => 'EzCRM le permite administrar tu negocio adicionando clientes potenciales, recordatorios, notificaciones, notas, tareas automatizadas, campañas, gráficas estadísticas. Permite enviar correos electrónicos y sms. Ezcrm es una forma fácil y simple usted puede organizar su negocio en pocos minutos.',
     'text_tour_first_steps'  => 'Primeros Pasos',
     'first_steps'  => 'Primeros Pasos - Configuración Inicial',
     'Content'  => 'Contenido',
@@ -613,7 +613,7 @@ return [
     'add_buildout'  => 'Add Build Out',
 
     'buildout_creation'  => 'Adicionar Build Out',
-    'text_login'  => '¡Acceda con Credenciales Aquí!',
+    'text_login'  => 'Login',
     'text_email'  => 'Introduzca correo aquí...',
     'text_forgot'  => 'Su contraseña fue recuperada satisfactoriamente. A continuación le mostramos sus datos:',
 
@@ -674,5 +674,7 @@ return [
     'add_notes'  => 'Agregar Notas',
     'Proyects'  => 'Proyectos',
     'fase_type'  => 'Tipo de Etapa',
+
+    'date_due' => 'Fecha de Vencimiento',
 
 ];

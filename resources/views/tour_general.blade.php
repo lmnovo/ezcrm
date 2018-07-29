@@ -34,11 +34,11 @@
         <div class='panel-heading' style="background-color: #337ab7; color: white;"><strong><i class="fa fa-user"></i> {{ trans('crudbooster.General_System') }}</strong></div>
 
         <div class="panel-body" style="padding:20px 0px 0px 0px">
-            <form class="form-horizontal" method="post" id="form" enctype="multipart/form-data" action="http://18.222.4.15/crm/campaigns/edit-save/2">
+            <form class="form-horizontal" method="post" id="form" enctype="multipart/form-data" action="http://18.220.213.59/crm/campaigns/edit-save/2">
                 <input type="hidden" name="_token" value="04WEmigxCcCs05dhAXuQZvlOTccK4fKUG3OrTpQO">
-                <input type="hidden" name="return_url" value="http://18.222.4.15/crm/campaigns?m=61">
-                <input type="hidden" name="ref_mainpath" value="http://18.222.4.15/crm/campaigns">
-                <input type="hidden" name="ref_parameter" value="return_url=http://18.222.4.15/crm/campaigns?m=61">
+                <input type="hidden" name="return_url" value="http://18.220.213.59/crm/campaigns?m=61">
+                <input type="hidden" name="ref_mainpath" value="http://18.220.213.59/crm/campaigns">
+                <input type="hidden" name="ref_parameter" value="return_url=http://18.220.213.59/crm/campaigns?m=61">
                 <div class="box-body" id="parent-form-area">
 
                     <style type="text/css">

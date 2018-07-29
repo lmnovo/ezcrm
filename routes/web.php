@@ -290,12 +290,12 @@ use crocodicstudio\crudbooster\helpers\CRUDBooster;
                 DB::table('fases')->where('id',$step_id)->update(['name' => 'Delivery On Time', 'updated_at' => null]);
 
                 $html = trans('crudbooster.text_steps_confirm_1')." <br><br> ".trans("crudbooster.Business_Name").": $quote->truck_name
-            &nbsp; <a href='http://18.222.4.15/crm/orders/edit/$orders_id'>".trans("crudbooster.text_details_here")."</a>";
+            &nbsp; <a href='http://18.220.213.59/crm/orders/edit/$orders_id'>".trans("crudbooster.text_details_here")."</a>";
             } else {
                 DB::table('fases')->where('id',$step_id)->update(['name' => 'Delivery Out Date', 'updated_at' => null, ]);
 
                 $html = trans('crudbooster.text_steps_confirm_0')." <br><br> ".trans("crudbooster.Business_Name").": $quote->truck_name
-            &nbsp; <a href='http://18.222.4.15/crm/orders/edit/$orders_id'>".trans("crudbooster.text_details_here")."</a>";
+            &nbsp; <a href='http://18.220.213.59/crm/orders/edit/$orders_id'>".trans("crudbooster.text_details_here")."</a>";
             }
 
             DB::table('user_trucks')->where('id',$orders_id)->update(['fases_id' => $step_id]);
@@ -365,7 +365,7 @@ use crocodicstudio\crudbooster\helpers\CRUDBooster;
                     // Add color and link on event
                     [
                         'color' => $color->description,
-                        'url' => 'http://18.222.4.15/crm/eazy_tasks/detail/'.$value->id,
+                        'url' => 'http://18.220.213.59/crm/eazy_tasks/detail/'.$value->id,
                     ]
                 );
             }

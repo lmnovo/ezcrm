@@ -1,29 +1,29 @@
 @extends('crudbooster::admin_template')
 @section('content')
 
-    <script src='http://18.222.4.15/p/jquery-ui.custom.min.js'></script>
-    <script src="http://18.222.4.15/p/jquery.ui.touch-punch.min.js"></script>
-    <script src="http://18.222.4.15/p/chosen.jquery.min.js"></script>
-    <script src="http://18.222.4.15/p/spinbox.min.js"></script>
-    <script src="http://18.222.4.15/p/bootstrap-datepicker.min.js"></script>
-    {{--<script src="http://18.222.4.15/p/bootstrap-timepicker.min.js"></script>--}}
-    <script src="http://18.222.4.15/p/moment.min.js"></script>
-    <script src="http://18.222.4.15/p/daterangepicker.min.js"></script>
-    <script src="http://18.222.4.15/p/bootstrap-datetimepicker.min.js"></script>
-    <script src="http://18.222.4.15/p/bootstrap-colorpicker.min.js"></script>
-    <script src="http://18.222.4.15/p/jquery.knob.min.js"></script>
-    <script src="http://18.222.4.15/p/autosize.min.js"></script>
-    <script src="http://18.222.4.15/p/jquery.inputlimiter.min.js"></script>
-    <script src="http://18.222.4.15/p/bootstrap-tag.min.js"></script>
+    <script src='http://18.220.213.59/p/jquery-ui.custom.min.js'></script>
+    <script src="http://18.220.213.59/p/jquery.ui.touch-punch.min.js"></script>
+    <script src="http://18.220.213.59/p/chosen.jquery.min.js"></script>
+    <script src="http://18.220.213.59/p/spinbox.min.js"></script>
+    <script src="http://18.220.213.59/p/bootstrap-datepicker.min.js"></script>
+    {{--<script src="http://18.220.213.59/p/bootstrap-timepicker.min.js"></script>--}}
+    <script src="http://18.220.213.59/p/moment.min.js"></script>
+    <script src="http://18.220.213.59/p/daterangepicker.min.js"></script>
+    <script src="http://18.220.213.59/p/bootstrap-datetimepicker.min.js"></script>
+    <script src="http://18.220.213.59/p/bootstrap-colorpicker.min.js"></script>
+    <script src="http://18.220.213.59/p/jquery.knob.min.js"></script>
+    <script src="http://18.220.213.59/p/autosize.min.js"></script>
+    <script src="http://18.220.213.59/p/jquery.inputlimiter.min.js"></script>
+    <script src="http://18.220.213.59/p/bootstrap-tag.min.js"></script>
 
     <!-- ace scripts -->
-    <script src="http://18.222.4.15/p/ace-elements.min.js"></script>
-    <script src="http://18.222.4.15/p/ace.min.js"></script>
+    <script src="http://18.220.213.59/p/ace-elements.min.js"></script>
+    <script src="http://18.220.213.59/p/ace.min.js"></script>
 
-    <script src="http://18.222.4.15/js/buildouts.js"></script>
-    <script src="http://18.222.4.15/js/products.js"></script>
-    <script src="http://18.222.4.15/js/estados.js"></script>
-    <script src="http://18.222.4.15/js/sizes.js"></script>
+    <script src="http://18.220.213.59/js/buildouts.js"></script>
+    <script src="http://18.220.213.59/js/products.js"></script>
+    <script src="http://18.220.213.59/js/estados.js"></script>
+    <script src="http://18.220.213.59/js/sizes.js"></script>
 
     <!-- Your html goes here -->
     <div class='panel panel-default'>

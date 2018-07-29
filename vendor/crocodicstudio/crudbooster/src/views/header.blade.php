@@ -22,7 +22,7 @@
             $(this).parent().parent("td").parent().hide();
 
             //Actualizar como leída la notificaciones seleccionada
-            $.get("http://18.222.4.15/crm/notifications/readone", { id: id_read}, function(data){
+            $.get("http://18.220.213.59/crm/notifications/readone", { id: id_read}, function(data){
             });
 
             loader_notification();
@@ -31,7 +31,7 @@
         $(document).on("click","#get_read_all",function(e) {
             e.preventDefault();
             //Actualizar como leída todas las notificaciones seleccionada
-            $.get("http://18.222.4.15/crm/notifications/readall", { id: id_read }, function(data){
+            $.get("http://18.220.213.59/crm/notifications/readall", { id: id_read }, function(data){
                 loader_notification();
                 $('#modal-notifications').modal('hide');
                 $('.notifications_rows').hide();
@@ -94,7 +94,7 @@
                                                 confirmButtonText: "Yes!",
                                                 cancelButtonText: "No",
                                                 closeOnConfirm: false },
-                                                function(){  location.href="http://18.222.4.15/crm/notifications/delete/{{ $item->id }}" });'><i class='fa fa-trash'></i>
+                                                function(){  location.href="http://18.220.213.59/crm/notifications/delete/{{ $item->id }}" });'><i class='fa fa-trash'></i>
                                         </a>--}}
                                     </div>
                                 </td>
@@ -158,8 +158,11 @@
                 <li class="dropdown messages-menu"><a href="{{CRUDBooster::adminpath("tour/general")}}"style="color: white;"><strong>{{ trans('crudbooster.text_quick_tour') }}</strong></a></li>
 
                 <!--GESTION DE IDIOMA-->
-                <li class="dropdown messages-menu"><a title="{{ trans('crudbooster.english') }}" href="<?php echo e(url('lang', ['en'])); ?>"><img style="width:25px" src="<?php echo e(asset('assets/images/us.png')); ?>" alt="EN"></a></li>
-                <li class="dropdown messages-menu"><a title="{{ trans('crudbooster.spanish') }}" href="<?php echo e(url('lang', ['es'])); ?>"><img style="width:25px" src="<?php echo e(asset('assets/images/es.png')); ?>" alt="ES"></a></li>
+                    @if(config('app.locale') == 'en')
+                        <li class="dropdown messages-menu"><a title="{{ trans('crudbooster.spanish') }}" href="<?php echo e(url('lang', ['es'])); ?>"><img style="width:25px" src="<?php echo e(asset('assets/images/es.png')); ?>" alt="ES"></a></li>
+                    @elseif(config('app.locale') == 'es')
+                        <li class="dropdown messages-menu"><a title="{{ trans('crudbooster.english') }}" href="<?php echo e(url('lang', ['en'])); ?>"><img style="width:25px" src="<?php echo e(asset('assets/images/us.png')); ?>" alt="EN"></a></li>
+                    @endif
                 <!--END-->
 
             <li class="dropdown notifications-menu">

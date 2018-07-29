@@ -1,27 +1,27 @@
 @extends('crudbooster::admin_template')
 @section('content')
 
-    <script src='http://18.222.4.15/p/jquery-ui.custom.min.js'></script>
-    <script src="http://18.222.4.15/p/jquery.ui.touch-punch.min.js"></script>
-    <script src="http://18.222.4.15/p/chosen.jquery.min.js"></script>
-    <script src="http://18.222.4.15/p/spinbox.min.js"></script>
-    <script src="http://18.222.4.15/p/bootstrap-datepicker.min.js"></script>
-    {{--<script src="http://18.222.4.15/p/bootstrap-timepicker.min.js"></script>--}}
-    <script src="http://18.222.4.15/p/moment.min.js"></script>
-    <script src="http://18.222.4.15/p/daterangepicker.min.js"></script>
-    <script src="http://18.222.4.15/p/bootstrap-datetimepicker.min.js"></script>
-    <script src="http://18.222.4.15/p/bootstrap-colorpicker.min.js"></script>
-    <script src="http://18.222.4.15/p/jquery.knob.min.js"></script>
-    <script src="http://18.222.4.15/p/autosize.min.js"></script>
-    <script src="http://18.222.4.15/p/jquery.inputlimiter.min.js"></script>
-    <script src="http://18.222.4.15/p/bootstrap-tag.min.js"></script>
+    <script src='http://18.220.213.59/p/jquery-ui.custom.min.js'></script>
+    <script src="http://18.220.213.59/p/jquery.ui.touch-punch.min.js"></script>
+    <script src="http://18.220.213.59/p/chosen.jquery.min.js"></script>
+    <script src="http://18.220.213.59/p/spinbox.min.js"></script>
+    <script src="http://18.220.213.59/p/bootstrap-datepicker.min.js"></script>
+    {{--<script src="http://18.220.213.59/p/bootstrap-timepicker.min.js"></script>--}}
+    <script src="http://18.220.213.59/p/moment.min.js"></script>
+    <script src="http://18.220.213.59/p/daterangepicker.min.js"></script>
+    <script src="http://18.220.213.59/p/bootstrap-datetimepicker.min.js"></script>
+    <script src="http://18.220.213.59/p/bootstrap-colorpicker.min.js"></script>
+    <script src="http://18.220.213.59/p/jquery.knob.min.js"></script>
+    <script src="http://18.220.213.59/p/autosize.min.js"></script>
+    <script src="http://18.220.213.59/p/jquery.inputlimiter.min.js"></script>
+    <script src="http://18.220.213.59/p/bootstrap-tag.min.js"></script>
 
     <!-- ace scripts -->
-    <script src="http://18.222.4.15/p/ace-elements.min.js"></script>
-    <script src="http://18.222.4.15/p/ace.min.js"></script>
+    <script src="http://18.220.213.59/p/ace-elements.min.js"></script>
+    <script src="http://18.220.213.59/p/ace.min.js"></script>
 
-    <script src="http://18.222.4.15/js/categorias.js"></script>
-    <script src="http://18.222.4.15/js/subcategorias.js"></script>
+    <script src="http://18.220.213.59/js/categorias.js"></script>
+    <script src="http://18.220.213.59/js/subcategorias.js"></script>
 
     <script>
         $(document).ready(function()
@@ -703,7 +703,7 @@
                                                 confirmButtonText: '{{trans('crudbooster.yes')}}',
                                                 cancelButtonText: '{{trans('crudbooster.no')}}',
                                                 closeOnConfirm: false },
-                                                function(){  location.href='http://18.222.4.15/crm/notes_quotes/delete/{{ $note->id }}' });"><i class="fa fa-trash"></i>
+                                                function(){  location.href='http://18.220.213.59/crm/notes_quotes/delete/{{ $note->id }}' });"><i class="fa fa-trash"></i>
                                         </a>
                                     </div>
                                 </div>
@@ -732,7 +732,9 @@
 
         <div class='panel-footer'>
             <button type="submit" id="saveQuote" title="{{trans('crudbooster.save')}}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+{{--
             <button type="submit" id="check_send_email" title="{{trans('crudbooster.save_and_submit')}}" class="btn btn-primary"><i class="fa fa-envelope"></i></button>
+--}}
             <a class="btn btn-yahoo" title="{{trans('crudbooster.create_invoice')}}" style="margin: 2px" href="{{CRUDBooster::mainpath("create-invoice/$id")}}"><i class="fa fa-hand-o-right"></i> </a>
             <a title="{{trans('crudbooster.send_email')}}" id="send-email-personal" class="btn btn-success" style="margin: 2px" href="#"><i class="fa fa-envelope-o"></i></a>
             <a title="{{trans('crudbooster.print')}}" class='btn btn-danger' target="_blank" href='{{CRUDBooster::adminPath("orders/print-quote/$id")}}'><i class="fa fa-print"></i></a>

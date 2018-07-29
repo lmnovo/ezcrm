@@ -41,13 +41,13 @@
 
 
                         <input type="hidden" name="_token" value="na1xb4SVzi3Gw52kbxOoGR4ACBbybUIXN7QLAhAs">
-                        <input type='hidden' name='return_url' value='http://18.222.4.15/crm/account?m=50'/>
-                        <input type='hidden' name='ref_mainpath' value='http://18.222.4.15/crm/account'/>
-                        <input type='hidden' name='ref_parameter' value='return_url=http://18.222.4.15/crm/account?m=50&amp;parent_id=&amp;parent_field='/>
+                        <input type='hidden' name='return_url' value='http://18.220.213.59/crm/account?m=50'/>
+                        <input type='hidden' name='ref_mainpath' value='http://18.220.213.59/crm/account'/>
+                        <input type='hidden' name='ref_parameter' value='return_url=http://18.220.213.59/crm/account?m=50&amp;parent_id=&amp;parent_field='/>
                         <div class="box-body" id="parent-form-area">
 
-                            <link rel='stylesheet' href='http://18.222.4.15/vendor/crudbooster/assets/select2/dist/css/select2.min.css'/>
-                            <script src='http://18.222.4.15/vendor/crudbooster/assets/select2/dist/js/select2.full.min.js'></script>
+                            <link rel='stylesheet' href='http://18.220.213.59/vendor/crudbooster/assets/select2/dist/css/select2.min.css'/>
+                            <script src='http://18.220.213.59/vendor/crudbooster/assets/select2/dist/js/select2.full.min.js'></script>
                             <style type="text/css">
                                 .select2-container--default .select2-selection--single {border-radius: 0px !important}
                                 .select2-container .select2-selection--single {height: 35px}

@@ -523,7 +523,7 @@ class CBController extends Controller {
                         //$value = "<a href=mailto:$value target='_blank'>$value</a>";
                         $id = DB::table('account')->where('email', $value)->first();
 
-                        $value = "<a href='http://18.222.4.15/crm/account/send-email/$id->id')>$value</a>";
+                        $value = "<a href='http://18.220.213.59/crm/account/send-email/$id->id')>$value</a>";
                     }
 
                     if($col['urlClient']) {

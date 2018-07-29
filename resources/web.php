@@ -66,7 +66,7 @@ Route::group(['middleware' => ['web']], function () {
                     // Add color and link on event
                     [
                         'color' => $color->description,
-                        'url' => 'http://18.222.4.15/crm/eazy_tasks/detail/'.$value->id,
+                        'url' => 'http://18.220.213.59/crm/eazy_tasks/detail/'.$value->id,
                     ]
                 );
             }

@@ -34,7 +34,7 @@
         <div class='panel-heading'><strong><i class="fa fa-envelope-o"></i> {{ trans('crudbooster.detail_campaign') }} </strong></div>
 
         <div class="panel-body" style="padding:20px 0px 0px 0px">
-            <form class="form-horizontal" method="post" id="form" enctype="multipart/form-data" action="http://18.222.4.15/crm/campaigns/edit-save/2">
+            <form class="form-horizontal" method="post" id="form" enctype="multipart/form-data" action="http://18.220.213.59/crm/campaigns/edit-save/2">
 
                 <div class="box-body" id="parent-form-area">
 

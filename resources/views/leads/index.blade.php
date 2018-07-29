@@ -66,10 +66,10 @@
                             confirmButtonText: '{{trans('crudbooster.yes')}}',
                             cancelButtonText: '{{trans('crudbooster.no')}}',
                             closeOnConfirm: false },
-                            function(){  location.href='http://18.222.4.15/crm/account/delete/{{ $id }}' });"><i class="fa fa-trash"></i>
+                            function(){  location.href='http://18.220.213.59/crm/account/delete/{{ $id }}' });"><i class="fa fa-trash"></i>
                     </a>
 
-                    <a class="btn btn-xs btn-primary btn-detail" title="Detail Data" href="http://18.222.4.15/crm/account/detail/{{$row->id}}?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fcrm%2Faccount%3Fm%3D62"><i class="fa fa-eye"></i></a>
+                    <a class="btn btn-xs btn-primary btn-detail" title="Detail Data" href="http://18.220.213.59/crm/account/detail/{{$row->id}}?return_url=http%3A%2F%2F127.0.0.1%3A8000%2Fcrm%2Faccount%3Fm%3D62"><i class="fa fa-eye"></i></a>
                 </td>
             </tr>
         @endforeach
