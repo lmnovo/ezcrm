@@ -1,29 +1,29 @@
 @extends('crudbooster::admin_template')
 @section('content')
 
-    <script src='http://18.220.213.59/p/jquery-ui.custom.min.js'></script>
-    <script src="http://18.220.213.59/p/jquery.ui.touch-punch.min.js"></script>
-    <script src="http://18.220.213.59/p/chosen.jquery.min.js"></script>
-    <script src="http://18.220.213.59/p/spinbox.min.js"></script>
-    <script src="http://18.220.213.59/p/bootstrap-datepicker.min.js"></script>
-    {{--<script src="http://18.220.213.59/p/bootstrap-timepicker.min.js"></script>--}}
-    <script src="http://18.220.213.59/p/moment.min.js"></script>
-    <script src="http://18.220.213.59/p/daterangepicker.min.js"></script>
-    <script src="http://18.220.213.59/p/bootstrap-datetimepicker.min.js"></script>
-    <script src="http://18.220.213.59/p/bootstrap-colorpicker.min.js"></script>
-    <script src="http://18.220.213.59/p/jquery.knob.min.js"></script>
-    <script src="http://18.220.213.59/p/autosize.min.js"></script>
-    <script src="http://18.220.213.59/p/jquery.inputlimiter.min.js"></script>
-    <script src="http://18.220.213.59/p/bootstrap-tag.min.js"></script>
+    <script src='http://ezcrm.us/p/jquery-ui.custom.min.js'></script>
+    <script src="http://ezcrm.us/p/jquery.ui.touch-punch.min.js"></script>
+    <script src="http://ezcrm.us/p/chosen.jquery.min.js"></script>
+    <script src="http://ezcrm.us/p/spinbox.min.js"></script>
+    <script src="http://ezcrm.us/p/bootstrap-datepicker.min.js"></script>
+    {{--<script src="http://ezcrm.us/p/bootstrap-timepicker.min.js"></script>--}}
+    <script src="http://ezcrm.us/p/moment.min.js"></script>
+    <script src="http://ezcrm.us/p/daterangepicker.min.js"></script>
+    <script src="http://ezcrm.us/p/bootstrap-datetimepicker.min.js"></script>
+    <script src="http://ezcrm.us/p/bootstrap-colorpicker.min.js"></script>
+    <script src="http://ezcrm.us/p/jquery.knob.min.js"></script>
+    <script src="http://ezcrm.us/p/autosize.min.js"></script>
+    <script src="http://ezcrm.us/p/jquery.inputlimiter.min.js"></script>
+    <script src="http://ezcrm.us/p/bootstrap-tag.min.js"></script>
 
     <!-- ace scripts -->
-    <script src="http://18.220.213.59/p/ace-elements.min.js"></script>
-    <script src="http://18.220.213.59/p/ace.min.js"></script>
+    <script src="http://ezcrm.us/p/ace-elements.min.js"></script>
+    <script src="http://ezcrm.us/p/ace.min.js"></script>
 
-    <script src="http://18.220.213.59/js/buildouts.js"></script>
-    <script src="http://18.220.213.59/js/products.js"></script>
-    <script src="http://18.220.213.59/js/estados.js"></script>
-    <script src="http://18.220.213.59/js/sizes.js"></script>
+    <script src="http://ezcrm.us/js/buildouts.js"></script>
+    <script src="http://ezcrm.us/js/products.js"></script>
+    <script src="http://ezcrm.us/js/estados.js"></script>
+    <script src="http://ezcrm.us/js/sizes.js"></script>
 
     <!-- Your html goes here -->
     <div class='panel panel-default'>

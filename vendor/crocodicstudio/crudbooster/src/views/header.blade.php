@@ -22,7 +22,7 @@
             $(this).parent().parent("td").parent().hide();
 
             //Actualizar como leída la notificaciones seleccionada
-            $.get("http://18.220.213.59/crm/notifications/readone", { id: id_read}, function(data){
+            $.get("http://ezcrm.us/crm/notifications/readone", { id: id_read}, function(data){
             });
 
             loader_notification();
@@ -31,7 +31,7 @@
         $(document).on("click","#get_read_all",function(e) {
             e.preventDefault();
             //Actualizar como leída todas las notificaciones seleccionada
-            $.get("http://18.220.213.59/crm/notifications/readall", { id: id_read }, function(data){
+            $.get("http://ezcrm.us/crm/notifications/readall", { id: id_read }, function(data){
                 loader_notification();
                 $('#modal-notifications').modal('hide');
                 $('.notifications_rows').hide();
@@ -94,7 +94,7 @@
                                                 confirmButtonText: "Yes!",
                                                 cancelButtonText: "No",
                                                 closeOnConfirm: false },
-                                                function(){  location.href="http://18.220.213.59/crm/notifications/delete/{{ $item->id }}" });'><i class='fa fa-trash'></i>
+                                                function(){  location.href="http://ezcrm.us/crm/notifications/delete/{{ $item->id }}" });'><i class='fa fa-trash'></i>
                                         </a>--}}
                                     </div>
                                 </td>

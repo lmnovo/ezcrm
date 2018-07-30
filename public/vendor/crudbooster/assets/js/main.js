@@ -46,7 +46,7 @@
 		function readOne(id,url) {
             var quotes_id = $('#note_quotes_id').val();
             //Actualizar como leída la notificaciones seleccionada
-            $.get("http://18.220.213.59/crm/notifications/readone", { id: id}, function(data){
+            $.get("http://ezcrm.us/crm/notifications/readone", { id: id}, function(data){
             });
 
             loader_notification();
