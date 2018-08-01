@@ -1,2 +1,5 @@
 /.idea
 .env
+storage/framework/views/*
+storage/framework/sessions/*
+storage/framework/cache/*
