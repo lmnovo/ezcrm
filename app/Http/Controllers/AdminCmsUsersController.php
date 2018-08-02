@@ -18,6 +18,7 @@ class AdminCmsUsersController extends \crocodicstudio\crudbooster\controllers\CB
 		$this->button_import 	   = FALSE;	
 		$this->button_export 	   = FALSE;
         $this->button_bulk_action  = FALSE;
+        $this->button_users_action  = TRUE;
         $this->button_show         = FALSE;
 		# END CONFIGURATION DO NOT REMOVE THIS LINE
 	
@@ -40,7 +41,19 @@ class AdminCmsUsersController extends \crocodicstudio\crudbooster\controllers\CB
         $this->form[] = array("label"=>trans('crudbooster.sign'),"name"=>"firma","type"=>"wysiwyg",'required'=>false);
 
         # END FORM DO NOT REMOVE THIS LINE
-				
+        /*
+        | ----------------------------------------------------------------------
+        | Add More Button Selected
+        | ----------------------------------------------------------------------
+        | @label       = Label of action
+        | @icon 	   = Icon from fontawesome
+        | @name 	   = Name of button
+        | Then about the action, you should code at actionButtonSelected method
+        |
+        */
+        $this->button_selected = array();
+        $this->button_selected[] = ['label'=>'Send Email','icon'=>'fa fa-envelope-o','name'=>'delete_user'];
+
 	}
 
 	public function getProfile() {			

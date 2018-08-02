@@ -314,12 +314,12 @@
 
 	        if ($nota->is_client == 0) {
                 if(count($notas) == 1) {
-                    DB::table('account')->where('id', $notas[0]->customers_id)->update(['notes'=>0]);
+                    DB::table('account')->where('id', $notas[0]->customers_id)->update(['notes'=>"No"]);
                 }
             }
             else {;
                 if(count($notas) == 1) {
-                    DB::table('clients')->where('id', $notas[0]->customers_id)->update(['notes'=>0]);
+                    DB::table('clients')->where('id', $notas[0]->customers_id)->update(['notes'=>"No"]);
                 }
             }
 	    }
@@ -332,7 +332,7 @@
 	    | 
 	    */
 	    public function hook_after_delete($id) {
-	        //Your code here
+            DB::table('eazy_notes')->where('id', $id)->delete();
 
 	    }
 

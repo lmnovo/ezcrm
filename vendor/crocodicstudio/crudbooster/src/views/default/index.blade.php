@@ -153,8 +153,14 @@
                         <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class='fa fa-check-square-o'></i> {{trans("crudbooster.button_selected_action")}}
                             <span class="fa fa-caret-down"></span></button>
                         <ul class="dropdown-menu">
-                            @if($button_delete && CRUDBooster::isDelete())
-                                <li><a href="javascript:void(0)" data-name='delete' title='{{trans('crudbooster.action_delete_selected')}}'><i class="fa fa-trash"></i> {{trans('crudbooster.action_delete_selected')}}</a></li>
+
+
+                            @if($button_users_action && $button_delete && CRUDBooster::isDelete())
+                                    {{--<li><a href="javascript:void(0)" data-name='delete' title='{{trans('crudbooster.action_delete_selected')}}'><i class="fa fa-trash"></i> {{trans('crudbooster.action_delete_selected')}}</a></li>--}}
+                                @else
+                                    @if($button_delete && CRUDBooster::isDelete())
+                                        <li><a href="javascript:void(0)" data-name='delete' title='{{trans('crudbooster.action_delete_selected')}}'><i class="fa fa-trash"></i> {{trans('crudbooster.action_delete_selected')}}</a></li>
+                                    @endif
                             @endif
 
                             @if($button_selected)

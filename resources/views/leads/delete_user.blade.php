@@ -55,7 +55,7 @@
                     </style>
 
                     <div class="form-group">
-                        <label style="color: green; font-size: 16px;" class="control-label col-md-9 col-sm-9 col-xs-12" for="title">Select the person in charge that will assume the leads and the user John's clients <span class="required">*</span>
+                        <label style="color: green; font-size: 16px;" class="control-label col-md-9 col-sm-9 col-xs-12" for="title"> {{ trans('crudbooster.deleted_user') }}<span class="required">*</span>
                         </label>
                     </div>
 

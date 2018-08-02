@@ -527,7 +527,7 @@ class AdminCustomersController extends \crocodicstudio\crudbooster\controllers\C
         ];
 
         DB::table('eazy_notes')->insertGetId($sumarizedData);
-        DB::table('account')->where('id', $request->get('customers_id'))->update(['notes'=>1]);
+        DB::table('account')->where('id', $request->get('customers_id'))->update(['notes'=>"Yes"]);
 
         return 1;
     }

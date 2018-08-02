@@ -36,6 +36,7 @@ class AdminCustomers25Controller extends \crocodicstudio\crudbooster\controllers
         //$this->col[] = ["label"=>trans('crudbooster.name'), "name"=>"name", "urlClient"=>"customers25"];
         $this->col[] = ["label"=>trans('crudbooster.name'), "name"=>"name"];
         $this->col[] = ["label"=>trans('crudbooster.lastname'), "name"=>"lastname"];
+        $this->col[] = ["label"=>trans('crudbooster.phone'),"name"=>"telephone", "urlPhone"=>"account"];
         $this->col[] = ["label"=>trans('crudbooster.email'),"name"=>"email", "email"=>"email"];
         $this->col[] = ["label"=>trans('crudbooster.state'),"name"=>"state"];
         $this->col[] = ["label"=>trans('crudbooster.address'), "name"=>"address", "address"=>"true"];
@@ -531,7 +532,7 @@ class AdminCustomers25Controller extends \crocodicstudio\crudbooster\controllers
         $client = DB::table('clients')->where('id', $request->get('lead_id'))->first();
 
         //Notificación de envío de tareas
-        $config['content'] = trans("crudbooster.new_tasks_client_en").$client->name.' '.$client->lastname;
+        /*$config['content'] = trans("crudbooster.new_tasks_client_en").$client->name.' '.$client->lastname;
         $config['content_spanish'] = trans("crudbooster.new_tasks_client_es").$client->name.' '.$client->lastname;
         $config['to'] = CRUDBooster::adminPath('eazy_tasks/detail/'.$lastId);
 
@@ -542,7 +543,7 @@ class AdminCustomers25Controller extends \crocodicstudio\crudbooster\controllers
             $config['id_cms_users'] = [1]; //This is an array of id users
         }
 
-        CRUDBooster::sendNotification($config);
+        CRUDBooster::sendNotification($config);*/
 
         return 1;
     }
@@ -559,7 +560,7 @@ class AdminCustomers25Controller extends \crocodicstudio\crudbooster\controllers
         ];
 
         DB::table('eazy_notes')->insertGetId($sumarizedData);
-        DB::table('clients')->where('id', $request->get('customers_id'))->update(['notes'=>1]);
+        DB::table('clients')->where('id', $request->get('customers_id'))->update(['notes'=>"Yes"]);
 
         return 1;
     }

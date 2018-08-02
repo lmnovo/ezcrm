@@ -676,5 +676,6 @@ return [
     'fase_type'  => 'Tipo de Etapa',
 
     'date_due' => 'Fecha de Vencimiento',
+    'deleted_user' => 'Seleccione a la persona que asumirá los prospectos y los clientes del usuario que desea eliminar',
 
 ];

@@ -665,6 +665,7 @@ return [
     'fase_type'  => 'Stage Type',
 
     'date_due' => 'Date Due',
+    'deleted_user' => 'Select the person in charge that will assume the leads and customers of the deleted user',
 
 
 ];
