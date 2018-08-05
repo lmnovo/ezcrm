@@ -356,7 +356,7 @@ return [
     'menu_Products Type' => 'Products Type',
     'menu_Sizes' => 'Sizes',
     'menu_Appliances Inside' => 'Appliances Inside',
-    'menu_Appliances' => 'Appliances Details',
+    'menu_Appliances' => 'Appliances',
     'menu_Notes' => 'Notes',
 
     'menu_Products' => 'Products',
@@ -445,7 +445,7 @@ return [
     'Create_Client' => 'Create Client',
     'Sending_Campaigns' => 'Sending Campaigns',
     'Phases_(Steps)' => 'Phases (Steps)',
-    'Add_Product_to_Catalog' => 'Add Product to Catalog',
+    'Add_Product_to_Catalog' => 'Add Appliance to Catalog',
     'delete_tour_user' => 'Assigned to (Edit)',
 
     'Leads' => 'Leads',
@@ -666,6 +666,12 @@ return [
 
     'date_due' => 'Date Due',
     'deleted_user' => 'Select the person in charge that will assume the leads and customers of the deleted user',
+
+    'leads_clients' => 'Leads and Clients',
+    'products_buildouts' => 'Products and Buildouts',
+    'Add_Buildout_to_Catalog' => 'Add Product and Buildout',
+    'buildout_catalog' => 'Add Product and Buildout to Catalog',
+    'product_catalog' => 'Add Appliance to Catalog',
 
 
 ];

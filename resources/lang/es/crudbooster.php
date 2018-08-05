@@ -450,7 +450,7 @@ return [
     'Create_Client' => 'Crear Cliente',
     'Sending_Campaigns' => 'Enviar Campañas',
     'Phases_(Steps)' => 'Etapas (Pasos)',
-    'Add_Product_to_Catalog' => 'Agregar Producto a Catálogo',
+    'Add_Product_to_Catalog' => 'Agregar Detalles de Producto',
 
     'description' => 'Descripción',
     'date' => 'Fecha',
@@ -677,5 +677,11 @@ return [
 
     'date_due' => 'Fecha de Vencimiento',
     'deleted_user' => 'Seleccione a la persona que asumirá los prospectos y los clientes del usuario que desea eliminar',
+
+    'leads_clients' => 'Prospectos',
+    'products_buildouts' => 'Productos y Buildouts',
+    'Add_Buildout_to_Catalog' => 'Agregar Product y Buildout',
+    'buildout_catalog' => 'Agregar Buildout al Catálogo',
+    'product_catalog' => 'Agregar Detalles de Productos',
 
 ];

@@ -351,8 +351,7 @@
         }
 
         public function getDeletebuildout(\Illuminate\Http\Request $request) {
-            DB::table('buildout')->where('id', $request->get('id'))->update(['deleted_at'=>  Carbon::now(config('app.timezone'))]);
-
+            DB::table('buildout')->where('id', $request->get('id'))->delete();
             return 1;
         }
 
