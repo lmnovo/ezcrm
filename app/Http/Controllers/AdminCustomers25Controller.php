@@ -805,6 +805,11 @@ class AdminCustomers25Controller extends \crocodicstudio\crudbooster\controllers
         $data['id'] = $id;
         $data['row'] = DB::table('campaigns')->where('id',$id)->first();
 
+        $data['campaigns_sent']  = DB::table('campaigns_leads')
+            ->leftJoin('settings_campaigns', 'settings_campaigns.id', '=', 'campaigns_leads.campaigns_id')
+            ->where('campaigns_leads.leads_id',$id)
+            ->get();
+
         $data['lead'] = DB::table('clients')
             ->select(DB::raw('states.name as abbreviation'), 'clients.name', 'clients.lastname',
                 'clients.telephone', 'clients.id', 'clients.email', 'clients.id', 'clients.address', 'clients.date_created',

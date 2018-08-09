@@ -672,6 +672,7 @@ return [
     'Add_Buildout_to_Catalog' => 'Add Product and Buildout',
     'buildout_catalog' => 'Add Product and Buildout to Catalog',
     'product_catalog' => 'Add Appliance to Catalog',
+    'emails_sent' => 'Emails Sent',
 
 
 ];

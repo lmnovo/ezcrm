@@ -441,6 +441,67 @@
                     </div>
                 </div>
 
+                {{--Recent Emails--}}
+                <div class='panel panel-default'>
+                    <div class='panel-heading' style="background-color: #337ab7; color: white;"><strong><i class="fa fa-book"></i> {{trans('crudbooster.emails_sent')}}</strong>
+                    </div>
+                </div>
+
+                <div class="table-responsive" style="padding-left: 20px; padding-right: 20px">
+                    <?php
+                    if(count($campaigns_sent) == 0) {
+                    echo "<div style='text-align: center; color: red; padding-bottom: 20px;'><i class='fa fa-search'></i>";?> {{ trans('crudbooster.table_data_not_found') }}  <?php echo "</div>";
+                    }
+                    else {
+                    ?>
+
+                    <table id="table_campaigns" class='table table-striped table-bordered'>
+                        <thead>
+                        <tr>
+                            <th>{{trans('crudbooster.name')}}</th>
+                            <th>{{trans('crudbooster.subject')}}</th>
+                            <th>{{trans('crudbooster.content')}}</th>
+                            <th>{{trans('crudbooster.type')}}</th>
+                            <th>{{trans('crudbooster.creation_date')}}</th>
+                            <th style="text-align: center">{{trans('crudbooster.actions')}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <?php } ?>
+
+                        @foreach($campaigns_sent as $campaign)
+                            <tr>
+                                <td>{{$campaign->name}}</td>
+                                <td>{{$campaign->subject}}</td>
+                                <td>
+                                    {{$campaign->content}}
+                                </td>
+                                <td>{{$campaign->type}}</td>
+                                <td>{{$campaign->created_at}}</td>
+                                <td style="text-align: center">
+                                    <a class="btn btn-xs btn-primary btn-detail" title="{{trans('crudbooster.detail')}}" href="http://ezcrm.us/crm/settings_campaigns/detail/{{$campaign->id}}"><i class="fa fa-eye"></i></a>
+                                    <a class="btn btn-xs btn-warning btn-delete" title="{{trans('crudbooster.delete')}}" href="javascript:;" onclick="swal({
+                                            title: '{{trans('crudbooster.are_you_sure')}}',
+                                            text: '{{trans('crudbooster.message_delete')}}',
+                                            type: 'warning',
+                                            showCancelButton: true,
+                                            confirmButtonColor: '#ff0000',
+                                            confirmButtonText: '{{trans('crudbooster.yes')}}',
+                                            cancelButtonText: '{{trans('crudbooster.no')}}',
+                                            closeOnConfirm: false },
+                                            function(){  location.href='{{CRUDBooster::adminpath("settings_campaigns/delete/$campaign->id")}}' });"><i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+
                 <div class="box-footer" style="background: #F5F5F5">
 
                     <div class="form-group">

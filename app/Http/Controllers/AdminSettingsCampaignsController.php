@@ -365,7 +365,7 @@
                 foreach ($leadsSelected as $item) {
                     //validamos antes de incluir los emails
                     if ($this->validarEmail($item->email)) {
-                        $to[] = $item->email;
+                        $to[] = strtolower($item->email);
                         $leads_send_id[] = $item->id;
                     }
                 }

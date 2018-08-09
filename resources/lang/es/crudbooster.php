@@ -683,5 +683,6 @@ return [
     'Add_Buildout_to_Catalog' => 'Agregar Product y Buildout',
     'buildout_catalog' => 'Agregar Buildout al Catálogo',
     'product_catalog' => 'Agregar Detalles de Productos',
+    'emails_sent' => 'Correos Enviados',
 
 ];
